@@ -1,0 +1,22 @@
+Date 19-02-2014
+Next meeting: Wednesday(26-02-2014 - 12:30)
+
+Todos:
+Report Ivan's notes about the project(The sync with shopping-list, and also sharing of shopping-lists)
+Report/review/show the mockups to the supervisor.
+
+Discussed features:
+Save recipes locally on the Mobile device(to look)
+
+Weekly meeting:
+Suggestions:
+Button design, instead of searching for ingredients...(suggestion from Ramin)
+Word cloud with ingredients(that would go well the already typed ingredients)
+Someone else could be able to fill the "ingredients that i already have" (like a wife who is at home, could be able to tell man who is at the supermarket to, that we already have
+chicken, shrimps, fruit...) (Idea from Ramin)
+
+Plans for the next time:
+Problem statement,
+Writing about the exiting solutions and the problems about them,
+Data structure, Server design,
+Introduction for the report
