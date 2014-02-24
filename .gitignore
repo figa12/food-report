@@ -8,4 +8,7 @@
 master.pdf
 *.gz
 *.toc
+*.fdb_latexmk
+*.fls
+*.~
 master.synctex.gz(busy)
