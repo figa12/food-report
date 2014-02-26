@@ -1,0 +1,10 @@
+Feature list:
+Predefined ingredients
+Core/optional ingredients
+Refs to other recipes
+
+Filter ingredients
+Shopping list
+Interactive ingredients search
+Save selection
+Share recipes
