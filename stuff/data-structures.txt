@@ -17,7 +17,7 @@ Cat:
 
 Ingredient:
     name -> String
-    ploral -> String
+    plural -> String
     metric -> Metric
     cat -> Cat
 
@@ -29,12 +29,13 @@ Recipe:
     picture -> [Pic]
     author -> User 
 
+RecipeIngredientChoice:
+    name -> String
+    Ingredients -> [RecipeIngredient]
+    
 RecipeIngredient:
     ingredient -> Ingredient
     amount
     mandatory
-
-RecipeIngredientChoice:
-    Ingredients -> [RecipeIngredient]
 
 User
