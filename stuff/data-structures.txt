@@ -28,6 +28,7 @@ Recipe:
     instructions -> String
     ingredients -> [RecipeIngredientsChoice]
     picture -> [Pic]
+    references -> [Recipe]
     author -> User 
 
 RecipeIngredientChoice:
