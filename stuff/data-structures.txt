@@ -6,8 +6,8 @@ String:
     .
     .
 
-Metric:
-    metric -> String
+Unit:
+    unit -> String
     imperial -> String
     conversion
 
@@ -18,8 +18,9 @@ Cat:
 Ingredient:
     name -> String
     plural -> String
-    metric -> Metric
+    unit -> Unit
     cat -> Cat
+    penalty
 
 Recipe:
     name ->  String
