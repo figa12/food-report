@@ -1,0 +1,40 @@
+Relative datastructures:
+
+String:
+    DK
+    US
+    .
+    .
+
+Metric:
+    metric -> String
+    imperial -> String
+    conversion
+
+Cat:
+    name
+    parent -> Cat | Null
+
+Ingredient:
+    name -> String
+    ploral -> String
+    metric -> Metric
+    cat -> Cat
+
+Recipe:
+    name ->  String
+    description -> String
+    instructions -> String
+    ingredients -> [RecipeIngredientsChoice]
+    picture -> [Pic]
+    author -> User 
+
+RecipeIngredient:
+    ingredient -> Ingredient
+    amount
+    mandatory
+
+RecipeIngredientChoice:
+    Ingredients -> [RecipeIngredient]
+
+User
