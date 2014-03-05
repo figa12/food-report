@@ -1,0 +1,46 @@
+Date: 05-03-2014 12:30
+Next meeing: 12-03-2014 12:30
+
+Things to tell him:
+Ask him about the report, any notes or somthing like that.
+Tell him that we have iterated on the design.(tiles and typing) show the the drawing on the black-board
+
+Tell that we have made small prototype test(animation) to ensure that it is possible design.(navigation drawer)
+
+Tell him that we have thought the data structure, and have created a markup.
+
+
+Meeting:
+Ramin enters!!
+
+We tell him stuff, what we have being doing the last week
+
+Create a feature/require list after existing solutions
+	- how did you make the choice for the interface?
+	- sensor(will always ask): why? do some testing about the prototype design
+	- He thinks it important to think about this
+	- Do some drawing..
+	
+Desgin decisions:
+	why use facebook/google plus login?
+	why have we chosen this android sdk?
+	why have we chosen php for serverside scripting?
+
+What is going on at the moment:
+	test?
+		mutation testing? get the it ready before starting to implement
+
+What kind of development process are you using?
+	tell him about pivotaltracker
+
+Repository?
+	git 
+
+Timeplan/milestones?
+	We plan to release it to google play store.
+
+Ramin wants next week:
+	A list about the milestone of our project
+	Requirement list (derived from the existing solution)
+
+	

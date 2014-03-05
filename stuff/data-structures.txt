@@ -25,12 +25,12 @@ Ingredient:
 Recipe:
     name ->  String
     description -> String
-    instructions -> String or [Step]
+    instructions -> [Step]
     ingredients -> [RecipeIngredientsChoice]
     picture -> [Pic]
     references -> [Recipe]
     author -> User
-    rating
+    rating (ved ikke lige hvordan det skal fungere?)
     comments -> [Comment]
 
 RecipeIngredientChoice:
@@ -44,11 +44,21 @@ RecipeIngredient:
 
 Step:
     description -> String
-    pic -> Pic
+    pic -> Pic | Null
 
 Comment:
     user -> User
     commentText -> String
 
+ShoppingList:
+    title -> String
+    ingredients -> [RecipeIngredient]
+    user -> [User]
+
 
 User
+    token
+    username
+    favourites -> [Recipe]
+    friends -> [User]
+    comments -> [Comment]
