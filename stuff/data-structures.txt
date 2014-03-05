@@ -25,11 +25,13 @@ Ingredient:
 Recipe:
     name ->  String
     description -> String
-    instructions -> String
+    instructions -> String or [Step]
     ingredients -> [RecipeIngredientsChoice]
     picture -> [Pic]
     references -> [Recipe]
-    author -> User 
+    author -> User
+    rating
+    comments -> [Comment]
 
 RecipeIngredientChoice:
     name -> String
@@ -39,5 +41,14 @@ RecipeIngredient:
     ingredient -> Ingredient
     amount
     mandatory
+
+Step:
+    description -> String
+    pic -> Pic
+
+Comment:
+    user -> User
+    commentText -> String
+
 
 User
