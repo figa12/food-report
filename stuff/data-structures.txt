@@ -55,7 +55,6 @@ ShoppingList:
     ingredients -> [RecipeIngredient]
     user -> [User]
 
-
 User
     token
     username
