@@ -36,11 +36,11 @@ Recipe:
 RecipeIngredientChoice:
     name -> String
     Ingredients -> [RecipeIngredient]
+    mandatory
     
 RecipeIngredient:
     ingredient -> Ingredient
     amount
-    mandatory
 
 Step:
     description -> String
