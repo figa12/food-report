@@ -6,4 +6,5 @@ Feature list:
     Shopping list
     Interactive ingredients search
     Save selection
-    Share recipes(sync?)
+    Share recipes and shopping lists (sms, facebook, google+)
+    Synchronisation (favorites, shopping list)
