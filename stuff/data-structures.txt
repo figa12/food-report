@@ -14,6 +14,7 @@ Unit:
 Cat:
     name -> String
     parent -> Cat | Null
+    pic -> Pic | Null
 
 Ingredient:
     name -> String
@@ -47,10 +48,9 @@ Step:
 
 Comment:
     user -> User
-    commentText -> String
+    recipe -> Recipe
 
 ShoppingList:
-    title -> String
     ingredients -> [RecipeIngredient]
     user -> [User]
 
