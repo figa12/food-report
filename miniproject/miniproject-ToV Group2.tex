@@ -1,13 +1,39 @@
 \documentclass[a4paper,12pt]{memoir}
+\usepackage{framed}
+\usepackage{enumitem}
+\usepackage{todonotes}
 
+\newcommand{\testdesign}[5]
+{
+\begin{framed}
+\begin{description}
+\item \textbf{Identifier:} #1
+\item \textbf{Features to be tested:} #2
+\item \textbf{Approach:} #3
+\item \textbf{Test case identification:} #4
+\item \textbf{Pass/fail criteria:} #5
+\end{description}
+\end{framed}
+}
 
 \title{Miniproject in Test and Verification - Part 1}
 \author{Jacob Karsten Wortmann\\Sam Sepstrup Olesen}
 
 \begin{document}
 \maketitle
-
 \chapter*{Miniproject}
-% a brief description of your initial project idea at the start of the semester (no more than half a page).
+\section*{1a - Test Design}
+\subsection*{Specification}
+%The purpose of the test design spec is to organize and describe the testing that needs to be performed on a specific feature. It doesn’t, however, give the detailed cases or the steps to execute to perform the testing.
+\testdesign
+{ServerTest}
+{Add items to shopping list. Items can be added from the shopping list or from a recipe.}
+{A shopping list written in hand will be created and then added to the shopping list in the application. Items from the recipe will be added to the shopping list.}
+{\begin{itemize}[nolistsep]
+\item 
+\end{itemize}}
+{A pass is when all test cases are run without finding a bug}
+
+\section*{1b - Test cases}
 
 \end{document}
