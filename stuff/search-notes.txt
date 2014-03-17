@@ -1,0 +1,53 @@
+Find matching recipeIngredients:
+
+SELECT recipeIngredientId FROM RecipeIngredient WHERE id IN listofingredients
+
+1  (garlic)
+4  (egg)
+
+
+
+Remove possible duplicates:
+
+SELECT recipeIngredientChoiceId, mandatory
+FROM ^ JOIN RecipeIngredientChoice
+GROUP BY recipeIngredientChoiceId
+
+2, 1
+5, 1
+7, 0
+8, 1
+9, 0
+
+
+Get a prioritied list of recipes:
+
+SELECT recipeId, SUM(mandatory) AS mandatoryMatching, COUNT(*)-SUM(mandatory) AS mandatoryLacking, SUM(optional) AS optionalMatching, COUNT(*)-SUM(optional) AS optionalLacking
+^ jOIN Recipe GROUP BY recipeId
+ORDER BY mandatoryCount DESC, mandatoryLacking ASC, optionalCount DESC, optionalLacking ASC
+LIMIT 10 OFFSET 20
+
+4  3  3  0  0
+6  2  0  1  2
+8  2  1  2  1
+9  1  0  0  0
+
+
+
+
+At least one matching mandatory or optional ingredient
+most matching mandatory ingredients
+least lacking mandatory ingredients
+most matching optional ingredients
+least lacking optional ingredients
+
+
+1,2,3,4,5,6
+1,2,3,4,5 | 6
+1,2,3,4 | 5,6
+1,2,3 | 4,5,6
+1,2 | 3,4,5,6
+1 | 2,3,4,5,6
+
+1/2 | 3,4
+1,2/3 | 4,5
