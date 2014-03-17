@@ -21,10 +21,12 @@ Allthecooks is one of the most downloaded \cite{allthecooks-googleplay} Android 
 \twofigs{screenshots/rainbowcake-2.png}{Buttons for different features}{fig:allthecooks-detail2}{screenshots/rainbowcake-3.png}{Directions for the recipe}{fig:allthecooks-detail3}
 
 \section{BigOven}
-BigOven is also one of the most downloaded \cite{bigoven-googleplay} Android application that is related to ``recipe''. The application's navigation and design does not follow the Android guidelines\cite{guidelines-appstructure} and therefore the application's navigation can be quite confusing to use for an Android user. \todo{insert some pictures of the start page.} 
+BigOven is also one of the most downloaded \cite{bigoven-googleplay} Android application that is related to ``recipe''. The application's navigation and design does not follow the Android guidelines\cite{guidelines-appstructure} and therefore the application's navigation can be quite confusing to an Android user. \todo{insert some pictures of the start page.} The application main page is cluttered and presents the user with many functionalities. It would be better to implement a navigation drawer and separate each function to its own view. 
+It is possible to make an ingredient search and recipe search. The ingredient search is limited to only three ingredients and the algorithm finds only the recipes were they all are included. If the user inputs three ingredients that have no real relation, the BigOven search would find no results. The BigOven application is free, but you can buy Pro-features that exclude commercials from the application and unlock more functionality in the application. 
 
 \section{Review of existing solution}
 After a small preview of the already existing solutions, of both web and android applications. We believe that we can create an application with improved features, such as a better search algorithms, easy navigation, and an elegant design. We like the idea of being able to search for recipes by ingredients, but we wont exclude the possibility to also search directly for recipes. We will also provide the user with different input styles; text-type-input(free text for recipe search and ingredient restricted), and tile-input. Tile input is basically the same as ingredient restricted input, but instead of typing the name of each ingredient the user selects the ingredient by use of tiles. The ingredient are divided into categories and maybe even subcategories, to make the navigation more sensible, otherwise the user would be presented with a too many tiles and the screen would be cluttered.
+
 \begin{table}[H]
 \centering
 \begin{tabular}{|l|l|l|l|}
@@ -57,7 +59,4 @@ After a small preview of the already existing solutions, of both web and android
 \caption{Application comparison}
 \label{tab:appcomparison}
 \end{table}
-
-\todo{Explain the different features we would like to take inspiration 
-from.}
 
