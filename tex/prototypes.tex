@@ -1,6 +1,6 @@
 \section{design}
 
-This section shows the prototypes that we have made and describes the application's functionality. The section includes both early and late prototypes to show how the design has progressed and changed. \todo{Billede af start screen, rescan alle billeder med search med navigation drawer icons i venstre hjørne}
+This section shows the prototypes that we have made and touches lightly on the application's functionality. The section includes both early and late prototypes to show how the design has progressed and changed. \todo{Billede af start screen, rescan alle billeder med search med navigation drawer icons i venstre hjørne}
 
 
 \begin{figure}[H]
@@ -19,9 +19,9 @@ This section shows the prototypes that we have made and describes the applicatio
 
 The first thing the user is shown when opening the application is the navigation drawer, as seen on \autoref{fig:navdrawer}. This is a standard component in Android which is used to navigate between different pages. We chose to use this design because we felt it was a good way to make the views less cluttered, by collecting all navigation options in an easy accessible component. 
 
-The application allows the user to search for recipes both based on the title of the recipes and based on ingredients that the user inputs. Searching for recipes based on the title is simple and straight forward, the user just types in parts of the title, or the full title, of the recipe they want and the application shows suggestions based on this. Searching based on ingredients is more complicated. The user might have type in multiple ingredients and we want to make it easy for them to do so, therefore we have implemented two different ways of searching for a recipe, either by text or by animations.
+The application allows the user to search for recipes both based on the title of the recipe and based on ingredients that the user inputs. Searching for recipes based on the title is simple and straight forward, the user just types in parts of the title, or the full title, of the recipe they want and the application shows suggestions based on this. Searching based on ingredients is more complicated. The user might have to type in multiple ingredients and we want to make it easy for them to do so, therefore we have implemented two different ways of searching for a recipe, either by text or by animations.
 
-\autoref{fig:ingretext} shows the screen layout when searching with text. The user clicks the search field at the top of the page and a keyboard and a word cloud pops up. Now the user can either type in the ingredient they want by use of the keyboard, or if the word appears in the word cloud they can simply click it. 
+\autoref{fig:ingretext} shows the screen layout when searching with text. The user clicks the search field at the top of the page and a keyboard and a word cloud pops up. Now the user can either type in the ingredient they want by use of the keyboard, or if the word appears in the word cloud they can simply click it. The idea with the word cloud is that it comes up with suggestions based on the ingredients the user already put in.
 
 \begin{figure}[H]
 \begin{minipage}[b]{0.5\columnwidth}
@@ -37,7 +37,7 @@ The application allows the user to search for recipes both based on the title of
 \end{minipage}
 \end{figure}
 
-The same idea applies when searching using animations, but instead of a keyboard small animations pop up that the user can click in order to go deeper down into a category, as the user navigates deeper, the word cloud will update with words associated with the category they are browsing. The animation navigation can be seen on \autoref{fig:ingreani}. When the user is done with inputting their ingredients they press the back button to close the keyboard or the animations and can browse the suggested recipes. \autoref{fig:recipecloud}, \autoref{fig:recipestatic}, and \autoref{fig:recipenothing} are three different versions of what it will look like when the user does so.
+The same idea applies when searching using animations, but instead of a keyboard a small animation bar pops up. This bar contains the different categories, and the user can click on one of these in order to go deeper down into a category, as the user navigates deeper the word cloud will update with words associated with the category they are browsing. The animation navigation can be seen on \autoref{fig:ingreani}. When the user is done with inputting their ingredients they press the back button to close the keyboard or the animations and can browse the suggested recipes. \autoref{fig:recipecloud}, \autoref{fig:recipestatic}, and \autoref{fig:recipenothing} are three different versions of what it will look like when the user does so.
 
 \autoref{fig:recipecloud} shows the same page without the keyboard, giving the user access to browse the suggested recipes while still having access to the word cloud so they can remove or add new ingredients on the fly, however the cost is a very small view of the suggested recipes. 
 
@@ -77,15 +77,18 @@ The same idea applies when searching using animations, but instead of a keyboard
 
 When the user finds a suggested recipe they want to look at, they press it and they are taken to a new page. The two variants of this page is shown on \autoref{fig:recipeold} and \autoref{fig:recipenew}. The three vertical lines in the top left corner have been replaced with a back arrow, this indicates two things; the navigation drawer is not available on this page and the back arrow indicates that if you click it you will be taken back to the previous page which is the list of suggested recipes. 
 
-In the top right corner there are two new icons; the first button is the share button, allowed the user to share the recipe with their friends and family. The second button is the favorite button, the user can click this to save the recipe under their favorites.
+In the top right corner there are two new icons; the first button is the share button, allowing the user to share the recipe with their friends and family. The second button is the favourite button, the user can click this to save the recipe under their favourites if they click it again they unfavourite it.
 
 \autoref{fig:recipeold} shows the first design, under the action bar there is a picture of the dish and just under that the title. This is followed by a list of ingredients and the instructions for making the dish. Next to "Ingredients" the user can see the time it takes to prepare the dish, and how many people the dish will serve. 
 
-To the left each ingredient there is a button with a shopping cart icon, the user can press this in order to add this ingredient to their shopping list. If the user presses the same icon again, the ingredient is removed from the shopping list. By default the application assumes that the user does not have any of the ingredients, so the user has to choose which ingredients they need in order to make this dish, this allows the user to quickly add items to their shopping list. 
+To the left each ingredient there is a button with a shopping cart icon, the user can press this in order to add this ingredient to their shopping list. If the user presses the same icon again, the ingredient is removed from the shopping list. By default the application assumes that the user does not have any of the ingredients, so the user has to choose which ingredients they need to add to the shopping list.
+
 
 Each of the ingredients have a box around them and a down arrow, this is to indicate a drop down menu. These will appear when an ingredient is exchangeable according to the recipe, meaning the user can use something else similar and still use the recipe. To the right of the ingredients there is a button with a circle on it. If the user presses this button all the unit measures in the recipe will be converted between Imperial and Metric and visa versa. Under the list of ingredients there is a list of instructions telling the user how to cook the dish. The button labeled "aA" next to instructions can be pressed and different font sizes can be chosen.
 
-We redesigned this layout and the result can be seen on \autoref{fig:recipenew}. Mostly we made small changes to previous design, for example the location of the title. It has now been moved up onto the picture, together with a rating for the recipe. There is now a small description under the recipe describing the dish. The shopping carts now have a small "+" or a small "-" to indicate if the user will add or delete the ingredient when they press it. We kept the drop down menu for ingredients to indicate that an ingredient is exchangeable. Instead of the "aA" icon that the user should press, there is now two buttons, one to make the font larger and one to make it smaller.
+To the right of the ingredients there is a button with a circle on it. If the user presses this button all the unit measures in the recipe will be converted between Imperial and Metric and visa versa. Under the list of ingredients there is a list of instructions telling the user how to cook the dish. The button labelled "aA" next to instructions can be pressed and different font sizes can be chosen. 
+
+We redesigned this layout and the result can be seen on \autoref{fig:recipenew}. Most of the changes are small changes to previous design, for example the location of the title. It has now been moved up onto the picture, together with a rating for the recipe. There is now a small description under the recipe describing the dish. The shopping carts now have a small "+" or a small "-" to indicate if the user will add or delete the ingredient when they press it. We kept the drop down menu for ingredients to indicate that an ingredient is exchangeable. Instead of the "aA" icon that the user should press, there are now two buttons, one to make the font larger and one to make it smaller.
 
 One of the larger redesigns we did was that wee removed the buttons to the right of the ingredients as we decided to add their functionality elsewhere and therefore have more room for the ingredient names. 
  
@@ -98,17 +101,21 @@ One of the larger redesigns we did was that wee removed the buttons to the right
 \hspace{0.5cm}
 \begin{minipage}[b]{0.5\columnwidth}
 \centering
-\includegraphics[width=0.7\columnwidth]{img/prototypes/recipe_new.pdf}
+\includegraphics[width=0.7\columnwidth]{img/prototypes/shopping_list_new.pdf}
 \caption{Redesigned layout for shopping list\label{fig:shoppingnew}}
 \end{minipage}
 \end{figure}
 
-Text
+The user can always access their shopping list through the navigationer drawer. \autoref{fig:shoppingold} and \autoref{fig:shoppingnew} shows the early design and redesign of the shopping list. The user is able to add ingredients directly in the shopping list by clicking the "Add item" field at the top. They are also able to quickly select or deselect all items in the list by clicking the "Select all" or "Deselect all" button under the action bar. This is useful if the user wants to remove all the ingredients or share them all. This can be done through the two buttons at the bottom of the page. 
+
+\autoref{fig:shoppingold} shows the first design of the shopping list, it displays how much of each ingredient the user needs, it has a simple layout where ingredients are divided into categories so the user has an easy overview of it. \autoref{fig:shoppingnew} shows a redesigned version of the shopping list. The design takes what recipes the ingredients come from into consideration. This means that if the user needs 2L of milk, they can click on it and see in which recipes they need how much milk. It also makes it easier for the user to remove ingredients if they decide not to make a specific recipe.
 
 \begin{figure}[H]
 \begin{minipage}[b]{0.5\columnwidth}
 \centering
 \includegraphics[width=0.7\columnwidth]{img/prototypes/favorites.pdf}
-\caption{The layout for favorites\label{fig:recipeold}}
+\caption{The layout for favourites\label{fig:favourite}}
 \end{minipage}
 \end{figure}
+
+As mentioned before the user can favourite a recipe by clicking the icon when looking at a recipe. \autoref{fig:favourite} shows the favourite page, it looks a lot like \autoref{fig:recipenothing} but it does not have the share or favourite button at the top. The user unfavourites a recipe either by long clicking the recipe or click it to go into the recipe and click the star symbol to unfavourite it.
