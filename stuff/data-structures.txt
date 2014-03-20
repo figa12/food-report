@@ -7,7 +7,7 @@ String:
     .
 
 Unit:
-    unit -> String
+    metric -> String
     imperial -> String
     conversion
 
@@ -25,38 +25,67 @@ Ingredient:
 Recipe:
     name ->  String
     description -> String
-    instructions -> [Step]
-    ingredients -> [RecipeIngredientsChoice]
+    ##instructions -> [Step]
+    ##ingredients -> [RecipeIngredientsChoice]
     picture -> [Pic]
-    references -> [Recipe]
-    author -> User
-    rating (ved ikke lige hvordan det skal fungere?)
-    comments -> [Comment]
+    ##references -> [Recipe]
+    %%%author -> User%%% SKROTTET FOR NU
+    upvotes
+    downvotes
+    ##comments -> [Comment]
 
-RecipeIngredientChoice:
+votes
+    id
+    recipe_id -> recipe
+    user_id -> user
+    vote -> bool
+    
+    
+
+References
+    id
+    ref_a -> recipe
+    ref_b -> recipe
+
+ExchangeableIngredients:
     name -> String
-    Ingredients -> [RecipeIngredient]
+    ##Ingredients -> [RecipeIngredient]
+    recipe_id -> recipe
     mandatory
     
-RecipeIngredient:
+Quantity:
+    exchange_ingredient -> 
     ingredient -> Ingredient
     amount
 
 Step:
     description -> String
     pic -> Pic | Null
+    recipe_id -> recipe
 
 Comment:
     user -> User
     recipe -> Recipe
+    text
 
 ShoppingList:
-    ingredients -> [RecipeIngredient]
-    user -> [User]
+    ##ingredients -> [RecipeIngredient]
+    user -> User
+
+Contains
+    id
+    shopping_id -> shoppingList
+    quantity_id -> quantity
+    
 
 User
     token
     username
-    favourites -> [Recipe]
+    ##favourites -> [Recipe]
     friends -> [User]
-    comments -> [Comment]
+    ##comments -> [Comment]
+
+Favourites
+    id
+    user_id
+    recipe_id
