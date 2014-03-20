@@ -11,4 +11,6 @@ master.pdf
 *.fdb_latexmk
 *.fls
 *.~
+*.sublime-project
+*.sublime-workspace
 master.synctex.gz(busy)
