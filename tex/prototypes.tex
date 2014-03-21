@@ -1,6 +1,6 @@
 \section{Design}
-This section shows the prototypes that we have made and touches lightly on the application's functionality. The section includes both early and late prototypes to show how the design has progressed and changed. \todo{Billede af start screen, rescan alle billeder med search med navigation drawer icons i venstre hjørne}
-
+This section shows the prototypes that we have made and touches lightly on the application's functionality. The section includes both early and late prototypes to show how the design has progressed and changed. \todo{Billede af start screen}
+i
 
 \begin{figure}[H]
 \begin{minipage}[b]{0.5\columnwidth}
@@ -18,15 +18,15 @@ This section shows the prototypes that we have made and touches lightly on the a
 
 The first thing the user is shown when opening the application is the navigation drawer, as seen on \autoref{fig:navdrawer}. This is a standard component in Android which is used to navigate between different pages. We chose to use this design because we want to follow the guidelines provided by Google\cite{guidelines-appstructure}, and we felt it was a good way to make the views less cluttered, collecting all navigation options in an easy accessible component.
 
-The application allows the user to search for recipes both based on the title of the recipe and based on ingredients that the user inputs. Searching for recipes based on the title is simple and straight forward, the user types in parts of the title, or the full title, of the recipe they want and the application shows suggestions based on this. Searching based on ingredients is more complicated. The user might have to type in multiple ingredients and we want to make it easy for them to do so, therefore we have implemented two different ways of aiding the user in entering ingredients, either by text or by animations.
+The application allows the user to search for recipes both based on the title of the recipe and based on ingredients that the user inputs. Searching for recipes based on the title is simple and straight forward, the user types in parts of the title, or the full title, of the recipe they want and the application shows suggestions based on this. Searching based on ingredients is more complicated. The user might have to type in multiple ingredients and we want to make it easy for them to do so, therefore we have implemented two different ways of aiding the user in entering ingredients, either by text or by tiles.
 
 \autoref{fig:ingretext} shows the screen layout when entering ingredients with text. The user clicks the search field at the top of the page and a keyboard and a word cloud pops up. Now the user can either type in the ingredient they want by use of the keyboard, or if the word appears in the word cloud they can simply click it. The idea with the word cloud is that it comes up with suggestions based on the ingredients the user already put in.
 
 \begin{figure}[H]
 \begin{minipage}[b]{0.5\columnwidth}
 \centering
-\includegraphics[width=0.7\columnwidth]{img/prototypes/ingredient_search_animation.pdf}
-\caption{Ingredient search with animation\label{fig:ingreani}}
+\includegraphics[width=0.7\columnwidth]{img/prototypes/ingredient_search_tile.pdf}
+\caption{Ingredient search with tile\label{fig:ingreani}}
 \end{minipage}
 \hspace{0.5cm}
 \begin{minipage}[b]{0.5\columnwidth}
@@ -36,7 +36,7 @@ The application allows the user to search for recipes both based on the title of
 \end{minipage}
 \end{figure}
 
-The same idea applies when entering ingredients using animations, but instead of a keyboard a small animation bar pops up. This bar contains the different categories, and the user can click on one of these in order to go deeper down into a category, as the user navigates deeper the word cloud will update with words associated with the category they are browsing. The animation navigation can be seen on \autoref{fig:ingreani}. When the user is done with inputting their ingredients they press the back button to close the keyboard or the animations and can browse the suggested recipes. \autoref{fig:recipecloud}, \autoref{fig:recipestatic}, and \autoref{fig:recipenothing} are three different versions of what it will look like when the user does so.
+The same idea applies when entering ingredients using tiles, but instead of a keyboard a small tile bar pops up. This bar contains the different categories, and the user can click on one of these in order to go deeper down into a category, as the user navigates deeper the word cloud will update with words associated with the category they are browsing. The tile navigation can be seen on \autoref{fig:ingreani}. When the user is done with inputting their ingredients they press the back button to close the keyboard or the tiles and can browse the suggested recipes. \autoref{fig:recipecloud}, \autoref{fig:recipestatic}, and \autoref{fig:recipenothing} are three different versions of what it will look like when the user does so.
 
 \autoref{fig:recipecloud} shows the same page without the keyboard, giving the user access to browse the suggested recipes while still having access to the word cloud so they can remove or add new ingredients on the fly, however the drawback is a very small view of the suggested recipes. 
 
