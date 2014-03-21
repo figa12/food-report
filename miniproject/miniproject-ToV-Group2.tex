@@ -25,12 +25,24 @@
 \section*{1a - Test Design}
 \subsection*{Specification}
 %The purpose of the test design spec is to organize and describe the testing that needs to be performed on a specific feature. It doesn’t, however, give the detailed cases or the steps to execute to perform the testing.
+\section{Technical specification}
+\begin{description}
+    \item[Server-side]
+        We will use PHP5.x to do the server-side scripting,
+        we will perform unit-test with the tool PHPUnit and mutation test with judgedim/Mutagenesis.
+    \item[Client-side]
+        We will use android SDK x to develop the Android application and use the Android Testing Framework to perform unit-tests.
+\end{description}
+We want to perform unit test on both the client-side and server-side. We also want to perform mutation tests, but it is only possible to do on the server-side, because the lack of support for mutation test on Android code(Java).
+
+%Hvor vil vi køre unit test, server? klient?(Vi vil gerne have unit på begge, men vi vil kan realistisk set få mutation test på serveren.)
+
 \testdesign
 {ServerTest}
 {Add items to shopping list. Items can be added from the shopping list or from a recipe.}
 {A shopping list written in hand will be created and then added to the shopping list in the application. Items from the recipe will be added to the shopping list.}
 {\begin{itemize}[nolistsep]
-\item 
+\item
 \end{itemize}}
 {A pass is when all test cases are run without finding a bug}
 
