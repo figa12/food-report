@@ -63,6 +63,15 @@
 % Wrap figure
 \usepackage{wrapfig}
 
+% Remove subsection numbering
+\renewcommand{\thesubsection}{}
+\makeatletter
+\def\@seccntformat#1{\csname #1ignore\expandafter\endcsname\csname the#1\endcsname\quad}
+\let\subsectionignore\@gobbletwo
+\let\latex@numberline\numberline
+\def\numberline#1{\if\relax#1\relax\else\latex@numberline{#1}\fi}
+\makeatother
+
 %landscape mode
 \usepackage{lscape}
 

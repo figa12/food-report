@@ -1,11 +1,17 @@
-\landscapefigure{width=\linewidth}{erdiagram.pdf}{Entity-relationship diagram}{fig:erdiagram}
+\pagebreak % temporary pagebreak, until text is written in the start of the section
+
+\section{Database}
+
+\todo{text}
+
+\landscapefigure{width=0.85\linewidth}{erdiagram.pdf}{Entity-relationship diagram}{fig:erdiagram}\todo{Der er plads til at gøre ER diagrammet større}
+
 \newcommand{\relation}[1]{[\{ #1 \}]\\}
 \newcommand{\us}{\textunderscore}
 
 \begin{table}[H]
-\centering
 \small
-\begin{tabular}{p{3.2cm} p{9.6cm}}
+\begin{tabular}{p{3.2cm} p{8.2cm}}
   string: & \relation{\underline{id: int}, dk: text, us: text}
   unit: & \relation{\underline{id: int}, metric $\ra$ string: int, imperial $\ra$ string: int, conversion: float}
   category: & \relation{\underline{id: int}, name $\ra$ string: int, parent\us id $\ra$ category: int, image: varchar}
