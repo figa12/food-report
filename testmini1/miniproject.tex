@@ -142,4 +142,24 @@
 {Connected to the internet}
 {Favourites recipes}
 
+\begin{testprocedure}
+\step & Open navigation drawer and tap the Search item & The Search page opens\\
+\hline
+\step & Search for, and choose a recipe & The recipe page opens\\
+\hline
+\step & Tap the star icon in the action bar & A message appears saying the recipe has been favourited\\
+\hline
+\step & Open navigation drawer and tap the Favourite item & The favourite page opens. The page contains the recipe that was favourited\\
+\hline
+\step & Tap the recipe which was just favourited & The recipe page opens\\
+\hline
+\step & Click the star icon in the action bar & A message appears saying the recipe has been removed from favourited\\
+\hline
+\step & Open navigation drawer and tap the Favourite item & The favourite page opens. The page does not contain the recipe that was removed from favourites\\
+\hline
+\step & Repeat steps 1 through 4, and long click the favourite recipe & A message appears asking if you would like to remove the favourite\\
+\hline
+\step & Confirm the favourite removal & The favourite recipe is removed\\
+\end{testprocedure}
+
 \end{document}
