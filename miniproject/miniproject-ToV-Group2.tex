@@ -3,15 +3,15 @@
 \usepackage{enumitem}
 \usepackage{todonotes}
 
-\newcommand{\testdesign}[5]
+\newcommand{\testdesign}[4]
 {
 \begin{framed}
 \begin{description}
 \item \textbf{Identifier:} #1
 \item \textbf{Features to be tested:} #2
 \item \textbf{Approach:} #3
-\item \textbf{Test case identification:} #4
-\item \textbf{Pass/fail criteria:} #5
+%\item \textbf{Test case identification:} #4
+\item \textbf{Pass/fail criteria:} #4
 \end{description}
 \end{framed}
 }
@@ -45,8 +45,8 @@ Change of language,
 
 \testdesign
 {ServerTest01}
-{Create a complete recipe, with picture, ingredients, instructions, rating, user comments}
-{A shopping list written in hand will be created and then added to the shopping list in the application. Items from the recipe will be added to the shopping list.}
+{Create a complete recipe, with picture, ingredients, and instructions}
+{Take a recipe from a normal cookbook, and add it to the application's database.}
 {\begin{itemize}[nolistsep]
 \item
 \end{itemize}}
