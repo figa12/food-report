@@ -85,11 +85,38 @@
 {}
 {Shopping list}
 
+\begin{testprocedure}
+\step & Open the navigation drawer and tab the Shopping list item & The Shopping list page opens \\ 
+\hline
+\step & Press the search field & A keyboard should appear \\
+\hline
+\step & Write in an ingredient and press enter  & The ingredient should appear in the shopping list \\
+\hline
+\step & Select an ingredient & Ingredient is selected  \\
+\hline
+\step & Press remove selected items & The selected items should be removed from the list \\
+\end{testprocedure}
+
 \testcase
 {Shopping list, recipe page}
 {Add/remove items to/from the shopping list from the recipe page}
 {}
 {}
+
+\begin{testprocedure}
+\step & Search for and choose a recipe & Recipe page opens \\ 
+\hline
+\step & Tab the Shopping cart to add an ingredient to the shopping list & A message appears saying the ingredient was added to the shopping list \\
+\hline
+\step & Open the navigation drawer and tab the Shopping list item  & The Shopping list page should appear with the added ingredient \\
+\hline
+\step & Navigate back to the recipe & The same recipe should appear and the same ingredients should be added to the Shopping cart \\
+\hline
+\step & Press the shopping cart to remove the ingredient from the shopping list & A message appears saying the ingredient was removed from the shopping list \\
+\hline
+\step & Open the navigation drawer and tab the Shopping list item & The Shopping list opens and the ingredient is removed \\ 
+\end{testprocedure}
+
 
 \testcase
 {Shopping list sharing}
