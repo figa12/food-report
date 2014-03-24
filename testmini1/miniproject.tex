@@ -1,0 +1,118 @@
+\documentclass[a4paper,12pt]{report}
+
+\usepackage{todonotes}
+\usepackage{framed}
+\usepackage{enumitem}
+\usepackage{ifthen}
+
+\title{Software Innovation: Miniproject}
+\author{Jesper Riemer Andersen\\Simon Reedtz Olesen}
+
+\newcommand{\testdesign}[5]
+{
+%\begin{framed}
+%\begin{description}
+%\item[Identifier:] #1
+%\item[Features to be tested:] #2
+%\item[Approach:] #3
+%\item[Test case identification:] \hfill #4
+%\item[Pass/fail criteria:] #5
+%\end{description}
+%\end{framed}
+}
+
+\newcommand{\testcase}[4]
+{
+\begin{center}
+\begin{tabular}{p{2.6cm} p{10cm}}
+\hline
+\textbf{Case name} & #1\\
+\textbf{Objective} & #2\\
+\textbf{Preconditions} & #3\\
+\textbf{Requirement} & #4\\
+\hline
+\end{tabular}
+\end{center}
+}
+
+\newcounter{counter}
+\newenvironment{testprocedure}%http://www.troubleshooters.com/linux/lyx/ownlists.htm
+{\newcommand{\step}{\arabic{counter}\stepcounter{counter}}
+\setcounter{counter}{1}
+\begin{center}
+\begin{tabular}{| c | p{5.4cm} | p{5.4cm} |}
+\hline
+\textbf{Step} & \textbf{Procedure} & \textbf{Success Criteria}\\
+\hline}
+{\hline
+\multicolumn{3}{c}{} \\% tom multicolumn for at få linjeafstand
+\end{tabular}
+\end{center}}
+
+
+\begin{document}
+\maketitle
+
+\section*{Test design}
+
+\testdesign
+{Shopping list test}
+{The add/remove function of items to the shopping list. Although not the target of this, the recipe activity will be indirectly tested in the process of testing the add/remove items to the shopping list functionality.}
+{A shopping list written in hand will be created and then added to the shopping list in the application. Items from the recipe will be added to the shopping list.}
+{\begin{itemize}[nolistsep]
+\item 
+\end{itemize}}
+{A pass is when all test cases are run without finding a bug.}
+
+\pagebreak
+\section*{Test cases}
+
+\testcase
+{Navigation drawer}
+{Navigate the application using the navigation drawer}
+{}
+{}
+
+\begin{testprocedure}
+\step & Do this & That happens\\
+\hline
+\step & Do that & This happens\\
+\end{testprocedure}
+
+\testcase
+{Shopping list}
+{Add/remove items to/from the shopping list from the shopping list page}
+{}
+{Shopping list}
+
+\testcase
+{Shopping list, recipe page}
+{Add/remove items to/from the shopping list from the recipe page}
+{}
+{}
+
+\testcase
+{Shopping list sharing}
+{Share a shopping list}
+{}
+{Sharing}
+
+\testcase
+{Recipe search}
+{Search and find recipe}
+{Connected to the internet}
+{Recipe search}
+
+\testcase
+{Search filter}
+{Filter the recipe search}
+{Connected to the internet}
+{Search filter}
+
+\testcase
+{Favourites}
+{Add/remove favourite recipes}
+{Connected to the internet}
+{Favourites recipes}
+
+\end{document}
