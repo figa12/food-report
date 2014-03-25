@@ -47,28 +47,26 @@ Change of language,
 {Take a recipe from a normal cookbook, and add it to the application's database.} %approach
 {A pass is when all test cases are run without finding a bug} %pass&fail criteria
 
-%testdesign der vil tjekke om det insatte data også er ens med det der kommer ud igen på selve applicationen.
+%testdesign that tests calculation between metric and imperial system.
 \testdesign
 {ServerTest02} %identifier
 {} %features to be testet
 {} %approach
 {} %pass&fail criteria
 
-
-%testdesign that tests calculation between metric and imperial system.
+%testdesign that tests if the application changes accordingly when user changes the language.
 \testdesign
 {ServerTest03} %identifier
 {} %features to be testet
 {} %approach
 {} %pass&fail criteria
 
-%testdesign that tests if the application changes accordingly when user changes the language.
+%testdesign der vil tjekke om det insatte data også er ens med det der kommer ud igen på selve applicationen.
 \testdesign
-{ServerTest04} %identifier
-{} %features to be testet
-{} %approach
-{} %pass&fail criteria
-
+{AppTest01} %identifier
+{Reciving data from the server} %features to be testet
+{Recieve a recipe from the server and test whether it is the correct data.} %approach
+{The data received should the same data as sent from the server.} %pass&fail criteria
 
 \section*{1b - Test cases}
 
