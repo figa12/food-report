@@ -5,7 +5,7 @@
 *.log
 *.lol
 *.lot
-miniproject.pdf
+*miniproject*.pdf
 *.gz
 *.toc
 *.fdb_latexmk
@@ -13,4 +13,4 @@ miniproject.pdf
 *.~
 *.sublime-project
 *.sublime-workspace
-miniproject.synctex.gz(busy)
+*miniproject*.synctex.gz(busy)
