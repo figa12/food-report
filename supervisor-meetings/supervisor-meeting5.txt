@@ -1,0 +1,15 @@
+Date: 26-03-2014 12:30
+Next meeting: 09-04-2014 12:30
+
+Things to tell him: The report, and that we are now done with the analysis sprint.
+What does he think of the current report any corrections:
+
+Remarks(rettelser):
+Introduction (some context should be provided)
+The design chapter - should not start with screenshot(you describe what you do, but not why you do it, to show that you have reflected about it, and just don't work) - More architecture.
+
+
+Ramin wants next next time we meet:
+Try to make a more detailed plan(milestones)
+
+
