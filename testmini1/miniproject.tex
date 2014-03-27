@@ -5,7 +5,7 @@
 \usepackage{enumitem}
 \usepackage{ifthen}
 
-\title{Software Innovation: Miniproject}
+\title{Test and Verification: Miniproject}
 \author{Jesper Riemer Andersen\\Simon Reedtz Olesen}
 
 \newcommand{\testdesign}[5]
@@ -72,9 +72,44 @@
 {}
 
 \begin{testprocedure}
-\step & Do this & That happens\\
+\step & Open the Navigation drawer & The Navigation drawer opens\\
 \hline
-\step & Do that & This happens\\
+\step & Tab the first item in the list & The item's page opens\\
+\hline
+\step & Repeat step 1-2 for all items in the list & The different item pages opens \\
+\end{testprocedure}
+
+\testcase
+{Recipe search}
+{Search and find recipe}
+{Connected to the Internet, application opened}
+{Recipe search}
+
+\begin{testprocedure}
+\step & Open the navigation drawer and tab the Recipe search item & The recipe search page opens \\ 
+\hline
+\step & Press the search field & A keyboard should appear \\
+\hline
+\step & Write parts of a recipe name  & Recipes matching the text should appear \\
+\hline
+\step & Write the full name of a recipe & Only recipes matching the full name should appear  \\
+\hline
+\step & Write random letters that does not match anything & Nothing should show up \\
+\end{testprocedure}
+
+\testcase
+{Ingredient search}
+{Search and find recipe}
+{Connected to the Internet, application opened}
+{Ingredient search}
+
+\begin{testprocedure}
+\step & Press the search field & A keyboard should appear \\
+\hline
+\step & Type in different ingredients & The ingredients should be added to the search and the word cloud changes to relevant suggestions each time an ingredient is added  \\ 
+\hline
+\step & Finish the searching by pressing back arrow  & The keyboard and word cloud disappears and a list of relevant recipes is shown \\
+\hline
 \end{testprocedure}
 
 \testcase
@@ -98,7 +133,7 @@
 \testcase
 {Shopping list, recipe page}
 {Add/remove items to/from the shopping list from the recipe page}
-{}
+{Application is open}
 {}
 
 \begin{testprocedure}
@@ -115,29 +150,67 @@
 \step & Open the navigation drawer and tab the Shopping list item & The Shopping list opens and the ingredient is removed \\ 
 \end{testprocedure}
 
-
 \testcase
 {Shopping list sharing}
 {Share a shopping list}
-{}
+{Ingredients has been added to the shopping list}
 {Sharing}
 
+\begin{testprocedure}
+\step & Open navigation drawer and tab the Shopping list item & Shopping list page opens \\ 
+\hline
+\step & Select the ingredients you want to share & Ingredients are selected \\
+\hline
+\step & Press the ``Share'' button  & A menu comes up asking which method you want to use \\
+\hline
+\step & Choose share by SMS & The recipient receives a text message with the shared ingredients \\
+\hline
+\step & Repeat step 2 through 4 Facebook, Google+ and E-mail & The recipient receives a message with the shared ingredients \\
+\hline
+\end{testprocedure}
+
 \testcase
-{Recipe search}
-{Search and find recipe}
-{Connected to the internet}
-{Recipe search}
+{Recipe sharing}
+{Share a recipe}
+{A recipe has been selected}
+{Sharing}
+
+\begin{testprocedure}
+\step & Press the ``Share'' button & A list comes up asking what method you want to use \\
+\hline
+\step & Choose share by SMS & The recipient receives a text message with a link to the shared recipe \\
+\hline
+\step & The recipient clicks the link  & The recipe opens in a web browser \\
+\hline
+\step & Repeat step 2 through 4 & The recipient receives a link to the shared recipe. \\
+\hline
+\end{testprocedure}
 
 \testcase
 {Search filter}
 {Filter the recipe search}
-{Connected to the internet}
+{Connected to the Internet, added an ingredient to the search filter}
 {Search filter}
+
+\begin{testprocedure}
+\step & Search for a recipe using text & A list of recipes is shown \\
+\hline
+\step & Check each recipe & None of the recipes may contain the filtered ingredient \\
+\hline
+\step & Open navigation drawer and tab the ``Search by ingredient'' item  & The search by ingredient page opens \\
+\hline
+\step & Add different ingredients to the search & A list of recipes shows up \\
+\hline
+\step & Check each recipe & None of the recipes may contain the filtered ingredient \\
+\hline
+\step & Remove all the ingredient and only search for the filtered ingredient & No recipes shows up \\
+\hline 
+\end{testprocedure}
 
 \testcase
 {Favourites}
 {Add/remove favourite recipes}
-{Connected to the internet}
+{Connected to the Internet}
 {Favourites recipes}
 
 \begin{testprocedure}
