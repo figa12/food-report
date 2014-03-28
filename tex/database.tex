@@ -15,12 +15,12 @@
   string: & \relation{\underline{id: int}, dk: text, us: text}
   unit: & \relation{\underline{id: int}, metric $\ra$ string: int, imperial $\ra$ string: int, conversion: float}
   category: & \relation{\underline{id: int}, name $\ra$ string: int, parent\us id $\ra$ category: int, image: varchar}
-  ingredient: & \relation{\underline{id: int}, name $\ra$ string: int, plural $\ra$ string: int, unit\us id $\ra$ unit: int, category\us id $\ra$ category: int}
+  ingredient: & \relation{\underline{id: int}, name $\ra$ string: int, plural $\ra$ string: int, category\us id $\ra$ category: int}
   recipe: & \relation{\underline{id: int}, name $\ra$ string: int, description $\ra$ string: int, image: varchar, upvotes: int, downvotes: int}
   votes: & \relation{\underline{id: int}, recipe\us id $\ra$ recipe: int, user\us id $\ra$ user: int, vote: boolean}
   references: & \relation{\underline{id: int}, ref\us a $\ra$ recipe: int, ref\us b $\ra$ recipe: int}
   exchangeable\us ingredients: & \relation{\underline{id: int}, name $\ra$ string: int, recipe\us id $\ra$ recipe: int, mandatory: boolean, order: int, ingredient\us group\us id $\ra$ ingredient\us group: int}
-  quantity: & \relation{\underline{id: int}, ingredient\us id $\ra$ ingredient: int, exchange\us ingredient\us id $\ra$ exchangeable\us ingredients: int, amount: double}
+  quantity: & \relation{\underline{id: int}, ingredient\us id $\ra$ ingredient: int, exchange\us ingredient\us id $\ra$ exchangeable\us ingredients: int, amount: double, unit\us id $\ra$ unit: int}
   step: & \relation{\underline{id: int}, description $\ra$ string: int, image: varchar, recipe\us id $\ra$ recipe: int, order: int}
   comment: & \relation{\underline{id: int}, user\us id $\ra$ user: int, recipe\us id $\ra$ recipe: int, text: text}
   shopping\us list: & \relation{\underline{id: int}, user\us id $\ra$ user: id}

@@ -24,50 +24,26 @@
 \maketitle
 \chapter*{Miniproject}
 %project description
-We will in our project make an application that functions as an digital cookbook. The user are able to search for recipes by different search functions, by ingredients, and by the name of the recipe. User can share the recipes with friends or relatives, it is also possible to favourite a recipe. Our application supports conversion between the imperial and metric system, to reach a larger audience.
+We will in our project make an application that functions as a digital cookbook. The user are able to search for recipes by different search functions, by ingredients, and by the name of the recipe. Users can share the recipes with friends or relatives, it is also possible to favourite a recipe. Our application supports conversion between the imperial and metric system, to reach a larger audience.
 
 \section*{1a - Test Design}
 %The purpose of the test design spec is to organize and describe the testing that needs to be performed on a specific feature. It doesn’t, however, give the detailed cases or the steps to execute to perform the testing.
-\section{Technical specification}
+\section*{Technical specification}
 \begin{description}
     \item[Server-side]
-        We will use PHP5.x to do the server-side scripting,
+        We will use PHP5.3.2 to do the server-side scripting,
         we will perform unit test with the tool PHPUnit and mutation test with judgedim/Mutagenesis.
     \item[Client-side]
-        We will use android SDK x to develop the Android application and use the Android Testing Framework to perform unit tests.
+        We will use android SDK 19 to develop the Android application and use the Android Testing Framework to perform unit tests.
 \end{description}
 
-%test description and plan
-We want to perform unit test on both the client-side and server-side.\\
-unit test:\\
-Create a copy of the database and test different functions such as: creation of a recipe, query and display a recipe, deletion of a recipe, edit recipe, comment on a recipe.\\
-Change of language, 
+\subsection{Test environment}
+The idea is to create a test environment for the server when doing tests, this way we ensure that we do not accidentally manipulate production data. We want to set up a test database that is identical to the database used in production, we could choose to directly copy the database before each test. This way we can also insert new data such as recipes and test on these alongside already existing recipes.
 
-%add an recipe to the database 
-\testdesign
-{ServerTest01} %identifier
-{Create a complete recipe, with picture, ingredients, and instructions} %features to be testet
-{Take a recipe from a normal cookbook, and add it to the application's database.} %approach
-{A pass is when all test cases are run without finding a bug} %pass&fail criteria
+\subsection{Code coverage}
+We want 100 percent code coverage on the server-side because of this being the most crucial part of the system. If we find a failure on the server, it can only be because of an error that happened on the server, but a failure on the client could both originate from the server and the client. This is because the client is dependent on the server whereas the server is not dependent on the client. As for code coverage on the client we will make a risk analysis to identify the most crucial parts of the client. Based on the risk analysis we can identify which parts of the client that has the highest priority and then schedule our time plan of testing based on this.
 
-%testdesign that tests calculation between metric and imperial system.
-\testdesign
-{ServerTest02} %identifier
-{} %features to be testet
-{} %approach
-{} %pass&fail criteria
+\subsection{Mutation testing}
+The tool that we have chosen to use for mutation testing, judgedim/Mutagenesis, supports a lot of operator mutations and also some logical mutations such as inverting an if statement.
 
-%testdesign that tests if the application changes accordingly when user changes the language.
-\testdesign
-{ServerTest03} %identifier
-{} %features to be testet
-{} %approach
-{} %pass&fail criteria
-
-%testdesign der vil tjekke om det insatte data også er ens med det der kommer ud igen på selve applicationen.
-\testdesign
-{AppTest01} %identifier
-{Reciving data from the server} %features to be testet
-{Recieve a recipe from the server and test whether it is the correct data.} %approach
-{The data received should the same data as sent from the server.} %pass&fail criteria
 \end{document}
