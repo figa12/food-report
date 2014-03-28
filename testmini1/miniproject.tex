@@ -8,21 +8,9 @@
 \title{Test and Verification: Miniproject}
 \author{Jesper Riemer Andersen\\Simon Reedtz Olesen}
 
-\newcommand{\testdesign}[5]
-{
-%\begin{framed}
-%\begin{description}
-%\item[Identifier:] #1
-%\item[Features to be tested:] #2
-%\item[Approach:] #3
-%\item[Test case identification:] \hfill #4
-%\item[Pass/fail criteria:] #5
-%\end{description}
-%\end{framed}
-}
-
 \newcommand{\testcase}[4]
 {
+\subsubsection*{#1}
 \begin{center}
 \begin{tabular}{p{2.6cm} p{10cm}}
 \hline
@@ -53,17 +41,8 @@
 \begin{document}
 \maketitle
 
-\testdesign
-{Shopping list test}
-{The add/remove function of items to the shopping list. Although not the target of this, the recipe activity will be indirectly tested in the process of testing the add/remove items to the shopping list functionality.}
-{A shopping list written in hand will be created and then added to the shopping list in the application. Items from the recipe will be added to the shopping list.}
-{\begin{itemize}[nolistsep]
-\item 
-\end{itemize}}
-{A pass is when all test cases are run without finding a bug.}
-
 \pagebreak
-\section*{Test cases}
+\section*{Test cases with procedure}
 
 \testcase
 {Navigation drawer}
@@ -109,7 +88,6 @@
 \step & Type in different ingredients & The ingredients should be added to the search and the word cloud changes to relevant suggestions each time an ingredient is added  \\ 
 \hline
 \step & Finish the searching by pressing back arrow  & The keyboard and word cloud disappears and a list of relevant recipes is shown \\
-\hline
 \end{testprocedure}
 
 \testcase
@@ -123,7 +101,7 @@
 \hline
 \step & Press the search field & A keyboard should appear \\
 \hline
-\step & Write in an ingredient and press enter  & The ingredient should appear in the shopping list \\
+\step & Write an ingredient and press enter  & The ingredient should appear in the shopping list \\
 \hline
 \step & Select an ingredient & Ingredient is selected  \\
 \hline
@@ -166,7 +144,6 @@
 \step & Choose share by SMS & The recipient receives a text message with the shared ingredients \\
 \hline
 \step & Repeat step 2 through 4 Facebook, Google+ and E-mail & The recipient receives a message with the shared ingredients \\
-\hline
 \end{testprocedure}
 
 \testcase
@@ -183,7 +160,6 @@
 \step & The recipient clicks the link  & The recipe opens in a web browser \\
 \hline
 \step & Repeat step 2 through 4 & The recipient receives a link to the shared recipe. \\
-\hline
 \end{testprocedure}
 
 \testcase
@@ -197,14 +173,13 @@
 \hline
 \step & Check each recipe & None of the recipes may contain the filtered ingredient \\
 \hline
-\step & Open navigation drawer and tab the ``Search by ingredient'' item  & The search by ingredient page opens \\
+\step & Open navigation drawer and tab the ``Ingredient search'' item  & The ingredient search page opens \\
 \hline
 \step & Add different ingredients to the search & A list of recipes shows up \\
 \hline
 \step & Check each recipe & None of the recipes may contain the filtered ingredient \\
 \hline
 \step & Remove all the ingredient and only search for the filtered ingredient & No recipes shows up \\
-\hline 
 \end{testprocedure}
 
 \testcase
