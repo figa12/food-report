@@ -25,7 +25,7 @@
 \chapter*{Miniproject}
 %project description
 We will in our project make an application that functions as a digital cookbook. The user are able to search for recipes by different search functions: by ingredients, and by the name of the recipe. Users can share the recipes with friends or relatives, it is also possible to favourite a recipe. Our  application also supports conversion between the imperial and metric system, to reach a larger audience. 
-We want to create a thin client which does not perform a huge amount of calculation, this means that we can focus on testing the server and the communication layer in the application.
+We want to create a thin client which does not perform a huge amount of calculation, this means that we can focus on testing the server and the communication layer in the client.
 
 \section*{1a - Test Design}
 %The purpose of the test design spec is to organize and describe the testing that needs to be performed on a specific feature. It doesn’t, however, give the detailed cases or the steps to execute to perform the testing.
@@ -39,12 +39,12 @@ We want to create a thin client which does not perform a huge amount of calculat
 \end{description}
 
 \subsection{Test environment}
-The idea is to create a test environment for the server when doing tests, this way we ensure that we do not accidentally manipulate production data. We want to set up a test database that is identical to the database used in production, we could choose to directly copy the database before each test. This way we can also insert new data such as recipes and test on these alongside already existing recipes.
+The idea is to create a test environment for the server when doing tests, this way we ensure that we do not accidentally manipulate production data. We want to set up a test database that is identical to the database used in production, we could choose to directly copy the database before each test. This way we can also insert new data such as recipes and test on these alongside already existing recipes. Setting up this test environment we can avoid destroying or corrupting the already existing data.
 
 \subsection{Code coverage}
 We want 100 percent code coverage on the server-side because of this being the most crucial part of the system. If we find a failure on the server, it can only be because of an error that happened on the server, but a failure on the client could both originate from the server and the client. This is because the client is dependent on the server whereas the server is not dependent on the client. As for code coverage on the client we will make a risk analysis to identify the most crucial parts of the client. Based on the risk analysis we can identify which parts of the client that has the highest priority and then schedule our time plan of testing based on this.
 
-\subsection{Mutation testing}
-The tool that we have chosen to use for mutation testing, judgedim/Mutagenesis, supports a lot of operator mutations and also some logical mutations such as inverting an if statement.
+\subsection{Mutation testing} %Måske skrive lidt mere til mutation testing.
+The tool that we have chosen to use for mutation testing, judgedim/Mutagenesis, supports a lot of operator mutations and also some logical mutations such as inverting an if statement. The tool supports first order mutants, which is sufficient to find a weakness in our unit tests, it is also the method used in practice. 
 
 \end{document}
