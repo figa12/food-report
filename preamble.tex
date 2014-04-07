@@ -81,6 +81,9 @@
 % Special symbols availability.
 \usepackage{amssymb}
 
+% Email @
+\usepackage{marvosym}
+
 %Degree symbol
 \usepackage{gensymb}
 
@@ -156,6 +159,15 @@
   numbersep=10pt,
   tabsize=4,
   breaklines=true,
+  literate=
+  {æ}{{\ae}}1
+  {Æ}{{\AE}}1
+  {ø}{{\o}}1
+  {Ø}{{\O}}1
+  {å}{{\r{a}}}1
+  {Å}{{\r{A}}}1
+  {§}{{\S}}1
+  {é}{{\'{e}}}1
 }
 % Define markup of XML
 \lstdefinelanguage{XML}
