@@ -1,36 +1,62 @@
 Find matching recipeIngredients:
 
-SELECT recipeIngredientId FROM RecipeIngredient WHERE id IN listofingredients
+listofingredients: 1, 4
+
+// If the listofingredients match multiple exchangeable_ingredients, it only counts as one.
+SELECT DISTINCT exchange_ingredient_id AS id FROM quantity
+WHERE ingredient_id IN (1,4)
 
 1  (garlic)
 4  (egg)
 
 
-
-Remove possible duplicates:
-
-SELECT recipeIngredientChoiceId, mandatory
-FROM ^ JOIN RecipeIngredientChoice
-GROUP BY recipeIngredientChoiceId
-
-2, 1
-5, 1
-7, 0
-8, 1
-9, 0
-
-
-Get a prioritied list of recipes:
-
-SELECT recipeId, SUM(mandatory) AS mandatoryMatching, COUNT(*)-SUM(mandatory) AS mandatoryLacking, SUM(optional) AS optionalMatching, COUNT(*)-SUM(optional) AS optionalLacking
-^ jOIN Recipe GROUP BY recipeId
-ORDER BY mandatoryCount DESC, mandatoryLacking ASC, optionalCount DESC, optionalLacking ASC
+SELECT recipe_id, SUM(mandatory) AS mandatory_matching, SUM(NOT mandatory) AS optional_matching
+FROM ^ AS temp NATURAL JOIN exchangeable_ingredients
+GROUP BY recipe_id
 LIMIT 10 OFFSET 20
+
+4  3  0
+6  2  1
+8  2  2
+9  1  0
+
+
+SELECT temp.recipe_id, mandatory_matching, (SUM(mandatory)-mandatory_matching) AS mandatory_lacking, optional_matching, (SUM(NOT mandatory)-optional_matching) AS optional_lacking
+FROM ^ AS temp JOIN exchangeable_ingredients ON temp.recipe_id = exchangeable_ingredients.recipe_id
+GROUP BY temp.recipe_id
+ORDER BY mandatory_matching DESC, mandatory_matching ASC, optional_matching DESC, optional_lacking ASC
 
 4  3  3  0  0
 6  2  0  1  2
 8  2  1  2  1
 9  1  0  0  0
+
+
+
+
+
+SELECT temp.recipe_id, mandatory_matching, (
+	SUM( mandatory ) - mandatory_matching
+) AS mandatory_lacking, optional_matching, (
+	SUM( NOT mandatory ) - optional_matching
+) AS optional_lacking
+FROM (
+	SELECT recipe_id, SUM( mandatory ) AS mandatory_matching, SUM( NOT mandatory ) AS optional_matching
+	FROM (
+		SELECT DISTINCT exchange_ingredient_id AS id
+		FROM quantity
+		WHERE ingredient_id
+		IN ( 1, 4 )
+	) AS temp
+	NATURAL JOIN exchangeable_ingredients
+	GROUP BY recipe_id
+	LIMIT 10 
+	OFFSET 20
+) AS temp
+JOIN exchangeable_ingredients ON temp.recipe_id = exchangeable_ingredients.recipe_id
+GROUP BY temp.recipe_id
+ORDER BY mandatory_matching DESC , mandatory_matching ASC , optional_matching DESC , optional_lacking ASC
+
 
 
 
