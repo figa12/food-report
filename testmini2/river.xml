@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_1.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+
+chan embark, disembark;</declaration>
+	<template>
+		<name x="5" y="5">Police Officer</name>
+		<declaration>// Place local declarations here.
+</declaration>
+		<location id="id0" x="102" y="0">
+		</location>
+		<location id="id1" x="255" y="0">
+			<name x="245" y="-34">right</name>
+		</location>
+		<location id="id2" x="-59" y="0">
+			<name x="-69" y="-34">left</name>
+		</location>
+		<init ref="id2"/>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id2"/>
+			<label kind="synchronisation" x="-17" y="42">disembark!</label>
+			<nail x="18" y="42"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="synchronisation" x="153" y="42">embark!</label>
+			<nail x="178" y="42"/>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="144" y="-59">disembark!</label>
+			<nail x="178" y="-42"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id0"/>
+			<label kind="synchronisation" x="-8" y="-59">embark!</label>
+			<nail x="18" y="-42"/>
+		</transition>
+	</template>
+	<template>
+		<name>Thief</name>
+		<location id="id3" x="0" y="0">
+		</location>
+		<init ref="id3"/>
+	</template>
+	<template>
+		<name>Parent</name>
+		<parameter>const bool isMale</parameter>
+		<location id="id4" x="0" y="0">
+		</location>
+		<init ref="id4"/>
+	</template>
+	<template>
+		<name>Child</name>
+		<parameter>const bool isBoy</parameter>
+		<location id="id5" x="0" y="0">
+		</location>
+		<init ref="id5"/>
+	</template>
+	<template>
+		<name>Boat</name>
+		<parameter>const int limit</parameter>
+		<location id="id6" x="161" y="17">
+			<name x="151" y="-17">two</name>
+		</location>
+		<location id="id7" x="8" y="17">
+			<name x="-2" y="-17">one</name>
+		</location>
+		<location id="id8" x="-153" y="17">
+			<name x="-170" y="-17">empty</name>
+		</location>
+		<init ref="id8"/>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="-110" y="68">disembark?</label>
+			<nail x="-76" y="59"/>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="51" y="68">disembark?</label>
+			<nail x="84" y="63"/>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id6"/>
+			<label kind="synchronisation" x="59" y="-51">embark?</label>
+			<nail x="85" y="-25"/>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="-102" y="-51">embark?</label>
+			<nail x="-76" y="-25"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+Process = Template();
+
+// List one or more processes to be composed into a system.
+system Process;</system>
+</nta>

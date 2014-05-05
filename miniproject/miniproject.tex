@@ -17,13 +17,13 @@ The main challenge of the project is to make an efficient search algorithm that 
 
 \subsection*{Problem Domain}
 
-When a user stands in their kitchen or in the supermarket and wants to look up a recipe for dinner, they must be able to access this easily.
+When a user stands in their kitchen or in the supermarket and wants to look up recipes for dinner, they must be able to access those easily.
 
 Our application focuses on making it easy to access recipes on mobile devices. We want to split up the recipes in core and optional ingredients, in order to optimise the search results the user gets. For this we need to analyse each recipe that will be used in the application.
 
 \subsection*{Use Context}
 
-The application can be used in different scenarios, for example the user can be at home and type in the items they have in their kitchen to get suggestions for that recipes they can use. The user can also stand in the supermarket and see an item on sale and use the interactive system to find which recipes they can make with that item and what other items they also need to buy. 
+The application can be used in different scenarios, for example the user can be at home and type in the items they have in their kitchen to get suggestions for that recipes they can use. The user can also stand in the supermarket and see items on sale and use the interactive system to find which recipes they can make with those items and what other items they also need to buy.
 
 \paragraph{Metaphor}
 
@@ -33,8 +33,8 @@ A metaphor for our application could be a cookbook on your mobile phone.
 
 \begin{description}
 
-\item [Navigation drawer] is a feature in Android, allowing the user to swipe from the left of the screen and open a "drawer" with different views that they can navigate to. Navigation drawer is standard design pattern in Android so this design will behave in a consistent and predictable fashion known to the user.
-\item [Action bar] is also a feature in Android. Like the navigation drawer this is also a standard design pattern. This is where the user expects the actions to be, so this is the natural placement of our search function. The action bar also shows that the navigation drawer is available and it can also open it since it is an action. 
+\item [Navigation drawer] is a feature in Android, allowing the user to swipe from the left edge of the screen to open a "drawer" with a list of different sections of the app they can navigate to. Navigation drawer is standard Android design pattern so this design will behave in a consistent and predictable fashion known to the user.
+\item [Action bar] is also a feature in Android. Like the navigation drawer this is also a standard Android design pattern. This is where the user expects the actions to be, so this is the natural placement of our search function. The action bar also shows that the navigation drawer is available and it can also open it since it is an action. 
 \item[Scrolling] is a basic feature in almost every application in order to show more information than what fits on the screen. The scrolling feature is usually indicated by partially displaying the content at the bottom or at either side.
 
 \end{description}
@@ -47,7 +47,7 @@ The application must be fast to use, it must also have a low learning curve.
 
 \subsection*{Story, Julie}
 
-Julie is at the supermarket, she does not know what to have for dinner later. She sees that minced beef is on sale, but she does not know what recipes include this. She opens the application. She is presented with a page that says "Click above to search for ingredients". She clicks the button, and a view of categories appears at the bottom of the screen. She clicks the category called "Meat", and a word cloud appears with many different kinds of meat. In the word cloud she finds minced beef and clicks it. She now dismisses the ingredient search, and the application now presents Julie with recipes which uses minced beef. The top results include recipes such as Spaghetti Bolognese and Lasagne. Having not thought about this before, Julie wants to cook Spaghetti Bolognese for dinner. She opens the recipe and can now see all the ingredients she need for this recipe. Remembering which of the ingredients she has at home, she then adds the ingredients she needs to her shopping list. Then she favourites the recipe to easily find it later. Julie opens her shopping list and continues shopping.
+Julie is at the supermarket, she does not know what to have for dinner later. She sees that minced beef is on sale, but she does not know what recipes include this. She opens the application. She is presented with a page that says "Click above to search for ingredients". She clicks the button, and a list of categories appears at the bottom of the screen. She clicks the category called "Meat", and a word cloud appears with many different kinds of meat. In the word cloud she finds minced beef and clicks it. She now dismisses the ingredient search, and the application now presents Julie with recipes which uses minced beef. The top results include recipes such as Spaghetti Bolognese and Lasagne. Having not thought about this before, Julie wants to cook Spaghetti Bolognese for dinner. She opens the recipe and can now see all the ingredients she need for this recipe. Remembering which of the ingredients she has at home, she then adds the ingredients she needs to her shopping list. Then she favourites the recipe to easily find it later. Julie opens her shopping list and continues shopping.
 
 
 \begin{figure}[H]
@@ -66,11 +66,11 @@ Julie is at the supermarket, she does not know what to have for dinner later. Sh
 
 The vision for the project is to digitalise a cookbook so users easily can search for recipes and find instruction for dishes. 
 
-\autoref{fig:ingreani} shows the ingredient search page. The idea with the design is so the user can quickly navigate to the ingredient they want with a few presses. This makes it easier to find ingredients with one hand, which is common when you are out shopping and you have a basket in one hand. The user starts searching by clicking the search field at the top, which is indicated with the ``Magnifying glass''. When the user starts searching a word cloud appear. The functionality of the word cloud is to suggest ingredients to the user based on the ingredients they already put in. This should help the user to quickly add the ingredients they want. 
+\autoref{fig:ingreani} shows the ingredient search page. The idea with the design is so the user can quickly navigate to the ingredient they want with a few presses. This makes it easier to find ingredients with one hand, which is common when you are out shopping and you have a basket in one hand. The user starts searching by clicking the search field at the top, which is indicated with the ``Magnifying glass''. When the user starts searching, a word cloud appear. The functionality of the word cloud is to suggest ingredients to the user based on the ingredients they already put in. This should help the user to quickly add the ingredients they want. 
 
 The problem with this design is if the user prefers to search by text, or perhaps it is too hard for the user to figure out what category the item they are looking for belongs to. Therefore it would be ideal to also have a way for the user to type in their recipes using a keyboard and text and some sort of autocomplete to help the user.
 
-\autoref{fig:recipeword} shows the recipe browse page. There the user has an overview of the recipes that matches the user's ingredients. The user can still see the ingredients they put in which allows them to quickly add or remove ingredients from their search. However, the view is very small so the user cannot see many recipes at a time. This could be changed by removing the ingredient view when browsing the recipes and then the user would have to click the search field again in order to add or remove ingredients, or the ingredients could be hidden when you scroll up and down, allowing the user a full view of recipes when scrolling but see their inputted ingredients when not. 
+\autoref{fig:recipeword} shows the recipe browse page. There the user has an overview of the recipes that matches the user's ingredients. The user can still see the ingredients they put in which allows them to quickly add or remove ingredients from their search. However, the space is quite limited so the user cannot see many recipes at a time. This could be changed by removing the ingredient view when browsing the recipes and then the user would have to click the search field again in order to add or remove ingredients, or the ingredients could be hidden when you scroll up and down, allowing the user a full view of recipes when scrolling but see their inputted ingredients when not.
 
 \subsection*{Story, Alice}
 
@@ -99,7 +99,7 @@ The layout for favourites is very simple and it looks like the page where you br
 
 The recipe consists of a picture of the dish, a title and a rating. Under the picture there is a short description. Then a list of ingredients and the list of instruction the user has to follow. If any of the ingredients can be exchanged with something else, there is a box around it and a drop down menu where you can choose one of the other ingredients.
 
-All the information the user gets on the recipe page might seem cluttered for the user until they learn to use the system. Perhaps the first time the user uses the application a small introduction could be shown, displaying the different functionalities in the application.
+All the information the user get on the recipe page might seem cluttered for the user until they learn to use the system. Perhaps the first time the user uses the application a small introduction could be shown, displaying the different functionalities in the application.
 
 \input{nummer2.tex}
 
