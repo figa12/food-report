@@ -1,0 +1,16 @@
+*.aux
+*.bbl
+*.blg
+*.lof
+*.log
+*.lol
+*.lot
+verification.pdf
+*.gz
+*.toc
+*.fdb_latexmk
+*.fls
+*.~
+*.sublime-project
+*.sublime-workspace
+master.synctex.gz(busy)
