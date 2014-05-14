@@ -100,7 +100,7 @@ The game has a list of rules that must be followed at all times to complete the 
 Figure \ref{fig:boat} shows the automata of the boat. The rules of the game defines that an adult needs to be on the boat for it to sail. To conform to this rule our automata require an adult to embark to boat before a second person is allowed to embark. When people on the boat disembark, we check whether this new state conforms to the rules. If it is an allowed state we update the location of the boat. If it is not a valid state the automata goes to a ``gameover'' location, which will cause a deadlock.
 
 
-\subsection*{Global declarations}
+\section*{Global declarations}
 
 \begin{lstlisting}[language=CPP, label = lst:plugin_example, caption = Global declaration.]
 clock time;
@@ -143,7 +143,7 @@ bool canInflictViolence() {
 }
 \end{lstlisting}
 
-\subsection*{Police \& Thief}
+\section*{Police \& Thief}
 
 \begin{figure}[h!]
 \centering
@@ -159,7 +159,7 @@ bool canInflictViolence() {
 \label{fig:thief}
 \end{figure}
 
-\subsection*{Parents}
+\section*{Parents}
 
 \begin{figure}[h!]
 \centering
@@ -188,7 +188,7 @@ void setLeft(bool left) {
 
 
 
-\subsection*{Children}
+\section*{Children}
 
 \begin{figure}[h!]
 \centering
@@ -228,7 +228,7 @@ void setLeft(bool left) {
 \end{lstlisting}
 
 
-\subsection*{More children???}
+\section*{More children???}
 
 \begin{lstlisting}[language=CPP, label = lst:plugin_example, caption = Global declarations with an extra boy.]
 clock time;
