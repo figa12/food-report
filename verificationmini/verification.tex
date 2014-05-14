@@ -54,7 +54,7 @@
 \caption{Crossing the river}
 \end{figure}
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Global declarations}]
 // Place global declarations here.
 
 clock time;
@@ -170,4 +170,19 @@ bool allCrossed()
     return true;
 }
 \end{lstlisting}
+
+In order to create instances of \lstinline|Adult|s and \lstinline|Childs| we need to give them a unique index. The index is passed to the processes when they are declared as well as a constant amount of time they take to cross the river \lstinline|Boy1 = Child(boy1, fast)|.
+
+All the unique indices are declared at lines 7-14 and the indices belonging to boys, girls, policemen, and thieves are put into their respective arrays at lines 16-27. So in order to add a boy/girl/policeman/thief to the system we only need to create a unique index $i$ such that $i \in [0 ... |participants|-1]$ which will correspond to their index in the \lstinline|crossed[ ]| array, then add the boy/girl/policeman/thief to their respective array, and remember to increment the count of that type of person. After that we of course also need to create the process for that person and them pass them their index.
+
+If UPPAAL allowed us to get the size of an array passed as a parameter to a function then we could cut our code in half. We would not need to keep count of how many boys/girls/policemn/thieves we had, and we would only need one function to check whether a given person is on the same side as any type of person.
+
+The \lstinline|allCrossed()| function checks whether all people in the game has crossed the river. This function is only used to query whether everyone crossed the river.
+
+\section*{Conclusion}
+
+With our UPPAAL model we can verify that it is possible to have everyone cross the river without anyone getting violent on each other. Trying to add just one boy/girl/thief leads to the game being unsolvable. If we add a policeman so we have two, then we can have as many boys/girls/thieves as we like.
+
+We added time to our model. The childs/adults are then instantiated with the time they take to cross the river. Then with our global time variable, UPPAAL could see tell us the shortest time it takes for everyone to cross the river.
+
 \end{document}
