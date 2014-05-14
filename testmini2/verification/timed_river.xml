@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_1.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+
+clock time;
+
+chan adultEmbark, childEmbark, disembark;
+
+bool boatIsLeft = true;
+
+bool policeIsLeft = true;
+bool thiefIsLeft  = true;
+bool dadIsLeft    = true;
+bool momIsLeft    = true;
+bool boy1IsLeft   = true;
+bool boy2IsLeft   = true;
+bool girl1IsLeft  = true;
+bool girl2IsLeft  = true;
+
+
+bool canInflictViolence() {
+    if (((momIsLeft == boy1IsLeft) || (momIsLeft == boy2IsLeft)) &amp;&amp; (momIsLeft != dadIsLeft))
+        return true;
+
+    if (((dadIsLeft == girl1IsLeft) || (dadIsLeft == girl2IsLeft)) &amp;&amp; (dadIsLeft != momIsLeft))
+        return true;
+
+    if (((thiefIsLeft == boy1IsLeft) || (thiefIsLeft == boy2IsLeft) ||
+         (thiefIsLeft == girl1IsLeft) || (thiefIsLeft == girl2IsLeft) || 
+         (thiefIsLeft == dadIsLeft) || (thiefIsLeft == momIsLeft)) &amp;&amp; 
+         (thiefIsLeft != policeIsLeft))
+        return true;
+
+    return false;
+}
+</declaration>
+	<template>
+		<name x="5" y="5">Police</name>
+		<declaration>clock delta;</declaration>
+		<location id="id0" x="76" y="51">
+		</location>
+		<location id="id1" x="76" y="-59">
+		</location>
+		<location id="id2" x="289" y="0">
+			<name x="279" y="-34">right</name>
+		</location>
+		<location id="id3" x="-127" y="0">
+			<name x="-137" y="-34">left</name>
+		</location>
+		<init ref="id3"/>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id3"/>
+			<label kind="guard" x="-110" y="25">delta &gt;= 20</label>
+			<label kind="synchronisation" x="-110" y="42">disembark!</label>
+			<label kind="assignment" x="-110" y="59">policeIsLeft = true</label>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id0"/>
+			<label kind="guard" x="153" y="34">!policeIsLeft &amp;&amp; !boatIsLeft</label>
+			<label kind="synchronisation" x="153" y="51">adultEmbark!</label>
+			<label kind="assignment" x="153" y="68">delta = 0</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="guard" x="144" y="-102">delta &gt;= 10</label>
+			<label kind="synchronisation" x="144" y="-85">disembark!</label>
+			<label kind="assignment" x="144" y="-68">policeIsLeft = false</label>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-102" y="-85">policeIsLeft &amp;&amp; boatIsLeft</label>
+			<label kind="synchronisation" x="-102" y="-68">adultEmbark!</label>
+			<label kind="assignment" x="-102" y="-51">delta = 0</label>
+		</transition>
+	</template>
+	<template>
+		<name>Thief</name>
+		<declaration>clock delta;</declaration>
+		<location id="id4" x="76" y="51">
+		</location>
+		<location id="id5" x="-127" y="0">
+			<name x="-137" y="-34">left</name>
+		</location>
+		<location id="id6" x="289" y="0">
+			<name x="279" y="-34">right</name>
+		</location>
+		<location id="id7" x="76" y="-59">
+		</location>
+		<init ref="id5"/>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id5"/>
+			<label kind="guard" x="-110" y="25">delta &gt;= 6</label>
+			<label kind="synchronisation" x="-110" y="42">disembark!</label>
+			<label kind="assignment" x="-110" y="59">thiefIsLeft = true</label>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id4"/>
+			<label kind="guard" x="153" y="34">!thiefIsLeft &amp;&amp; !boatIsLeft</label>
+			<label kind="synchronisation" x="153" y="51">childEmbark!</label>
+			<label kind="assignment" x="153" y="68">delta = 0</label>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id6"/>
+			<label kind="guard" x="144" y="-102">delta &gt;= 3</label>
+			<label kind="synchronisation" x="144" y="-85">disembark!</label>
+			<label kind="assignment" x="144" y="-68">thiefIsLeft = false</label>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id7"/>
+			<label kind="guard" x="-102" y="-85">thiefIsLeft &amp;&amp; boatIsLeft</label>
+			<label kind="synchronisation" x="-102" y="-68">childEmbark!</label>
+			<label kind="assignment" x="-102" y="-51">delta = 0</label>
+		</transition>
+	</template>
+	<template>
+		<name>Parent</name>
+		<parameter>const bool isDad</parameter>
+		<declaration>clock delta;
+
+bool isLeft() {
+    if (isDad)
+        return dadIsLeft;
+    else
+        return momIsLeft;
+}
+
+void setLeft(bool left) {
+    if (isDad)
+        dadIsLeft = left;
+    else
+        momIsLeft = left;
+}</declaration>
+		<location id="id8" x="76" y="51">
+		</location>
+		<location id="id9" x="-127" y="0">
+			<name x="-137" y="-34">left</name>
+		</location>
+		<location id="id10" x="289" y="0">
+			<name x="279" y="-34">right</name>
+		</location>
+		<location id="id11" x="76" y="-59">
+		</location>
+		<init ref="id9"/>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id9"/>
+			<label kind="guard" x="-93" y="25">delta &gt;= 10</label>
+			<label kind="synchronisation" x="-93" y="42">disembark!</label>
+			<label kind="assignment" x="-93" y="59">setLeft(true)</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id8"/>
+			<label kind="guard" x="153" y="34">!isLeft() &amp;&amp; !boatIsLeft</label>
+			<label kind="synchronisation" x="153" y="51">adultEmbark!</label>
+			<label kind="assignment" x="153" y="68">delta = 0</label>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id10"/>
+			<label kind="guard" x="144" y="-102">delta &gt;= 5</label>
+			<label kind="synchronisation" x="144" y="-85">disembark!</label>
+			<label kind="assignment" x="144" y="-68">setLeft(false)</label>
+		</transition>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id11"/>
+			<label kind="guard" x="-102" y="-85">isLeft() &amp;&amp; boatIsLeft</label>
+			<label kind="synchronisation" x="-102" y="-68">adultEmbark!</label>
+			<label kind="assignment" x="-102" y="-51">delta = 0</label>
+		</transition>
+	</template>
+	<template>
+		<name>Child</name>
+		<parameter>const bool isBoy, const bool isFirst</parameter>
+		<declaration>clock delta;
+
+bool isLeft() {
+    if (isBoy)
+        if (isFirst)
+            return boy1IsLeft;
+        else
+            return boy2IsLeft;
+    else
+        if (isFirst)
+            return girl1IsLeft;
+        else
+            return girl2IsLeft;
+}
+
+void setLeft(bool left) {
+    if (isBoy)
+        if (isFirst)
+            boy1IsLeft = left;
+        else
+            boy2IsLeft = left;
+    else
+        if (isFirst)
+            girl1IsLeft = left;
+        else
+            girl2IsLeft = left;
+}</declaration>
+		<location id="id12" x="76" y="51">
+		</location>
+		<location id="id13" x="-127" y="0">
+			<name x="-137" y="-34">left</name>
+		</location>
+		<location id="id14" x="289" y="0">
+			<name x="279" y="-34">right</name>
+		</location>
+		<location id="id15" x="76" y="-59">
+		</location>
+		<init ref="id13"/>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id13"/>
+			<label kind="guard" x="-110" y="25">delta &gt;= 30</label>
+			<label kind="synchronisation" x="-110" y="42">disembark!</label>
+			<label kind="assignment" x="-110" y="59">setLeft(true)</label>
+		</transition>
+		<transition>
+			<source ref="id14"/>
+			<target ref="id12"/>
+			<label kind="guard" x="153" y="34">!isLeft() &amp;&amp; !boatIsLeft</label>
+			<label kind="synchronisation" x="153" y="51">childEmbark!</label>
+			<label kind="assignment" x="153" y="68">delta = 0</label>
+		</transition>
+		<transition>
+			<source ref="id15"/>
+			<target ref="id14"/>
+			<label kind="guard" x="144" y="-102">delta &gt;= 15</label>
+			<label kind="synchronisation" x="144" y="-85">disembark!</label>
+			<label kind="assignment" x="144" y="-68">setLeft(false)</label>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id15"/>
+			<label kind="guard" x="-102" y="-85">isLeft() &amp;&amp; boatIsLeft</label>
+			<label kind="synchronisation" x="-102" y="-68">childEmbark!</label>
+			<label kind="assignment" x="-102" y="-51">delta = 0</label>
+		</transition>
+	</template>
+	<template>
+		<name>Boat</name>
+		<location id="id16" x="-144" y="221">
+			<name x="-186" y="238">gameover</name>
+		</location>
+		<location id="id17" x="-144" y="119">
+			<urgent/>
+		</location>
+		<location id="id18" x="-8" y="17">
+			<urgent/>
+		</location>
+		<location id="id19" x="161" y="-85">
+			<name x="151" y="-119">two</name>
+		</location>
+		<location id="id20" x="161" y="119">
+			<name x="178" y="127">one</name>
+		</location>
+		<location id="id21" x="-144" y="17">
+			<name x="-161" y="-17">empty</name>
+		</location>
+		<init ref="id21"/>
+		<transition>
+			<source ref="id17"/>
+			<target ref="id16"/>
+			<label kind="guard" x="-272" y="153">canInflictViolence()</label>
+		</transition>
+		<transition>
+			<source ref="id17"/>
+			<target ref="id21"/>
+			<label kind="guard" x="-280" y="51">!canInflictViolence()</label>
+			<label kind="assignment" x="-297" y="76">boatIsLeft = !boatIsLeft</label>
+		</transition>
+		<transition>
+			<source ref="id20"/>
+			<target ref="id17"/>
+			<label kind="synchronisation" x="-51" y="127">disembark?</label>
+		</transition>
+		<transition>
+			<source ref="id18"/>
+			<target ref="id19"/>
+			<label kind="synchronisation" x="59" y="0">childEmbark?</label>
+			<nail x="93" y="-8"/>
+		</transition>
+		<transition>
+			<source ref="id19"/>
+			<target ref="id20"/>
+			<label kind="synchronisation" x="170" y="8">disembark?</label>
+		</transition>
+		<transition>
+			<source ref="id18"/>
+			<target ref="id20"/>
+		</transition>
+		<transition>
+			<source ref="id18"/>
+			<target ref="id19"/>
+			<label kind="synchronisation" x="-17" y="-76">adultEmbark?</label>
+			<nail x="59" y="-51"/>
+		</transition>
+		<transition>
+			<source ref="id21"/>
+			<target ref="id18"/>
+			<label kind="synchronisation" x="-119" y="25">adultEmbark?</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+Dad = Parent(true);
+Mom = Parent(false);
+Boy1 = Child(true, true);
+Boy2 = Child(true, false);
+Girl1 = Child(false, true);
+Girl2 = Child(false, false);
+
+// List one or more processes to be composed into a system.
+system Police, Thief, Dad, Mom, Boy1, Boy2, Girl1, Girl2, Boat;</system>
+</nta>
