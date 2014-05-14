@@ -169,7 +169,7 @@ We do the same thing from right to left, except that we specify it must take mor
 
 As seen in Figure \ref{fig:thief} the Thief is very similar to the Police Officer, the only differences is that a Thief is treated as a child instead of an adult and that a Thief travels much faster. The reason that the Thief is treated as a child is that the rules of the game specifies that the Thief can not operate the boat.
 
-\section*{Parents}
+\section*{Parents \& children}
 
 \begin{figure}[h!]
 \centering
@@ -178,7 +178,9 @@ As seen in Figure \ref{fig:thief} the Thief is very similar to the Police Office
 \label{fig:parent}
 \end{figure}
 
+As seen in Figure \ref{fig:parent} the only difference from the \code{Police} is that we call the function \code{isLeft()} to check whether he/she is on the left side or not, the time it takes to sail from side to side is also different. The reason for the \code{isLeft()} function is that we need to know whether the \code{Parent} represents the mother or the father.
 
+\code{Children} works just like the parents except that they are treated as children instead of adults. The \code{isLeft()} on \code{Children} takes two arguments, one to specify whether it is a girl or not, and one to specify whether it is the first or second child.
 
 \begin{lstlisting}[language=CPP, label = lst:plugin_example, caption = Parent declaration.]
 clock delta;
@@ -197,10 +199,6 @@ void setLeft(bool left) {
         momIsLeft = left;
 }
 \end{lstlisting}
-
-
-
-\section*{Children}
 
 \begin{figure}[h!]
 \centering
