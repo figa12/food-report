@@ -89,6 +89,12 @@ The game has a list of rules that must be followed at all times to complete the 
 \item Only police officer, dad and mom can handle the boat.
 \end{itemize}
 
+The following is the specification for our system. It simply checks whether a trace exists where all people are on the right side of the river.
+\begin{lstlisting}[keywords={and, E}]
+E<> (Police.right and Thief.right and Dad.right and Mom.right
+and Boy1.right and Boy2.right and Girl1.right and Girl2.right)
+\end{lstlisting}
+
 \section*{Boat}
 \begin{figure}[h!]
 \centering
@@ -234,7 +240,11 @@ void setLeft(bool left) {
 \end{lstlisting}
 
 
-\section*{More children???}
+\section*{Additional children}
+
+It is obvious that the system wont allow for multiple thieves since the officer can only able to be on one side at a time and the boat can only transport one thief at a time, making it impossible to send a thief to the other side.
+
+When adding a boy (or a girl), UPPAAL is unable to find a trace that conforms to the rules. You can argue that if it is impossible to move 3 boys to the other side, it is also impossible to move more than 3 boys, since those problems also require that 3 boys are moved to the other side which is proved impossible.
 
 \begin{lstlisting}[language=CPP, label = lst:plugin_example, caption = Global declarations with an extra boy.]
 clock time;
@@ -274,5 +284,6 @@ bool canInflictViolence() {
     return false;
 }
 \end{lstlisting}
+
 
 \end{document}

@@ -1,11 +1,11 @@
 \documentclass[a4paper,12pt]{article}
 
 \usepackage[utf8]{inputenc}
-\usepackage[danish]{babel}
 
 \usepackage{todonotes}
 \usepackage{float} % for [H]
 \usepackage{listings}
+\usepackage{enumitem}
 
 \lstset{
   language=C,
@@ -30,29 +30,75 @@
 \begin{document}
 \maketitle
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\linewidth]{Crossing_The_River.png}
-\caption{Crossing the river}
-\end{figure}
+For this assignment we had to model a game in which we had help a family cross a river. The game consists of two adults, a mom and a dad, four children, two girls and two boys, a police officer, and a thief. They have to follow some constraints in order to all cross the river:
+
+\begin{itemize}[noitemsep]
+\item Max 2 persons on the boat,
+\item Mom not alone with boys,
+\item Dad not alone with girls,
+\item Thief not alone with family,
+\item Only police officer, dad and mom can handle the boat.
+\end{itemize}
+
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth]{Boat.pdf}
-\caption{Crossing the river}
+\includegraphics[width=0.8\linewidth]{Crossing_The_River.png}
 \end{figure}
+
+\newpage
+
+In order to model this game we chose to use three channels as can be seen in Listing \ref{lst:global}. These are used to keep track whether or not the boat has been embarked or disembarked. We also have a boolean to check what side of the river the boat is on.
+
+\begin{lstlisting}[caption={Global varialbles},label={lst:global}]
+clock time;
+bool boatCrossed = false;
+chan disembark, childEmbark, adultEmbark;
+\end{lstlisting}
+
+Our model consists of three templates; a template for an adult, one for a child, and one for the boat. An adult includes mom, dad and the policeman and the child includes the boys, the girls and the thief. The template for an adult can be seen on Figure \ref{fig:adult}. An adult can be in three different locations. They can either be ``Home'', on the boat, or ``Away''. 
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth]{Adult.pdf}
-\caption{Crossing the river}
+\caption{Adult template}
+\label{fig:adult}
 \end{figure}
+
+In order for an adult to be able to embark the boat from ``Home'', the guard \lstinline|boatCrossed| has to be false.  It uses the ``adultEmbark!'' channel to initiate the handshake with the boat in order to embark. When an adult disembarks the boat it initiates the handshake with ``disembark!'' , their boolean in \lstinline|crossed[personIndex]|, where ``personIndex'' is an index that is given when creating a new person, is changed to true. This indicates that the adult is ``Away''. 
+
+An adult is able to embark the boat from ``Away'' if the \lstinline|boatCrossed| is true. When an adult disembarks the boat, their boolean is set to false. For now disregard the ``y'' variable. 
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth]{Child.pdf}
-\caption{Crossing the river}
+\caption{Child template}
+\label{fig:child}
 \end{figure}
+
+The child template works exactly the same way as the adult template except it uses ``childEmbark!'' to initiate the handshake with the boat. The reason why is explained further down, in the explanation of the boat.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{Boat.pdf}
+\caption{Template for the boat}
+\label{fig:boat}
+\end{figure}
+
+Figure \ref{fig:boat} shows the template for the boat. It has four marked locations, ``Free'', ``One'', ``Two'', and ``GameOver''. Free indicates that no one is on it. One means one person is on the boat and two means that two persons are on it. GameOver means the game is lost. 
+
+Since two children, or a child and a thief are not allowed to cross the river at the same time, we decided to model the boat such that an adult has to embark the boat first before a child is allowed to embark, in order to save checks when the second person embarks in order to find out if the boat has two children or a child and a thief. After the adult has embarked the boat, either a child or an adult can embark. An adult is also able to cross the river alone. 
+
+When the last person disembarks the boat a function called \lstinline|canInflictViolence()| is called. This function checks whether any person on either side can beat up any other person on the same side as themselves, in regards to the rules mentioned in the beginning. If \lstinline|canInflictViolence()| returns true then it goes to ``GameOver'' and the system is in a deadlock. If it returns false then the boat is ``Free'' and ready to be embarked.
+
+The boat has two locations that are different from the others, it has an urgent and a committed location. After the first adult has embarked the boat, it is in an urgent location which means time must not pass while this location is part of the global state. 
+
+This is where the ``y'' variable from both adult and child comes into play, the variable is used in order to keep track of time. Each person has a certain time they take the cross the river, and the boat sails with the speed of the slowest. In order to be sure that after an adult has embarked the boat, the time we have set it takes for him to cross the river does not pass, we have to ensure that the time does not pass until he either disembarks or another person embarks the boat.
+
+After the last person has disembarked the system is in a committed stage, we chose this because we want to ensure that it is checked whether or not a person can inflict violence so that the game can continue.
+
+All functions and variables are explained further down
+
 
 \begin{lstlisting}[caption={Global declarations}]
 // Place global declarations here.
