@@ -36,13 +36,6 @@
 \caption{Crossing the river}
 \end{figure}
 
-\begin{lstlisting}
-bool canInflictViolence()
-{
-    return canMomInflictViolence() || canDadInflictViolence() || canThiefInflictViolence();
-}
-\end{lstlisting}
-
 \begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth]{Boat.pdf}
@@ -61,4 +54,120 @@ bool canInflictViolence()
 \caption{Crossing the river}
 \end{figure}
 
+\begin{lstlisting}
+// Place global declarations here.
+
+clock time;
+bool boatCrossed = false;
+chan disembark, childEmbark, adultEmbark;
+
+const int mom = 0;
+const int dad = 1;
+const int boy1 = 2;
+const int boy2 = 3;
+const int girl1 = 4;
+const int girl2 = 5;
+const int police1 = 6;
+const int thief1 = 7;
+
+const int boysCount = 3;
+const int boys[boysCount] = { boy1, boy2 };
+
+const int girlCount = 3;
+const int girls[girlCount] = { girl1, girl2 };
+
+const int policeCount = 2;
+const int polices[policeCount] = { police1 };
+
+const int thiefCount = 5;
+const int thiefs[thiefCount] = { thief1 };
+
+const int participants = boysCount + girlCount + policeCount + thiefCount + 2; // +2 for parents
+bool crossed[participants]; // default array values are false
+
+bool onTheSameSide(int p1, int p2)
+{
+    return crossed[p1] == crossed[p2];
+}
+
+bool boyOnSameSideAs(int personIndex)
+{
+    // if any boy is on the same side as the person, return true
+    for (i : int[0, boysCount-1])
+    {
+        if (onTheSameSide(personIndex, boys[i]))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool girlOnSameSideAs(int personIndex)
+{
+    // if any girl is on the same side as the person, return true
+    for (i : int[0, girlCount-1])
+    {
+        if (onTheSameSide(personIndex, girls[i]))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool policeOnTheSameSideAs(int personIndex)
+{
+    // if any dad is on the same side as the person, return true
+    for (i : int[0, policeCount-1])
+    {
+        if (onTheSameSide(personIndex, polices[i]))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool canMomInflictViolence()
+{
+    return (boyOnSameSideAs(mom) && crossed[mom] != crossed[dad]);
+}
+
+bool canDadInflictViolence()
+{
+    return (girlOnSameSideAs(dad) && crossed[dad] != crossed[mom]);
+}
+
+bool canThiefInflictViolence()
+{
+    for (i : int [0, thiefCount-1])
+    {
+        int thiefIndex = thiefs[i];
+        if (!policeOnTheSameSideAs(thiefIndex) && (crossed[thiefIndex] == crossed[mom] || crossed[thiefIndex] == crossed[dad] ||
+           boyOnSameSideAs(thiefIndex) || girlOnSameSideAs(thiefIndex)))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool canInflictViolence()
+{
+    return canMomInflictViolence() || canDadInflictViolence() || canThiefInflictViolence();
+}
+
+bool allCrossed()
+{
+    for (i : int[0, participants-1])
+    {
+        if (!crossed[i])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+\end{lstlisting}
 \end{document}
