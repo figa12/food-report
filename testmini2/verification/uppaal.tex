@@ -152,6 +152,9 @@ bool canInflictViolence() {
 \label{fig:police}
 \end{figure}
 
+As seen in Figure \ref{fig:police} the Police Officer can move from the left location to the right location. The first transition has a guard that checks that both the Police Officer and the Boat is at the left location. If the guard is true we can proceed by telling the Boat that an adult has embarked and set the Delta (time) value to 0. When the Police Officer disembarks on the other side we specify that it must have taken longer than 10 time units and that the Police Officer is no longer on the left side.
+We do the same thing from right to left, except that we specify it must take more than 20 time units to go from right to left, this is to simulate headwind on the river.
+
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.7\linewidth]{Thief.pdf}
