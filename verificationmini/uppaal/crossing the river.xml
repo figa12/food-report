@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_1.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+
+clock time;
+bool boatCrossed = false;
+chan disembark, childEmbark, adultEmbark;
+
+const int mom = 0;
+const int dad = 1;
+const int boy1 = 2;
+const int boy2 = 3;
+const int girl1 = 4;
+const int girl2 = 5;
+const int police1 = 6;
+const int thief1 = 7;
+
+const int boysCount = 2;
+const int boys[boysCount] = { boy1, boy2 };
+
+const int girlCount = 2;
+const int girls[girlCount] = { girl1, girl2 };
+
+const int policeCount = 1;
+const int polices[policeCount] = { police1 };
+
+const int thiefCount = 1;
+const int thiefs[thiefCount] = { thief1 };
+
+const int participants = boysCount + girlCount + policeCount + thiefCount + 2; // +2 for parents
+bool crossed[participants]; // default array values are false
+
+bool onTheSameSide(int p1, int p2)
+{
+    return crossed[p1] == crossed[p2];
+}
+
+bool boyOnSameSideAs(int personIndex)
+{
+    // if any boy is on the same side as the person, return true
+    for (i : int[0, boysCount-1])
+    {
+        if (onTheSameSide(personIndex, boys[i]))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool girlOnSameSideAs(int personIndex)
+{
+    // if any girl is on the same side as the person, return true
+    for (i : int[0, girlCount-1])
+    {
+        if (onTheSameSide(personIndex, girls[i]))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool policeOnTheSameSideAs(int personIndex)
+{
+    // if any dad is on the same side as the person, return true
+    for (i : int[0, policeCount-1])
+    {
+        if (onTheSameSide(personIndex, polices[i]))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool canMomInflictViolence()
+{
+    return (boyOnSameSideAs(mom) &amp;&amp; crossed[mom] != crossed[dad]);
+}
+
+bool canDadInflictViolence()
+{
+    return (girlOnSameSideAs(dad) &amp;&amp; crossed[dad] != crossed[mom]);
+}
+
+bool canThiefInflictViolence()
+{
+    for (i : int [0, thiefCount-1])
+    {
+        int thiefIndex = thiefs[i];
+        if (!policeOnTheSameSideAs(thiefIndex) &amp;&amp; (crossed[thiefIndex] == crossed[mom] || crossed[thiefIndex] == crossed[dad] ||
+           boyOnSameSideAs(thiefIndex) || girlOnSameSideAs(thiefIndex)))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool canInflictViolence()
+{
+    return canMomInflictViolence() || canDadInflictViolence() || canThiefInflictViolence();
+}
+
+bool allCrossed()
+{
+    for (i : int[0, participants-1])
+    {
+        if (!crossed[i])
+        {
+            return false;
+        }
+    }
+    return true;
+}</declaration>
+	<template>
+		<name>Boat</name>
+		<location id="id0" x="-408" y="34">
+			<name x="-442" y="51">GameOver</name>
+		</location>
+		<location id="id1" x="-246" y="34">
+			<committed/>
+		</location>
+		<location id="id2" x="-8" y="34">
+			<name x="-25" y="51">One</name>
+		</location>
+		<location id="id3" x="170" y="-42">
+			<name x="187" y="-59">Two</name>
+		</location>
+		<location id="id4" x="-8" y="-119">
+			<urgent/>
+		</location>
+		<location id="id5" x="-246" y="-119">
+			<name x="-256" y="-153">Free</name>
+		</location>
+		<init ref="id5"/>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id5"/>
+			<label kind="guard" x="-374" y="-59">!canInflictViolence()</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="guard" x="-382" y="8">canInflictViolence()</label>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="60" y="-68">childEmbark?</label>
+			<nail x="51" y="-42"/>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id4"/>
+			<label kind="synchronisation" x="-178" y="-144">adultEmbark?</label>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id2"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-170" y="34">disembark?</label>
+			<label kind="assignment" x="-221" y="51">boatCrossed = !boatCrossed</label>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id2"/>
+			<label kind="synchronisation" x="68" y="34">disembark?</label>
+			<nail x="170" y="34"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="59" y="-144">adultEmbark?</label>
+			<nail x="170" y="-119"/>
+		</transition>
+	</template>
+	<template>
+		<name>Adult</name>
+		<parameter>const int personIndex, const int delay</parameter>
+		<declaration>clock y;</declaration>
+		<location id="id6" x="-467" y="-196">
+		</location>
+		<location id="id7" x="-306" y="-323">
+		</location>
+		<location id="id8" x="-306" y="-196">
+			<name x="-297" y="-188">Away</name>
+		</location>
+		<location id="id9" x="-467" y="-323">
+			<name x="-493" y="-357">Home</name>
+		</location>
+		<init ref="id9"/>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id9"/>
+			<label kind="guard" x="-544" y="-297">y &gt;= delay</label>
+			<label kind="synchronisation" x="-544" y="-281">disembark!</label>
+			<label kind="assignment" x="-654" y="-264">crossed[personIndex] = false</label>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id8"/>
+			<label kind="guard" x="-297" y="-297">y &gt;= delay</label>
+			<label kind="synchronisation" x="-297" y="-281">disembark!</label>
+			<label kind="assignment" x="-297" y="-264">crossed[personIndex] = true</label>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id6"/>
+			<label kind="guard" x="-425" y="-171">boatCrossed</label>
+			<label kind="synchronisation" x="-425" y="-188">adultEmbark!</label>
+			<label kind="assignment" x="-425" y="-153">y = 0</label>
+		</transition>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id7"/>
+			<label kind="guard" x="-425" y="-382">!boatCrossed</label>
+			<label kind="synchronisation" x="-425" y="-365">adultEmbark!</label>
+			<label kind="assignment" x="-425" y="-348">y = 0</label>
+		</transition>
+	</template>
+	<template>
+		<name>Child</name>
+		<parameter>const int personIndex, const int delay</parameter>
+		<declaration>clock y;</declaration>
+		<location id="id10" x="-433" y="0">
+		</location>
+		<location id="id11" x="-272" y="-127">
+		</location>
+		<location id="id12" x="-272" y="0">
+			<name x="-263" y="8">Away</name>
+		</location>
+		<location id="id13" x="-433" y="-127">
+			<name x="-459" y="-161">Home</name>
+		</location>
+		<init ref="id13"/>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id13"/>
+			<label kind="guard" x="-510" y="-102">y &gt;= delay</label>
+			<label kind="synchronisation" x="-510" y="-85">disembark!</label>
+			<label kind="assignment" x="-620" y="-68">crossed[personIndex] = false</label>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id12"/>
+			<label kind="guard" x="-263" y="-102">y &gt;= delay</label>
+			<label kind="synchronisation" x="-263" y="-85">disembark!</label>
+			<label kind="assignment" x="-263" y="-68">crossed[personIndex] = true</label>
+		</transition>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id10"/>
+			<label kind="guard" x="-391" y="25">boatCrossed</label>
+			<label kind="synchronisation" x="-391" y="8">childEmbark!</label>
+			<label kind="assignment" x="-391" y="42">y = 0</label>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id11"/>
+			<label kind="guard" x="-391" y="-187">!boatCrossed</label>
+			<label kind="synchronisation" x="-391" y="-170">childEmbark!</label>
+			<label kind="assignment" x="-391" y="-152">y = 0</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+const int fastest = 5;
+const int fast    = 10;
+const int slow    = 20;
+const int slowest = 25;
+
+Mom = Adult(mom, fastest);
+Dad = Adult(dad, fastest);
+
+Boy1 = Child(boy1, fastest);
+Boy2 = Child(boy2, fastest);
+
+Girl1 = Child(girl1, fastest);
+Girl2 = Child(girl2, fastest);
+
+Police1 = Adult(police1, fastest);
+Thief1 = Child(thief1, fastest);
+
+TheBoat = Boat();
+
+// List one or more processes to be composed into a system.
+system TheBoat, Mom, Dad, Boy1, Boy2, Girl1, Girl2, Police1, Thief1;</system>
+</nta>
