@@ -1,7 +1,6 @@
 \documentclass[a4paper,12pt]{article}
 
 \usepackage[utf8]{inputenc}
-\usepackage[danish]{babel}
 
 \usepackage{todonotes}
 \usepackage{float} % for [H]
@@ -59,10 +58,6 @@ chan disembark, childEmbark, adultEmbark;
 
 Our model consists of three templates; a template for an adult, one for a child, and one for the boat. An adult includes mom, dad and the policeman and the child includes the boys, the girls and the thief. The template for an adult can be seen on Figure \ref{fig:adult}. An adult can be in three different locations. They can either be ``Home'', on the boat, or ``Away''. 
 
-In order for an adult to be able to embark the boat from ``Home'', the guard \lstinline|boatCrossed| has to be false.  It uses the ``adultEmbark!'' channel to initiate the handshake with the boat in order to embark. When an adult disembarks the boat it initiates the handshake with ``disembark!'' , their boolean in \lstinline|crossed[personIndex]|, where ``personIndex'' is an index that is given when creating a new person, is changed to true. This indicates that the adult is ``Away''. 
-
-An adult is able to embark the boat from ``Away'' if the \lstinline|boatCrossed| is true. When an adult disembarks the boat, their boolean is set to false. For now disregard the ``y'' variable. 
-
 \begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth]{Adult.pdf}
@@ -70,13 +65,24 @@ An adult is able to embark the boat from ``Away'' if the \lstinline|boatCrossed|
 \label{fig:adult}
 \end{figure}
 
-The child template works exactly the same way as the adult template except it uses ``childEmbark!'' to initiate the handshake with the boat. The reason why is explained further down, in the explanation of the boat.
+In order for an adult to be able to embark the boat from ``Home'', the guard \lstinline|boatCrossed| has to be false.  It uses the ``adultEmbark!'' channel to initiate the handshake with the boat in order to embark. When an adult disembarks the boat it initiates the handshake with ``disembark!'' , their boolean in \lstinline|crossed[personIndex]|, where ``personIndex'' is an index that is given when creating a new person, is changed to true. This indicates that the adult is ``Away''. 
+
+An adult is able to embark the boat from ``Away'' if the \lstinline|boatCrossed| is true. When an adult disembarks the boat, their boolean is set to false. For now disregard the ``y'' variable. 
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth]{Child.pdf}
 \caption{Child template}
 \label{fig:child}
+\end{figure}
+
+The child template works exactly the same way as the adult template except it uses ``childEmbark!'' to initiate the handshake with the boat. The reason why is explained further down, in the explanation of the boat.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{Boat.pdf}
+\caption{Template for the boat}
+\label{fig:boat}
 \end{figure}
 
 Figure \ref{fig:boat} shows the template for the boat. It has four marked locations, ``Free'', ``One'', ``Two'', and ``GameOver''. Free indicates that no one is on it. One means one person is on the boat and two means that two persons are on it. GameOver means the game is lost. 
@@ -91,12 +97,8 @@ This is where the ``y'' variable from both adult and child comes into play, the 
 
 After the last person has disembarked the system is in a committed stage, we chose this because we want to ensure that it is checked whether or not a person can inflict violence so that the game can continue.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=\linewidth]{Boat.pdf}
-\caption{Template for the boat}
-\label{fig:boat}
-\end{figure}
+All functions and variables are explained further down
+
 
 \begin{lstlisting}[caption={Global declarations}]
 // Place global declarations here.
