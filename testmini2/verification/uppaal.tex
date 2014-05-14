@@ -90,7 +90,7 @@ The game has a list of rules that must be followed at all times to complete the 
 \end{itemize}
 
 \section*{Boat}
-\begin{figure}[h]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=\linewidth]{Boat.pdf}
 \caption{Boat automata.}
@@ -99,19 +99,8 @@ The game has a list of rules that must be followed at all times to complete the 
 
 Figure \ref{fig:boat} shows the automata of the boat. The rules of the game defines that an adult needs to be on the boat for it to sail. To conform to this rule our automata require an adult to embark to boat before a second person is allowed to embark. When people on the boat disembark, we check whether this new state conforms to the rules. If it is an allowed state we update the location of the boat. If it is not a valid state the automata goes to a ``gameover'' location, which will cause a deadlock.
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.7\linewidth]{Police.pdf}
-\caption{Police automata.}
-\label{fig:police}
-\end{figure}
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.7\linewidth]{Thief.pdf}
-\caption{Thief automata.}
-\label{fig:thief}
-\end{figure}
+\subsection*{Global declarations}
 
 \begin{lstlisting}[language=CPP, label = lst:plugin_example, caption = Global declaration.]
 clock time;
@@ -154,7 +143,25 @@ bool canInflictViolence() {
 }
 \end{lstlisting}
 
-\begin{figure}[h]
+\subsection*{Police \& Thief}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\linewidth]{Police.pdf}
+\caption{Police automata.}
+\label{fig:police}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\linewidth]{Thief.pdf}
+\caption{Thief automata.}
+\label{fig:thief}
+\end{figure}
+
+\subsection*{Parents}
+
+\begin{figure}[h!]
 \centering
 \includegraphics[width=0.7\linewidth]{Parent.pdf}
 \caption{Parent automata.}
@@ -178,6 +185,17 @@ void setLeft(bool left) {
         momIsLeft = left;
 }
 \end{lstlisting}
+
+
+
+\subsection*{Children}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\linewidth]{Child.pdf}
+\caption{Child automata.}
+\label{fig:child}
+\end{figure}
 
 \begin{lstlisting}[language=CPP, label = lst:plugin_example, caption = Child declaration.]
 clock delta;
@@ -209,12 +227,8 @@ void setLeft(bool left) {
 }
 \end{lstlisting}
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.7\linewidth]{Child.pdf}
-\caption{Child automata.}
-\label{fig:child}
-\end{figure}
+
+\subsection*{More children???}
 
 \begin{lstlisting}[language=CPP, label = lst:plugin_example, caption = Global declarations with an extra boy.]
 clock time;
