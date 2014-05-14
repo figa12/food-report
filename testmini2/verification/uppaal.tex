@@ -97,7 +97,7 @@ The game has a list of rules that must be followed at all times to complete the 
 \label{fig:boat}
 \end{figure}
 
-Figure \ref{fig:boat} shows the automata of the boat. The rules of the game defines that an adult needs to be on the boat for it to sail. To conform to this rule our automata require an adult to embark to boat before a second person is allowed to embark. When people on the boat disembark, we check whether this new state conforms to the rules. If it is an allowed state we update the location of the boat. If it is not a valid state the automata goes to a ``gameover'' location, which will cause a deadlock.
+Figure \ref{fig:boat} shows the automata of the boat. The rules of the game defines that an adult needs to be on the boat for it to sail. To conform to this rule our automata require an adult to embark to boat before a second person is allowed to embark. When people on the boat disembark, we check whether this new state conforms to the rules. If it is an allowed state we update the location of the boat. If it is not a valid state the automata goes to a \code{gameover} location, which will cause a deadlock.
 
 
 \section*{Global declarations}
@@ -120,28 +120,27 @@ bool girl2IsLeft  = true;
 
 
 bool canInflictViolence() {
-    if (((momIsLeft == boy1IsLeft)
-    	|| (momIsLeft == boy2IsLeft))
+    if (((momIsLeft == boy1IsLeft) || (momIsLeft == boy2IsLeft))
     	&& (momIsLeft != dadIsLeft))
         return true;
 
-    if (((dadIsLeft == girl1IsLeft)
-    	|| (dadIsLeft == girl2IsLeft))
+    if (((dadIsLeft == girl1IsLeft) || (dadIsLeft == girl2IsLeft))
     	&& (dadIsLeft != momIsLeft))
         return true;
 
-    if (((thiefIsLeft == boy1IsLeft)
-    	|| (thiefIsLeft == boy2IsLeft)
-    	|| (thiefIsLeft == girl1IsLeft)
-    	|| (thiefIsLeft == girl2IsLeft)
-    	|| (thiefIsLeft == dadIsLeft)
-    	|| (thiefIsLeft == momIsLeft))
+    if (((thiefIsLeft == boy1IsLeft) || (thiefIsLeft == boy2IsLeft)
+    	|| (thiefIsLeft == girl1IsLeft) || (thiefIsLeft == girl2IsLeft)
+    	|| (thiefIsLeft == dadIsLeft) || (thiefIsLeft == momIsLeft))
     	&& (thiefIsLeft != policeIsLeft))
         return true;
 
     return false;
 }
 \end{lstlisting}
+
+In the the global declarations we define a clock \code{time} which can be used to see how fast a given trace is. \code{time} is not used by the system.
+
+The global declaration also declares the channels and defines the location of the boat and all the people. \code{canInflictViolence} is a function that can be used to check whether the current state is invalid. 
 
 \section*{Police \& Thief}
 
@@ -252,16 +251,20 @@ bool girl2IsLeft  = true;
 
 
 bool canInflictViolence() {
-    if (((momIsLeft == boy1IsLeft) || (momIsLeft == boy2IsLeft) || (momIsLeft == boy3IsLeft)) && (momIsLeft != dadIsLeft))
+    if (((momIsLeft == boy1IsLeft) || (momIsLeft == boy2IsLeft)
+    	|| (momIsLeft == boy3IsLeft))
+    	&& (momIsLeft != dadIsLeft))
         return true;
 
-    if (((dadIsLeft == girl1IsLeft) || (dadIsLeft == girl2IsLeft)) && (dadIsLeft != momIsLeft))
+    if (((dadIsLeft == girl1IsLeft) || (dadIsLeft == girl2IsLeft))
+    	&& (dadIsLeft != momIsLeft))
         return true;
 
-    if (((thiefIsLeft == boy1IsLeft) || (thiefIsLeft == boy2IsLeft) || (thiefIsLeft == boy3IsLeft) ||
-         (thiefIsLeft == girl1IsLeft) || (thiefIsLeft == girl2IsLeft) || 
-         (thiefIsLeft == dadIsLeft) || (thiefIsLeft == momIsLeft)) && 
-         (thiefIsLeft != policeIsLeft))
+    if (((thiefIsLeft == boy1IsLeft) || (thiefIsLeft == boy2IsLeft)
+    || (thiefIsLeft == boy3IsLeft)
+    || (thiefIsLeft == girl1IsLeft) || (thiefIsLeft == girl2IsLeft)
+    || (thiefIsLeft == dadIsLeft) || (thiefIsLeft == momIsLeft))
+    && (thiefIsLeft != policeIsLeft))
         return true;
 
     return false;
