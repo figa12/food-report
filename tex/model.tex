@@ -12,6 +12,14 @@ The application needs a model to represent recipes. The recipe data we receive f
 
 We have two different representation of a recipe, \lstinline|Recipe| and \lstinline|IntermediateRecipe|. The \lstinline|IntermediateRecipe| is a small subset of a recipe which is used to display search results. When the user clicks the search results, then the rest of a \lstinline|Recipe| is downloaded from the server and displayed to the user.
 
-A \lstinline|Recipe| consists of one or more instruction steps and one or more \lstinline|IngredientGroup|s which is a grouping of ingredients. The use of ingredients are easier understood by looking at \autoref{fig:ingredients}\todo{make figure}.
+A \lstinline|Recipe| consists of one or more instruction steps and one or more \lstinline|IngredientGroups| which is a grouping of ingredients. An \lstinline|ExchangeableIngredient| consists of one or more \lstinline|IngredientQuantity| class which are interchangeable. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\linewidth]{img/ingredients.pdf}
+\caption{Ingredient model}
+\label{fig:ingredients}
+\end{figure}
+The use of ingredients are easier understood by looking at \autoref{fig:ingredients}. If an ingredient can be exchanged by another ingredient, then it can be clicked which will reveal the different ingredients that can be used. On the figure \textit{2 dl powdered sugar} is exchangeable, and has already been clicked.
 
 The reason why the attributes from \lstinline|Unit| is not modelled inside \lstinline|IngredientQuantity| is because the model resembles our relational database as much as possible. The \lstinline|Ingredient| class could also have been modelled inside \lstinline|IngredientQuantity|, but \lstinline|Ingredient| is used elsewhere. To use ingredient search we need to know the ingredients in order to use them for the search.
