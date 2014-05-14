@@ -94,21 +94,23 @@ If any of these rules are broken at any time the game will stop.
 \begin{figure}[h]
 \centering
 \includegraphics[width=\linewidth]{Boat.pdf}
-\caption{Boat.}
+\caption{Boat automata.}
 \label{fig:boat}
 \end{figure}
+
+Figure \ref{fig:boat} shows the automata of the boat. Since the rules of the game defines that an adult needs to be on the boat for it to sail. To conform to this rule our automata require an adult to embark to boat before a second person is allowed to embark. When people on the boat disembark, we check whether this new state conforms to the rules. If it is an allowed state we update the location of the boat. If it is not a valid state the automata goes to a ``gameover'' location, which will cause a deadlock.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.7\linewidth]{Police.pdf}
-\caption{Police.}
+\caption{Police automata.}
 \label{fig:police}
 \end{figure}
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.7\linewidth]{Thief.pdf}
-\caption{Thief.}
+\caption{Thief automata.}
 \label{fig:thief}
 \end{figure}
 
@@ -156,7 +158,7 @@ bool canInflictViolence() {
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.7\linewidth]{Parent.pdf}
-\caption{Parent.}
+\caption{Parent automata.}
 \label{fig:parent}
 \end{figure}
 
@@ -211,7 +213,7 @@ void setLeft(bool left) {
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.7\linewidth]{Child.pdf}
-\caption{Child.}
+\caption{Child automata.}
 \label{fig:child}
 \end{figure}
 
