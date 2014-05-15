@@ -86,7 +86,7 @@ The game has a list of rules that must be followed at all times to complete the 
 \item Mom not alone with boys,
 \item Dad not alone with girls,
 \item Thief not alone with family,
-\item Only the Police Officer, dad and mom can handle the boat.
+\item Only the Police Officer, dad, and mom can handle the boat.
 \end{itemize}
 
 The following is the specification for our system. It simply checks whether a trace exists where all people are on the right side of the river.
@@ -240,7 +240,7 @@ void setLeft(bool left) {
 
 
 \section*{Additional children}
-It is obvious that the system wont allow for multiple thieves since the Police Officer can only able to be on one side at a time and the boat can only transport one thief at a time, making it impossible to send a thief to the other side.
+It is obvious that the system wont allow for multiple thieves since the Police Officer can only able to be on one side at a time and the boat can only transport one Thief at a time, making it impossible to send a thief to the other side.
 
 When adding a boy (or a girl), UPPAAL is unable to find a trace that conforms to the rules. You can argue that if it is impossible to move 3 boys to the other side, it is also impossible to move more than 3 boys, since those problems also require that 3 boys are moved to the other side which is proved impossible.
 
