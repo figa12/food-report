@@ -1,4 +1,69 @@
-ad
+\section{Unit test}
+The mobile application is designed to be a thin client that sends and recieves messages to and from the server. Because of this we have chosen to focus our testing on the server, if the server has a 100\% code coverage and all tests are satisfied, we only need to ensure that the mobile application sends a correct message, and we can guarantee that the result is correct.
+The server layer consists of a class that handles all connection to the database, the goal is to achieve 100\% method coverage on this class.
+
+The unit tests are run using ``PHPUnit'' version 3.6.10 by Sebastian Bergmann,\todo{CITE THIS TOOL} furthermore mutation tests are run using ``judgedim/mutagenesis''\todo{CITE THIS TOOL}.
+
+\begin{lstlisting}
+    /**
+     * @depends testSetUnit
+     * @depends testSetIngredient
+     * @covers DB::setRecipe
+     */
+    public function testSetRecipe($unit, $ingredient) {
+        $url = 'http://localhost/food/lib/recipebackend.php';
+
+        //what post fields?
+        $fields = array(
+            'test'=>"true",
+            'recipeName'=>$this->recipeName,
+            'recipeDesc'=>$this->recipeDesc,
+            'group1'=>$this->groupName,
+            'group1_exchange1'=>"",
+            'group1_exchange1_mandatory'=>$this->firstExchangeMandatory,
+            'group1_exchange1_ingredient1'=>$ingredient,
+            'group1_exchange1_ingredient1_amount'=>$this->firstIngAmount,
+            'group1_exchange1_ingredient1_unit'=>$unit,
+            'step1'=>$this->firstStepDesc,
+            'step2'=>$this->secondStepDesc
+            );
+        
+        $result = $this->sendCurl($url, $fields);
+        $this->assertNotNull($result);
+            
+        $resultRecipeId = (int)strip_tags($result);
+        $this->assertNotNull($resultRecipeId);
+        
+        return $resultRecipeId;
+      }
+\end{lstlisting}
+
+bla bla bla
+
+\begin{lstlisting}
+    /**
+     * @depends testSetRecipe
+     */
+    public function testGetRecipe($recipeId) {
+        $jsonResult = self::$DB->getRecipe($recipeId, $this->language, $this->metric);
+        $recipe = json_decode($jsonResult);
+
+        //Check that the recipe is equal to the one we inserted.
+        $this->assertEquals($recipeId, $recipe->id);
+        $this->assertEquals($this->recipeName, $recipe->name);
+        $this->assertEquals($this->recipeDesc, $recipe->desc);
+        $this->assertEquals($this->recipeImage, $recipe->image);
+        $this->assertEquals($this->groupName, $recipe->groups[0]->name);
+        $this->assertNotNull($recipe->groups[0]->order);
+        $this->assertEquals($this->ingredientName, $recipe->groups[0]->exchanges[0]->ingredients[0]->name);
+        $this->assertEquals($this->firstIngAmount, $recipe->groups[0]->exchanges[0]->ingredients[0]->amount);
+        $this->assertEquals($this->metricName, $recipe->groups[0]->exchanges[0]->ingredients[0]->unit);
+
+        $this->assertEquals(((bool)$this->firstExchangeMandatory), $recipe->groups[0]->exchanges[0]->mandatory);
+    }
+\end{lstlisting}
+
+
 %%% Local Variables: 
 %%% mode: latex
 %%% TeX-master: "../master"
