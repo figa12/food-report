@@ -30,7 +30,7 @@
 \begin{document}
 \maketitle
 
-For this assignment we had to model a game in which we had help a family cross a river. The game consists of two adults, a mom and a dad, four children, two girls and two boys, a police officer, and a thief. They have to follow some constraints in order to all cross the river:
+For this assignment we had to model a game in which we had to help a family cross a river. The game consists of two adults, a mom and a dad, four children, two girls and two boys, a police officer, and a thief. They have to follow some constraints in order to all cross the river:
 
 \begin{itemize}[noitemsep]
 \item Max 2 persons on the boat,
@@ -48,13 +48,13 @@ For this assignment we had to model a game in which we had help a family cross a
 
 \newpage
 
-In order to model this game we chose to use three channels as can be seen in Listing \ref{lst:global}. These are used to keep track whether or not the boat has been embarked or disembarked. We also have a boolean to check what side of the river the boat is on.
-
-\begin{lstlisting}[caption={Global varialbles},label={lst:global}]
+\begin{lstlisting}[caption={Global variables},label={lst:global}]
 clock time;
 bool boatCrossed = false;
 chan disembark, childEmbark, adultEmbark;
 \end{lstlisting}
+
+In order to model this game we chose to use three channels as can be seen in Listing \ref{lst:global}. These are used to keep track whether or not the boat has been embarked or disembarked. We also have a boolean to check what side of the river the boat is on.
 
 Our model consists of three templates; a template for an adult, one for a child, and one for the boat. An adult includes mom, dad and the policeman and the child includes the boys, the girls and the thief. The template for an adult can be seen on Figure \ref{fig:adult}. An adult can be in three different locations. They can either be ``Home'', on the boat, or ``Away''. 
 
@@ -67,7 +67,7 @@ Our model consists of three templates; a template for an adult, one for a child,
 
 In order for an adult to be able to embark the boat from ``Home'', the guard \lstinline|boatCrossed| has to be false.  It uses the ``adultEmbark!'' channel to initiate the handshake with the boat in order to embark. When an adult disembarks the boat it initiates the handshake with ``disembark!'' , their boolean in \lstinline|crossed[personIndex]|, where ``personIndex'' is an index that is given when creating a new person, is changed to true. This indicates that the adult is ``Away''. 
 
-An adult is able to embark the boat from ``Away'' if the \lstinline|boatCrossed| is true. When an adult disembarks the boat, their boolean is set to false. For now disregard the ``y'' variable. 
+An adult is able to embark the boat from ``Away'' if the \lstinline|boatCrossed| is true. When an adult disembarks the boat, their boolean is set to false. The ``y'' variable is explained later. 
 
 \begin{figure}[H]
 \centering
@@ -89,16 +89,13 @@ Figure \ref{fig:boat} shows the template for the boat. It has four marked locati
 
 Since two children, or a child and a thief are not allowed to cross the river at the same time, we decided to model the boat such that an adult has to embark the boat first before a child is allowed to embark, in order to save checks when the second person embarks in order to find out if the boat has two children or a child and a thief. After the adult has embarked the boat, either a child or an adult can embark. An adult is also able to cross the river alone. 
 
-When the last person disembarks the boat a function called \lstinline|canInflictViolence()| is called. This function checks whether any person on either side can beat up any other person on the same side as themselves, in regards to the rules mentioned in the beginning. If \lstinline|canInflictViolence()| returns true then it goes to ``GameOver'' and the system is in a deadlock. If it returns false then the boat is ``Free'' and ready to be embarked.
+When the last person disembarks the boat a function called \linebreak \lstinline|canInflictViolence()| is called. This function checks whether any person on either side can beat up any other person on the same side as themselves, in regards to the rules mentioned in the beginning. If \lstinline|canInflictViolence()| returns true then it goes to ``GameOver'' and the system is in a deadlock. If it returns false then the boat is ``Free'' and ready to be embarked.
 
 The boat has two locations that are different from the others, it has an urgent and a committed location. After the first adult has embarked the boat, it is in an urgent location which means time must not pass while this location is part of the global state. 
 
-This is where the ``y'' variable from both adult and child comes into play, the variable is used in order to keep track of time. Each person has a certain time they take the cross the river, and the boat sails with the speed of the slowest. In order to be sure that after an adult has embarked the boat, the time we have set it takes for him to cross the river does not pass, we have to ensure that the time does not pass until he either disembarks or another person embarks the boat.
+This is where the ``y'' variable from both adult and child comes into play, the variable is used in order to keep track of time. Each person has a certain time they take to cross the river, and the boat sails with the speed of the slowest person. In order to be sure that after an adult has embarked the boat, the time we have set it takes for him to cross the river does not elapse, we have to ensure that the time does not elapse until he either disembarks or another person embarks the boat.
 
 After the last person has disembarked the system is in a committed stage, we chose this because we want to ensure that it is checked whether or not a person can inflict violence so that the game can continue.
-
-All functions and variables are explained further down
-
 
 \begin{lstlisting}[caption={Global declarations}]
 // Place global declarations here.
@@ -221,14 +218,14 @@ In order to create instances of \lstinline|Adult|s and \lstinline|Childs| we nee
 
 All the unique indices are declared at lines 7-14 and the indices belonging to boys, girls, policemen, and thieves are put into their respective arrays at lines 16-27. So in order to add a boy/girl/policeman/thief to the system we only need to create a unique index $i$ such that $i \in [0 ... |participants|-1]$ which will correspond to their index in the \lstinline|crossed[ ]| array, then add the boy/girl/policeman/thief to their respective array, and remember to increment the count of that type of person. After that we of course also need to create the process for that person and them pass them their index.
 
-If UPPAAL allowed us to get the size of an array passed as a parameter to a function then we could cut our code in half. We would not need to keep count of how many boys/girls/policemn/thieves we had, and we would only need one function to check whether a given person is on the same side as any type of person.
+If UPPAAL allowed us to get the size of an array passed as a parameter to a function then we could cut our code in half. We would not need to keep count of how many boys/girls/policeman/thieves we had, and we would only need one function to check whether a given person is on the same side as any type of person.
 
 The \lstinline|allCrossed()| function checks whether all people in the game has crossed the river. This function is only used to query whether everyone crossed the river.
 
 \section*{Conclusion}
 
-With our UPPAAL model we can verify that it is possible to have everyone cross the river without anyone getting violent on each other. Trying to add just one boy/girl/thief leads to the game being unsolvable. If we add a policeman so we have two, then we can have as many boys/girls/thieves as we like.
+With our UPPAAL model we can verify that it is possible to have everyone cross the river without anyone getting violent with each other. Trying to add just one boy/girl/thief leads to the game being unsolvable. If we add a policeman so we have two, then we can have as many boys/girls/thieves as we like.
 
-We added time to our model. The childs/adults are then instantiated with the time they take to cross the river. Then with our global time variable, UPPAAL could see tell us the shortest time it takes for everyone to cross the river.
+We added time to our model. The children/adults are then instantiated with the time they take to cross the river. Then with our global time variable, UPPAAL could tell us the shortest time it takes for everyone to cross the river.
 
 \end{document}

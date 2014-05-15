@@ -13,4 +13,5 @@
 *.~
 *.sublime-project
 *.sublime-workspace
+*uppaal.tex
 *miniproject*.synctex.gz(busy)
