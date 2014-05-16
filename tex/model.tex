@@ -1,7 +1,7 @@
 \pagebreak
 \section{Model Component}
 
-The application needs a model to represent recipes. The recipe data we receive from the server is in JSON format, the data is then parsed to our application model. The model component is shown in \autoref{fig:model}.
+The application needs a model to represent recipes. The recipe data we receive from the server is of the JSON format, the data is then parsed to our application model. The model component is shown in \autoref{fig:model}.
 
 \begin{figure}[H]
 \centering
@@ -10,16 +10,17 @@ The application needs a model to represent recipes. The recipe data we receive f
 \label{fig:model}
 \end{figure}
 
-We have two different representation of a recipe, \lstinline|Recipe| and \lstinline|IntermediateRecipe|. The \lstinline|IntermediateRecipe| is a small subset of a recipe which is used to display search results. When the user clicks the search results, then the rest of a \lstinline|Recipe| is downloaded from the server and displayed to the user.
+We have two different representation of a recipe, \inline{Recipe} and \inline{IntermediateRecipe}. The \inline{IntermediateRecipe} is a small subset of a recipe which is used to display search results. When the user clicks one of the search results, then the rest of a \inline{Recipe} is downloaded from the server and displayed to the user.
 
-A \lstinline|Recipe| consists of one or more instruction steps and one or more \lstinline|IngredientGroups| which is a grouping of ingredients. An \lstinline|ExchangeableIngredient| consists of one or more \lstinline|IngredientQuantity| class which are interchangeable. 
+A \inline{Recipe} consists of one or more instruction steps and one or more \inline{IngredientGroups} which is a grouping of ingredients. An \inline{ExchangeableIngredient} consists of one or more \inline{IngredientQuantity} class which are interchangeable. 
 
-\begin{figure}[H]
+\begin{figure}[H]s
 \centering
 \includegraphics[width=0.6\linewidth]{img/ingredients.pdf}
 \caption{Ingredient model}
 \label{fig:ingredients}
 \end{figure}
-The use of ingredients are easier understood by looking at \autoref{fig:ingredients}. If an ingredient can be exchanged by another ingredient, then it can be clicked which will reveal the different ingredients that can be used. On the figure \textit{2 dl powdered sugar} is exchangeable, and has already been clicked.
 
-The reason why the attributes from \lstinline|Unit| is not modelled inside \lstinline|IngredientQuantity| is because the model resembles our relational database as much as possible. The \lstinline|Ingredient| class could also have been modelled inside \lstinline|IngredientQuantity|, but \lstinline|Ingredient| is used elsewhere. To use ingredient search we need to know the ingredients in order to use them for the search.
+The use of ingredients are easier understood by looking at \autoref{fig:ingredients}. If an ingredient can be exchanged by another ingredient, then it can be clicked which will reveal the different ingredients that can be used. It can be seen that \textit{2 dl powdered sugar} is exchangeable with \textit{2 dl sugar}.
+
+The reason why the attributes from \inline{Unit} is not modelled inside \inline{IngredientQuantity} is because the model resembles our relational database as much as possible. The \inline{Ingredient} class could also have been modelled inside \inline{IngredientQuantity}, but \inline{Ingredient} is used elsewhere. To use ingredient search we need to know the ingredients in order to use them for the search.\todo{Fix så det giver mening}
