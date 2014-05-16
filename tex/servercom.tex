@@ -4,7 +4,7 @@ In order to communicate with the server we created an abstract class which must 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\linewidth, page=2]{img/servercomtask.pdf}
-\caption{\inline|ServerComTask|}
+\caption{ServerComTask}
 \label{fig:servercomtask}
 \end{figure}
 \inline{ServerComTask} is a generic class, it declares a type which the abstract method \inline{ParseJson()} must create from the JSON it is supplied with.
@@ -66,7 +66,7 @@ public abstract class ServerComTask<T> extends AsyncTask<String, Integer, T> {
 \end{lstlisting}
 
 \begin{description}
-\item[Lines 7-14] The constructor for \inline{ServerComTask}. It must have a \inline{ServerAlertDialog} to display errors, and it must have an \inline|OnResponseListener| to send the result to.
+\item[Lines 7-14] The constructor for \inline{ServerComTask}. It must have a \inline{ServerAlertDialog} to display errors, and it must have an \inline{OnResponseListener} to send the result to.
 \item[Line 13] The call to \inline{execute()} starts the overriden abstract method \inline{doInBackground()} on a new thread. We chose to execute the task when the class is instantiated, since the task can only be executed once per instance of the task, so it is required that the path to download from is specified in the constructor.
 \item[Lines 16-24] \inline{doinBackground()} must return the generic type. The result is then passed to the method \inline{onPostExecute()} which runs on the \ac{ui} thread.
 \item[Line 19] First we download the data from the server. The download is an \textit{http get} request, so any parameters to the call is specified in the path. The \inline{download()} method is not shown.
@@ -95,6 +95,6 @@ new RecipeSearchCom((ServerAlertDialog) this.getActivity(), query, new OnRespons
 
 \begin{description}
 \item[Line 1] We make a new instance of \inline{RecipeSearchCom} and create an in line implementation of the \inline{OnResponseListener}. Both the class and the interface uses the generic type \inline{ArrayList<IntermediateRecipe>} which is the result of the request. An \inline{IntermediateRecipe} is a partial recipe, used to display recipe search results. When the user wants to view the recipe, then the entire recipe is download. \todo{Der skal måske være en forklaring af vores applikation model før det her hvor det bliver forklaret} A \inline{query} string is specified which is the recipe text to search for.
-\item[Lines 5-6] When the request is done we display the recipe search results in the \inline{this.RecipeSearchFragment}, and hide the progress circle.
+\item[Lines 5-6] When the request is done we display the recipe search results in \inline{RecipeSearchFragment.this}, and hide the progress circle.
 \item[line 11] If the request failed then we must make sure to hide the progress circle as well, the \inline{ServerComTask} will show an alert to the user.
 \end{description}
