@@ -4,11 +4,11 @@ The server layer consists of a class that handles all connection to the database
 
 To avoid corrupting the data that is running on production we have made a script that makes an exact copy of the database to perform all of the testing on. The copying of the database could prove to be a bottleneck if the application were to get very big, but at the in current state it only takes a few seconds.
 
-The unit tests are run using ``PHPUnit'' version 3.6.10 by Sebastian Bergmann,\todo{CITE THIS TOOL http://phpunit.de/} furthermore mutation tests are run using ``judgedim/mutagenesis''\todo{CITE THIS TOOL https://github.com/judgedim/mutagenesis}.
+The unit tests are run using ``PHPUnit'' version 3.6.10 by Sebastian Bergmann,\todo{CITE: http://phpunit.de/} furthermore mutation tests are run using ``judgedim/mutagenesis''\todo{CITE: https://github.com/judgedim/mutagenesis}.
 
-To demonstrate how we have performed the unit tests, the tests \lstinline|testSetRecipe()| and \lstinline|testGetRecipe()| have been included. These tests ensure that when a new recipe is written to the database, the exact same recipe can be retrieved again with no missing data.
+To demonstrate how we have performed the unit tests, the tests \inline{testSetRecipe()} and \inline{testGetRecipe()} have been included. These tests ensure that when a new recipe is written to the database, the exact same recipe can be retrieved again with no missing data.
 
-\begin{lstlisting}
+\begin{lstlisting}[language=phpstyle]
     /**
      * @depends testSetUnit
      * @depends testSetIngredient
@@ -17,7 +17,6 @@ To demonstrate how we have performed the unit tests, the tests \lstinline|testSe
     public function testSetRecipe($unit, $ingredient) {
         $url = 'http://localhost/food/lib/recipebackend.php';
 
-        //what post fields?
         $fields = array(
             'test'=>"true",
             'recipeName'=>$this->recipeName,
@@ -36,13 +35,23 @@ To demonstrate how we have performed the unit tests, the tests \lstinline|testSe
         $this->assertNotNull($result);
             
         $resultRecipeId = (int)strip_tags($result);
-        $this->assertNotNull($resultRecipeId);
+        $this->assertGreaterThan(0, $resultRecipeId);
         
         return $resultRecipeId;
       }
 \end{lstlisting}
 
-bla bla bla
+\begin{description}
+\item[Lines 2-3] The test depends on both \inline{testSetUnit()} and \inline{setSetIngredient}, we need both ingredients and a unit of measurement to create a recipe.
+\item[Line 4] We specify that this test covers the \inline{setRecipe()} method in the \inline{DB} class. This is because the code coverage analysis tool does not properly detect coverage when using cURL.\todo{CITE: http://www.php.net/manual/en/intro.curl.php}
+\item[Line 6] \inline{testSetRecipe()} takes two parameters: the id of the inserted unit of measurement from \inline{testSetUnit()} and the id from \inline{testSetIngredient()} respectively.
+\item[Line 7] The \inline{$url} variable is initialised to the value address of the file that handles creation of recipes. \textit{recipebackend.php} is used by the recipe creator tool.%$
+\item[Lines 9-21] An array is initialised with key value pairs that represent the POST variables that is send to the given url.
+\item[Line 23] The request is send to the server with the given POST variables and the result is stored in \inline{$result}.%$
+\item[Line 24] It is checked that the result is not null. If the result were null it would mean that something went wrong while inserting the data.
+\item[Lines 26-27] The id of the newly inserted recipe must be greater than 0.
+\item[Line 29] Return the id of the insert recipe. This id is used by the \inline{testGetRecipe()} method to check that we can extract the recipe correctly again.
+\end{description}
 
 \begin{lstlisting}
     /**
@@ -65,7 +74,15 @@ bla bla bla
 
         $this->assertEquals(((bool)$this->firstExchangeMandatory), $recipe->groups[0]->exchanges[0]->mandatory);
     }
-\end{lstlisting}
+\end{lstlisting}%$
+
+\begin{description}
+\item[Lines 2] The test depends on \inline{testSetRecipe()}.
+\item[Line 4] \inline{testGetRecipe()} takes the id that was returned from \inline{testSetRecipe} as a parameter.
+\item[Lines 5-6] The method to get a recipe is called from the \inline{DB} class, and the result is JSON decoded. This enables us to handle the result as a PHP object.
+\item[Line 7] The \inline{$url} variable is initialised to the value address of the file that handles creation of recipes. \textit{recipebackend.php} is used by the recipe creator tool.%$
+\item[Lines 9-19] Numerous assertions are made to ensure that the data in the fetched object is equal to the data we used when writing the recipe to the database.
+\end{description}
 
 
 %%% Local Variables: 
