@@ -1,0 +1,21 @@
+\section{Search}\label{sec:design_search}
+
+As Requirement \ref{req:ingredientsearch} and Requirement \ref{req:recipesearch} states, we want two different ways to search for recipes: Free-text and by entering a number of ingredients.
+
+\subsection*{Free-text search}
+Free-text search can be used to search for parts of the text in recipes. As defined in the following section, \secref{sec:design_database}, we use MariaDB as our DBMS. MariaDB has support for full-text search which makes it simple to implement free-text search. MariaDB also has support for a special full-text search called ``Boolean search''. In ``Boolean search'', the user is able to use special operators for marking words as mandatory, matching phrases, and inserting wildcards, among other things. A disadvantage of ``Boolean search'' is that this query only outputs ``true'' or ``false'', to indicate whether a match was found. We want to be able to order the result based on how well the text in the recipes match the query. In particular, a match in a title of a recipe should have higher precedence in the result than a match in a description of a recipe.
+
+\subsection*{Search by ingredients}
+The primary feature of the application is the ability to search for recipes based on a number of ingredients. Unlike the existing service, Supercook, described in \secref{sec:exist}, we want recipes with the most matching number of ingredients to have a higher precedence than recipes with the least missing ingredients. We believe this will yield better results since the user is unlikely to enter every single ingredient they own. This should also make the application more useful when searching by items on sale in a supermarket.
+
+ When searching by an ingredient we also want recipes where this ingredient is an essential part of the recipe to have a higher precedence than recipes where the ingredient is optional, e.g. when searching for recipes which contain ``cream'', an ice cream recipe should have a higher precedence than a recipe for making hot chocolate, since cream is not an essential ingredient for making hot chocolate.
+
+ The following shows the design of our precedence function we use when searching for recipes:
+\begin{enumerate}
+	\item Remove recipes without any matching ingredients.
+	\item Sort by least missing optional ingredients.
+	\item Sort by most matching optional ingredients.
+	\item Sort by least missing mandatory ingredients.
+	\item Sort by most matching mandatory ingredients.
+\end{enumerate}
+It should be clarified that latter sorts will be of more importance than earlier sorts, i.e. our result will primarily be sorted by the number of matching mandatory ingredients. Any recipes with an equivalent number of mandatory ingredient will be sorted by the least missing number of ingredients, and so on.
