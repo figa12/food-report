@@ -13,7 +13,7 @@ In our implementation of the Google+ sign in we use a object called \\GoogleApiC
 The object GoogleApiClient should be initialised and connected separately in every activity, so each activity has it own life cycle with the GoogleApiClient, \autoref{fig:googleclientlifecycle} shows the life cycle of a GoogleApiClient object in an activity.
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\linewidth]{img/googleclientflow.png}
+\includegraphics[width=0.75\linewidth]{img/googleclientflow.png}
 \caption{The GoogleApiClient basic life cycle\cite{googleapiclient-lifecycle}}
 \label{fig:googleclientlifecycle}
 \end{figure}
@@ -26,7 +26,7 @@ If the user did not grant access to the application the routine starts all over.
 
 When the user is signed in to our application we can get information of the user by using the GoogleApiClient.
 In our application we only use the user's Google email(account name) and the user's real name(for comments on recipes). 
-When we receives the user's email we hash it using a hashing technique called "SHA256", we do it because we can only use the uniqueness of the email, and it makes no sense storing the user's email in plain text both in the application and database. 
+When we receives the user's email we hash it using a hashing technique called "SHA256", we do it because we have no use of the email other than its uniqueness, and it makes no sense storing the user's email in plain text both in the application and database. 
 So we hash it and every time the user makes an action that requires the user to be signed in, we send the hashed email to the server together with the action. 
-It might seem overrated that we send the hashed email every time and not just an user id, but the mobile device is not required to have Internet\todo{Internet or connection to the server?} to be able to sign in using Google+. The sign in can be achieved locally on the mobile device, we have kept the functionality of signing in without Internet by doing as mentioned before.
+It might seem overrated that we send the hashed email every time and not just an user id, but the mobile device is not required to have an internet connection\todo{Internet or connection to the server?} to be able to sign in using Google+. The sign in can be achieved locally on the mobile device, we have kept the functionality of signing in without an internet connection by doing as explained earlier.
 
