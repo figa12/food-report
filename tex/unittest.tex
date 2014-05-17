@@ -3,7 +3,7 @@ The server layer consists of a class that handles all connection to the database
 
 To avoid corrupting the data that is running on production we have made a script that makes an exact copy of the database to perform all of the testing on. An example of how the testing could corrupt the database is when the test is run a recipe will be created to ensure that this functionality works. If this recipe, for any reason, could not get deleted again it would be possible for the users to see this recipe. The copying of the database could prove to be a bottleneck if the application were to get very big, but in current state it only takes a few seconds.
 
-The unit tests are run using ``PHPUnit'' version 3.6.10 by Sebastian Bergmann\cite{phpunit}, furthermore mutation tests are run using ``judgedim/mutagenesis''\cite{mutagenesis}. The basic approach of using PHPUnit is to create a new file that includes the functions which should be tested, the new file must have a new class that extends\linebreak \lstinline|PHPUnit_Framework_TestCase|. All public methods, in this new class, which are named with a prefix of \lstinline|test| will be included in the test. Inside each of these methods all kinds of assertions can be made, an example could be \lstinline|$this->assertNotNull($var)|\citep{phpunit}.
+The unit tests are run using ``PHPUnit'' version 3.6.10 by Sebastian Bergmann\cite{phpunit}, furthermore mutation tests are run using ``judgedim/mutagenesis''\cite{mutagenesis}. The basic approach of using PHPUnit is to create a new file that includes the functions which should be tested, the new file must have a new class that extends\linebreak \lstinline|PHPUnit_Framework_TestCase|. All public methods, in this new class, which are named with a prefix of \lstinline|test| will be included in the test. Inside each of these methods all kinds of assertions can be made, an example could be \lstinline|$this->assertNotNull($var)|.
 
 To demonstrate how we have performed the unit tests, the tests \inline{testSetRecipe()} and \inline{testGetRecipe()} have been included. These tests ensure that when a new recipe is written to the database, the exact same recipe can be retrieved again with no missing data.
 
@@ -93,7 +93,7 @@ The goal was to achieve 100\% code coverage of the \inline{DB} class and as seen
 
 \begin{lstlisting}[numbers=none, basicstyle=\ttfamily, caption={The result of the Mutagenesis test}]
 Score: 78.12%
-( 14 escaped on 64 mutants )
+(14 escaped on 64 mutants)
 \end{lstlisting}
 
 The tests have been run trough a mutation testing tool and gives a success rate of 78.12\%. The reason behind mutation testing is to check how good the tests are by altering the source code. If any tests pass while the source code is altered it is considered defective. The percentage of escaped mutations could and should be reduced, but we simply ran out of time.
