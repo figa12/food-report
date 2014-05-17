@@ -88,9 +88,15 @@ To demonstrate how we have performed the unit tests, the tests \inline{testSetRe
 Time: 1 second, Memory: 3.75Mb
 OK (16 tests, 45 assertions)
 \end{lstlisting}
+
 The goal was to achieve 100\% code coverage of the \inline{DB} class and as seen in \appref{app:coverage} this was succeeded. All of the tests passes and from this we can conclude that all of the functionality on the server works as intended. As long as the mobile application send the correct data of the correct format, we can ensure that a valid response is sent back.
 
-The tests have been run trough a mutation testing tool and gives a success rate of 76.67\%. The reason behind mutation testing is to check how good the tests are by altering the source code. If any tests pass while the source code is altered it is considered defective. The percentage of escaped mutations could and should be reduced, but we simply ran out of time.
+\begin{lstlisting}[numbers=none, basicstyle=\ttfamily, caption={The result of the Mutagenesis test}]
+Score: 78.12%
+( 14 escaped on 64 mutants )
+\end{lstlisting}
+
+The tests have been run trough a mutation testing tool and gives a success rate of 78.12\%. The reason behind mutation testing is to check how good the tests are by altering the source code. If any tests pass while the source code is altered it is considered defective. The percentage of escaped mutations could and should be reduced, but we simply ran out of time.
 
 
 %%% Local Variables: 
