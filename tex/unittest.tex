@@ -42,7 +42,7 @@ To demonstrate how we have performed the unit tests, the tests \inline{testSetRe
 
 \begin{description}
 \item[Lines 2-3] The test depends on both \inline{testSetUnit()} and \inline{setSetIngredient}, we need both ingredients and a unit of measurement to create a recipe.
-\item[Line 4] We specify that this test covers the \inline{setRecipe()} method in the \inline{DB} class. This is because the code coverage analysis tool does not properly detect coverage when using cURL.\todo{CITE: http://www.php.net/manual/en/intro.curl.php}
+\item[Line 4] We specify that this test covers the \inline{setRecipe()} method in the \inline{DB} class. This is because the code coverage analysis tool does not properly detect coverage when using cURL\cite{curl}.
 \item[Line 6] \inline{testSetRecipe()} takes two parameters: the id of the inserted unit of measurement from \inline{testSetUnit()} and the id from \inline{testSetIngredient()} respectively.
 \item[Line 7] The \inline{$url} variable is initialised to the value address of the file that handles creation of recipes. \textit{recipebackend.php} is used by the recipe creator tool.%$
 \item[Lines 9-21] An array is initialised with key value pairs that represent the POST variables that is send to the given url.
