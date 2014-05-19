@@ -1,0 +1,53 @@
+\section{Communication}
+\label{sec:com}
+
+The server is implemented as a REST API using GET parameters, this means that whenever a request is made to the server it is of the following format: $$http://figz.dk/food/lib/ingredients.php?id=us$$ In the given example the parameter sent is \textit{id} with the value of \textit{"us"}.
+
+We have created a single file on the server that handles all database connection, this means that whenever a call is made to the server, the parameters are checked and then sent to an instance of the database class. This way we isolate all connection to the database making it easier to maintain and test. The server will then return a JSON formatted object which can easily be parsed on the mobile application. We have chosen JSON as a format since it is well supported, easy to generate, and read in both PHP and Android.
+
+\begin{lstlisting}[language=phpstyle, caption=ingredients.php]
+require_once('DB.php');
+// Connect to the DB
+$DB = new DB();
+
+if (isset($_GET["lang"]))
+	$lang = $_GET["lang"];
+else
+	$lang = "us";
+
+$DB->getIngredients($lang);
+\end{lstlisting}%$
+
+\begin{description}
+\item[Lines 1-3] Include the database file and create an instance of the \inline{DB} class. The constructor of the \inline{DB} class will automatically create a connection to the database.
+\item[Lines 5-8] Check whether the \textit{lang} parameter is set. If the parameter is not set it will be defaulted to \textit{"us"}.
+\item[Line 10] The method \inline{getIngredients()} in the \inline{DB} class is called with the given language parameter.
+\end{description}
+
+\begin{lstlisting}[language=phpstyle, caption=getIngredients() method of DB class]
+public function getIngredients($lang) {
+        if ($this->checkLanguage($lang)) {
+            $ingredientQuery = $this->con->prepare( "SELECT ingredient.id, singular.{$lang} AS singular, plural.{$lang} AS plural
+            			                             FROM ingredient
+            			                             JOIN string AS singular ON ingredient.singular = singular.id
+            			                             JOIN string AS plural ON ingredient.plural = plural.id
+                                                     ORDER BY singular.{$lang} ASC");
+
+            $ingredientQuery->execute();
+            return $this->echoJson($ingredientQuery);
+        }
+}
+\end{lstlisting}%$
+
+\begin{description}
+\item[Line 1] \inline{getIngredients()} takes the language as a parameter.
+\item[Line 2] \inline{checkLanguage()} is called to check whether the language is valid. The method simply checks that the string matches a string in an array of valid strings.
+\item[Lines 3-8] The SQL query is prepared for execution with the language parameter.
+\item[Line 9] The query is executed.
+\item[Line 10] The \inline{echoJson} method is called to print the result of the SQL query.
+\end{description}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../master"
+%%% End: 
