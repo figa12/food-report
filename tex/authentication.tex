@@ -2,12 +2,13 @@
 \section{Authentication}
 We have not implemented our own sign in option, since it would require us to handle the user's passwords and other personal information.
 By using a social media sign in in our application as a way of identify the user, we move the security measures to the specific social media.
-There are many different social media sign in options Google+, Facebook, Twitter etc., but the sign in we chosen to implement first is Google+. 
-Google recommends using the Google+ sign in for Android applications\todo{kilde?}, since the developer is able to gather information about the user through their Google+ account. The other sign in option could later be implemented.
+There are many different social media sign in options Google+, Facebook, Twitter etc., but we have chosen Google+ to be the first social media sign in to implement. Other sign in options could later be implemented in the application.
 
 \subsection{Google+}
 It makes sense to use Google+ sign in since it is highly recommended by Google to have a Google account when using an Android device, because the user would limit their experience with an Android device, if they do not have a Google account. 
-The Google+ authentication is natively supported by Android and can be achieved seamlessly.  
+The authentication of Google+ uses Auth 2.0 and is it really easy implementation of a secure sign for Android users, since it is natively supported by Android. 
+It can seamlessly authenticate an user without the user has to enter a password or even account name. 
+Once granted access the application developer is able to gain access to the user's information through their Google+ account.\cite{googleplusvideo}
 
 In our implementation of the Google+ sign in we use a object called \\GoogleApiClient\citep{googleapiclient-docs}, which is provided by the Google Play services application. 
 The object GoogleApiClient should be initialised and connected separately in every activity, so each activity has it own life cycle with the GoogleApiClient, \autoref{fig:googleclientlifecycle} shows the life cycle of a GoogleApiClient object in an activity.
@@ -17,7 +18,7 @@ The object GoogleApiClient should be initialised and connected separately in eve
 \caption{The GoogleApiClient basic life cycle\cite{googleapiclient-lifecycle}}
 \label{fig:googleclientlifecycle}
 \end{figure}
-We have implemented an activity called LogInActivity, which implements the sign in features. Every activity in the application extends this activity, this means that all activities support the sign in features. 
+We have implemented an activity called LogInActivity, which implements the sign in features. Every activity in the application extends this activity, which means that all activities in the application has the sign in feature. 
 The blue boxes represents methods in the LogInActivity, and the two grey boxes represents other activities. The method \textit{onStart()} is called upon the activity start up, and we immediately try to sign in. 
 This can either succeed or fail, if it fails \textit{onConnectionFailed()} will be called, this will happen if the user has not yet consented with the Google+ sign in, the application now awaits for the user to press the sign in button. 
 When the user presses the sign in button, the application opens an account chooser activity, if the user has multiple Google accounts. 
