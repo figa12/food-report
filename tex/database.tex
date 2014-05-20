@@ -1,10 +1,12 @@
-\pagebreak % temporary pagebreak, until text is written in the start of the section
-
 \section{Database}\label{sec:design_database}
 
-\todo{text}
+\todo{Skriv vi bruger MariaDB osv. Hvis siderne bliver træls så brug MariaDB diskussion som intro, og resten indsættes mellem diagram og mapping}
 
-\landscapefigure{width=0.85\linewidth}{erdiagram.pdf}{Entity-relationship diagram}{fig:erdiagram}\todo{Der er plads til at gøre ER diagrammet større}
+\autoref{fig:erdiagram} shows the \ac{er} diagram of our our database. The diagram does not show the attributes of the entities. All functional relationship types are total participants except for the relationship \textit{Parent} between \textit{Category}'s.
+
+\autoref{tab:relations} shows the mapping of our \ac{er} diagram to relations. It also shows the attributes of the entities.
+
+\landscapefigure{width=0.98\linewidth}{erdiagram.pdf}{Entity-relationship diagram}{fig:erdiagram}
 
 \newcommand{\relation}[1]{[\{ #1 \}]\\}
 \newcommand{\us}{\textunderscore}
@@ -12,20 +14,20 @@
 \begin{table}[H]
 \small
 \begin{tabular}{p{3.2cm} p{8.2cm}}
-  string: & \relation{\underline{id: int}, dk: text, us: text}
+  string: & \relation{\underline{id: int}, us: text}
   unit: & \relation{\underline{id: int}, metric $\ra$ string: int, imperial $\ra$ string: int, conversion: float}
   category: & \relation{\underline{id: int}, name $\ra$ string: int, parent\us id $\ra$ category: int, image: varchar}
-  ingredient: & \relation{\underline{id: int}, name $\ra$ string: int, plural $\ra$ string: int, category\us id $\ra$ category: int}
+  ingredient: & \relation{\underline{id: int}, singular $\ra$ string: int, plural $\ra$ string: int, category\us id $\ra$ category: int}
   recipe: & \relation{\underline{id: int}, name $\ra$ string: int, description $\ra$ string: int, image: varchar, upvotes: int, downvotes: int}
   votes: & \relation{\underline{id: int}, recipe\us id $\ra$ recipe: int, user\us id $\ra$ user: int, vote: boolean}
   references: & \relation{\underline{id: int}, ref\us a $\ra$ recipe: int, ref\us b $\ra$ recipe: int}
-  exchangeable\us ingredients: & \relation{\underline{id: int}, name $\ra$ string: int, recipe\us id $\ra$ recipe: int, mandatory: boolean, order: int, ingredient\us group\us id $\ra$ ingredient\us group: int}
+  exchangeable\us ingredients: & \relation{\underline{id: int}, recipe\us id $\ra$ recipe: int, mandatory: boolean, order: int, ingredient\us group\us id $\ra$ ingredient\us group: int}
   quantity: & \relation{\underline{id: int}, ingredient\us id $\ra$ ingredient: int, exchange\us ingredient\us id $\ra$ exchangeable\us ingredients: int, amount: double, unit\us id $\ra$ unit: int}
   step: & \relation{\underline{id: int}, description $\ra$ string: int, image: varchar, recipe\us id $\ra$ recipe: int, order: int}
   comment: & \relation{\underline{id: int}, user\us id $\ra$ user: int, recipe\us id $\ra$ recipe: int, text: text}
   shopping\us list: & \relation{\underline{id: int}, user\us id $\ra$ user: id}
   contains: & \relation{\underline{id: int}, shopping\us list\us id $\ra$ shopping\us list: int, quantity\us id $\ra$ quantity: int}
-  user: & \relation{\underline{id: int}, token: int, username: text}
+  user: & \relation{\underline{id: int}, hash: text}
   favourites: & \relation{\underline{id: int}, user\us id $\ra$ user: int, recipe\us id $\ra$ recipe: int}
   ingredient\us group & \relation{\underline{id: int}, name $\ra$ string: int, order: int, recipe\us id $\ra$ recipe: int}
 \end{tabular}
