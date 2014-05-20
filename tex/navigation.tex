@@ -1,8 +1,5 @@
 \section{Navigation}\label{sec:navigation}
-As mention in the previous Section we use the navigation drawer in our application, the navigation drawer is a navigation design pattern acknowledged and used by Google.\cite{guidelines-navigationdrawer} The navigation drawer is the central view for navigation in our application.
- 
-\subsection{Navigation drawer}
-The navigation drawer is a powerful design that allows the user from any views in the application to navigate to top level views. The navigation drawer is expanded from the left of the application.
+As mention in the previous Section we use the navigation drawer in our application, the navigation drawer is a navigation design pattern acknowledged and used by Google.\cite{guidelines-navigationdrawer} The navigation drawer is the central view for navigation in our application. It is a powerful design that allows the user from any views in the application to navigate to top level views. The navigation drawer is expanded from the left of the application.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\linewidth]{img/screenshots/navigation_drawer_overview.png}
@@ -19,6 +16,7 @@ In our application we plan to implement six top level views ingredient search, r
 Our application only has one lower level view which is the display of a recipe, it is a lower level view because it is only accessible through other views.
 Some views or actions in the application might require the user to be signed in, for them to be available. 
 Like the favourites view, which displays the recipes that the user has favourited. 
+
 If the user is not signed in when entering the favourite view, they are met with a text asking them to sign in, this should always happen in the case the user tries to use user-functionalities. 
 In the bottom of the navigation drawer we plan to add an item with the action of signing in or signing out the user, it is located in the bottom of the navigation drawer to signalise its difference with the other items in the navigation drawer.
 \begin{figure}[H]
