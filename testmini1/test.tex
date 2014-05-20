@@ -194,3 +194,23 @@ All test cases are presented in the form of a case header consisting of the case
 \hline
 \step & Confirm the favourite removal & The favourite recipe is removed\\
 \end{testprocedure}
+
+\testcase
+{No Internet}
+{Use application without Internet}
+{Not connected to the Internet, but already signed in with your user in the application}
+{}
+
+\begin{testprocedure}
+\step & Open the application & You get the message "Server connection failed"\\
+\hline
+\step & Search for recipes, trying both ingredient search and text search & You get the message "Server connection failed"\\
+\hline
+\step & Connect to the Internet, search and find a recipe, disconnect from the Internet, and try to open a recipe & You get the message "Server connection failed" \\
+\hline
+\step & Connect to the Internet, open a recipe, disconnect from the Internet, and press the favourite button & You get the message "Server connection failed"\\
+\hline
+\step & Open the favourites page & You get the message "Server connection failed"\\
+\hline
+\step & Open the shopping list & The shopping list is displayed\\
+\end{testprocedure}
