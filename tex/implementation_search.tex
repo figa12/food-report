@@ -1,0 +1,306 @@
+\section{Search}
+\todo{intro}
+\textbf{It should be noted that variables are only inserted directly in the SQL queries for clarification.} Inserting user specified variables directly in an SQL query will make the query vulnerable to SQL injections. In the actual implementation, the SQL queries are protected using PHP's \textit{prepared statements}. In prepared statements, the query and variables are separated to make make sure that the values of the variables are not executed on the DBMS. Prepared statements can also be used to execute a query repeatedly with different values, without sending the entire query to the DBMS every time.
+
+Since SQL is a declarative language, each individual SQL query's clauses will not be explained sequentially but in an order that is easier to understand.
+
+
+
+\subsection*{Free-text search}
+Free-text search can be used to search for parts of the text in recipes. As defined in \secref{sec:design_database}, we use MariaDB as our DBMS. MariaDB has support for full-text search which makes it simple to implement free-text search. MariaDB also has support for a special full-text search called ``Boolean search''. In ``Boolean search'', the user is able to use special operators for marking words as mandatory, matching phrases, and inserting wildcards, among other things. A disadvantage of ``Boolean search'' is that this query only outputs ``true'' or ``false'', to indicate whether a match was found. We want to be able to order the result based on how well the text in the recipes match the query. In particular, a match in a title of a recipe should have higher precedence in the result than a match in a description of a recipe.
+\todo{Nævn hvilke operatorer, der er tilgængelige.}
+\autoref{lst:freetext} shows the SQL query used for free-text search.
+
+\begin{lstlisting}[language=SQL, morekeywords={AGAINST,OFFSET,BOOLEAN,MODE}, float=h, label={lst:freetext}, caption={Free-text search.}]
+SELECT recipe.id, name.{$lang} AS name,
+  description.{$lang} AS description, image,
+  (MATCH (name.{$lang}) AGAINST ('{$str}')) AS title_score,
+  (MATCH (description.{$lang}) AGAINST ('{$str}')) AS desc_score
+FROM recipe
+JOIN string AS name ON name.id = recipe.name
+JOIN string AS description ON description.id = recipe.description
+WHERE MATCH (name.{$lang}, description.{$lang})
+  AGAINST ('{$str}*' IN BOOLEAN MODE)
+ORDER BY title_score DESC, desc_score DESC
+LIMIT {$limit} OFFSET {$offset}
+\end{lstlisting}
+
+\begin{description}
+\item[Lines 5-7] The \inline{recipe} table is joined with the \inline{string} table two times to get both the title and description of each recipe.
+\item[Lines 8-9] Keep only recipes which have a match in \inline{BOOLEAN MODE}. Note the asterisk, `*', which is appended to the user defined search text. This allow the user to enter e.g. ``choco'' and get a match on e.g. ``Chocolate cake''. We would like to add a prefixed asterisk as well to allow users to search for e.g. ``berry'' and get results like ``Strawberry Pie''. Unfortunately it is not possible due to limitations in MariaDB.\todo{ref}
+\item[Lines 3-4] The scores for when the user defined text is matched to the recipes' titles and descriptions are calculated using the default full text search mode: \inline{NATURAL LANGUAGE MODE}. These values are stored in respectively \inline{title_score} and \inline{desc_score}
+\item[Lines 10] The result is ordered using the calculated scores with \inline{title_score} having a higher precedence than \inline{desc_score}.
+\item[Line 11] The result is limited and offset according to the applications needs i.e. how far the user has scrolled through the result.
+\item[Lines 1-2] The ID, name, description, image, and scores of the recipes are returned from the query and then later send to the application.
+\end{description}
+
+
+
+\subsection*{Search by ingredients}
+\todo{forklar kort hvad det er med ref til design}
+
+\todo{beskriv \$quantityQuery}
+\begin{lstlisting}[language=SQL, float=h, label={}, caption={\$quantityQuery, get matching quantities.}]
+SELECT DISTINCT exchange_ingredient_id, ingredient_id
+FROM quantity
+WHERE FIND_IN_SET(ingredient_id, '{$commaSeparatedIngredients}')
+\end{lstlisting}
+
+\begin{description}
+\item[Line 2-3] Get the quantities which are made of one of the ingredients defined by the user. \inline{FIND_IN_SET} allow us to check a comma separated string instead of a tuple required by the \inline{IN} operator. It would not be possible to provide a tuple to the \inline{IN} operator because PHP's prepared statements does not have support for a variable number of arguments.
+\item[Line 1] The IDs of the found pairs of exchangeables and ingredients are returned.
+\end{description}
+
+
+
+\todo{beskriv \$ingredientQuery}
+\begin{lstlisting}[language=SQL, float=h, label={}, caption={\$ingredientQuery, get the number of times the individual ingredients appear in each recipe.}]
+SELECT recipe_id, ingredient_id,
+  SUM(mandatory) AS mandatory_matching,
+  SUM(NOT mandatory) AS optional_matching
+FROM ( {$quantityQuery} ) AS temp
+JOIN exchangeable_ingredients
+  ON temp.exchange_ingredient_id = exchangeable_ingredients.id
+GROUP BY recipe_id, ingredient_id
+\end{lstlisting}
+
+\begin{description}
+\item[Lines 4-6] The result of the \inline{$quantityQuery} is joined with the \inline{exchangeable_ingredients} table.
+\item[Line 7] The result of the join is then grouped by \inline{recipe_id} and \inline{ingredient_id}.
+\item[Lines 1-3] The IDs of the pairs of recipes and ingredients are returned together with the sum of the \inline{mandatory} column in \inline{exchangeable_ingredients}. Since the \inline{mandatory} column consists of boolean values we will simply get the number of times this ingredient appear in the recipe as mandatory. Likewise, we get the number of times this ingredient appear in the recipe as optional.
+\end{description}
+
+
+
+\todo{beskriv \$matchingQuery}
+\begin{lstlisting}[language=SQL, morekeywords={OFFSET}, float=h, label={}, caption={\$matchingQuery, get the matching ingredients count.}]
+SELECT recipe_id,
+  COUNT(NULLIF(mandatory_matching,0)) AS mandatory_matching,
+  COUNT(NULLIF(optional_matching,0)) AS optional_matching
+FROM ( {$ingredientQuery} ) AS temp
+GROUP BY recipe_id
+LIMIT {$limit} OFFSET {$offset}
+\end{lstlisting}
+
+\begin{description}
+\item[Lines 4-5] The result of \inline{$ingredientQuery} is grouped by the \inline{recipe_id}.
+\item[Line 6] The result is limited and offset according to the applications needs i.e. how far the user has scrolled through the result.
+\item[Lines 1-3] The ID of each recipe, and the number of matching mandatory and optional ingredients are returned. To calculate this, we first replace the matching count with \inline{NULL} if the count is 0. Since \inline{NULL} values are ignored by the \inline{COUNT} function, we will get the number of unique ingredient matches.\todo{improve}
+\end{description}
+
+
+
+\todo{beskriv \$exchangeQuery}
+\begin{lstlisting}[language=SQL, float=h, label={}, caption={\$exchangeQuery, get the number of times the individual exchangeable appear in each recipe.}]
+SELECT recipe_id, exchange_ingredient_id,
+  SUM(mandatory) AS mandatory_cover,
+  SUM(NOT mandatory) AS optional_cover
+FROM ( {$quantityQuery} ) AS temp
+JOIN exchangeable_ingredients
+  ON temp.exchange_ingredient_id = exchangeable_ingredients.id
+WHERE temp.ingredient_id NOT IN ( {$ignoredIngredients} )
+GROUP BY recipe_id, exchange_ingredient_id
+\end{lstlisting}
+
+\begin{description}
+\item[Lines 4-6] The result of the \inline{$quantityQuery} is joined with the \inline{exchangeable_ingredients} table.
+\item[Line 7] All rows containing ignored ingredients are discarded.
+\item[Line 8] The result is then grouped by \inline{recipe_id} and \inline{exchange_ingredient_id}.
+\item[Lines 1-3] The IDs of the pairs of recipes and exchangeables are returned together with the sum of the \inline{mandatory} column in \inline{exchangeable_ingredients}. Since the \inline{mandatory} column consists of boolean values we will get the number of matching non-ignored ingredients of this exchangeable when the exchangeable is mandatory. Likewise, we get the number of matching non-ignored ingredients of this exchangeable when the exchangeable is optional.
+\end{description}
+
+
+
+\todo{beskriv \$coverQuery}
+\begin{lstlisting}[language=SQL, morekeywords={NULLIF,OFFSET}, float=h, label={}, caption={\$coverQuery, get the exchangeable cover counts.}]
+SELECT recipe_id,
+  COUNT(NULLIF(mandatory_cover,0)) AS mandatory_cover,
+  COUNT(NULLIF(optional_cover,0)) AS optional_cover
+FROM ( {$exchangeQuery} ) AS temp
+GROUP BY recipe_id
+LIMIT {$limit} OFFSET {$offset}
+\end{lstlisting}
+
+\begin{description}
+\item[Lines 4-5] The result of \inline{$exchangeQuery} is grouped by the \inline{recipe_id}.
+\item[Line 6] The result is limited and offset according to the applications needs i.e. how far the user has scrolled through the result.
+\item[Lines 1-3] The ID of each recipe, and the number of covered mandatory and optional ingredients are returned. To calculate this, we first replace the cover count with \inline{NULL} if the count is 0. Since \inline{NULL} values are ignored by the \inline{COUNT} function, we will get the number of uniquely covered exchangeables.\todo{improve}
+\end{description}
+
+
+
+\todo{beskriv \$countQuery}
+\begin{lstlisting}[language=SQL, float=h, label={}, caption={\$countQuery, count the number of mandatory and optional exchangeables.}]
+SELECT recipe_id, SUM(mandatory) AS mandatory_count,
+  SUM(NOT mandatory) AS optional_count
+FROM exchangeable_ingredients
+JOIN quantity
+  ON quantity.exchange_ingredient_id = exchangeable_ingredients.id
+WHERE quantity.ingredient_id NOT IN ( {$ignoredIngredients} )
+GROUP BY recipe_id
+\end{lstlisting}
+
+\begin{description}
+\item[Lines 3-5] The \inline{quantity} table is joined with the \inline{exchangeable} table.
+\item[Line 6] The rows which consists of an ignored ingredient are discarded.
+\item[Line 7] The result is grouped by \inline{recipe_id}.
+\item[Lines 1-2] The ID of each recipe is returned together with the number of mandatory and optional exchangeables for that recipe.
+\end{description}
+
+
+
+\todo{beskriv \$lackingQuery}
+\begin{lstlisting}[language=SQL, morekeywords={IFNULL}, float=h, label={}, caption={\$lackingQuery, get the lacking ingredients count.}]
+SELECT temp2.recipe_id,
+  (mandatory_count-IFNULL(mandatory_cover,0)) AS mandatory_lacking,
+  (optional_count-IFNULL(optional_cover,0)) AS optional_lacking
+FROM ( {$coverQuery} ) AS temp1
+RIGHT JOIN ( {$countQuery} ) AS temp2
+  ON temp1.recipe_id = temp2.recipe_id
+\end{lstlisting}
+
+\begin{description}
+\item[Lines 4-6] The result of \inline{$coverQuery} is joined with the result of \inline{$countQuery}. We use \inline{RIGHT JOIN} to ensure we do not discard recipes where a match exists. \todo{Vi kan måske undgå det hvis vi bruger left join i sortingQuery}
+\item[Lines 1-3] The ID of each recipe, and the number of lacking mandatory and optional ingredients are returned. To calculate this, we first replace the cover count with 0 if the count is \inline{NULL} due to the \inline{RIGHT JOIN} in \inline{$lackingQuery}. We then substract the mandatory cover count from the total number of mandatories to get the number of lacking exchangeables. WE do the same to get the number of lacking optional exchangeables.\todo{improve, omdøb til nonCovered?}
+\end{description}
+
+
+
+\todo{beskriv \$sortingQuery}
+\begin{lstlisting}[language=SQL, float=h, label={}, caption={\$sortingQuery, combine and sort.}]
+SELECT recipe.id, name.{$lang} AS name,
+  description.{$lang} AS description, image
+FROM ( {$matchingQuery} ) AS temp1
+JOIN ( {$lackingQuery} ) AS temp2 ON temp1.recipe_id = temp2.recipe_id
+JOIN recipe ON recipe.id = temp1.recipe_id
+JOIN string AS name ON name.id = recipe.name
+JOIN string AS description ON description.id = recipe.description
+ORDER BY mandatory_matching DESC , mandatory_lacking ASC ,
+  optional_matching DESC , optional_lacking ASC
+\end{lstlisting}
+
+\begin{description}
+\item[Lines 3-4] The result of \inline{$matchingQuery} is joined with the result of \inline{$lackingQuery}.
+\item[Lines 5-7] The rows are then joined with the \inline{recipe} table and two \inline{string} tables. 
+\item[Lines 8-9] The result is ordered as defined in \secref{sec:design_search}. In descending order of precedence: most mandatory matching, least mandatory lacking, most optional matching, least optional lacking. \todo{mandatory not covered?}
+\item[Lines 1-2] The ID, name, description, and image of the recipes are returned from the query and then later send to the application.
+\end{description}
+
+
+
+
+
+
+
+
+
+
+\begin{lstlisting}[language=SQL, morekeywords={FIND_IN_SET}, float=h, label={}, caption={Query to find the exchangeables that are not covered.}]
+SELECT id
+FROM exchangeable_ingredients
+WHERE exchangeable_ingredients.recipe_id = {$recipeId}
+AND mandatory = 1
+AND NOT EXISTS (
+    SELECT * 
+    FROM quantity
+    WHERE exchangeable_ingredients.id = quantity.exchange_ingredient_id
+    AND FIND_IN_SET(ingredient_id, {$ingredients})
+)
+\end{lstlisting}
+
+\begin{lstlisting}[language=SQL, morekeywords={FIND_IN_SET}, float=h, label={}, caption={Query to get the ingredient of an exchangeable, excluding ignored ingredients.}]
+SELECT DISTINCT ingredient_id
+FROM quantity
+WHERE exchange_ingredient_id = ?
+AND NOT FIND_IN_SET(ingredient_id, '{$ignoredIngredients}' )
+\end{lstlisting}
+
+
+
+
+
+
+
+\begin{lstlisting}[language=phpstyle, caption={Search by ingredients}]
+public function ingredientSearch($ingredients, $limit, $offset, $lang) {
+    // check whether the input is valid
+    if ($this->isNaturalNumber($limit) &&
+    	$this->isNaturalNumber($offset) &&
+    	$this->isValidLanguage($lang)) {
+        // ignored ingredients (water, salt, pepper)
+        $ignoredIngredients = '20,19,40';
+
+        // get the queries needed
+        $searchQuery =$this->getIngredientSearchQuery($ignoredIngredients, $limit, $offset, $lang);
+        $notCoveredQuery = $this->getNotCoveredQuery();
+        $missingQuery = $this->getIngredientsQuery($ignoredIngredients);
+
+        // prepare and bind the ingredients to the query. Bound 2 times since it is used in two sub-queries
+        $commaSeparatedIngredients = implode(',', $ingredients);
+        $searchQuery->bind_param('ss', $commaSeparatedIngredients, $commaSeparatedIngredients);
+        
+        // execute and retrieve the output of the query
+        $searchQuery->execute();
+        $searchQuery->store_result();
+
+        // bind the output to $recipe
+        $recipe = new stdClass();
+        $searchQuery->bind_result($recipe->id, $recipe->name,
+            $recipe->description, $recipe->image);
+
+        // array to store the result
+        $result = array();
+
+        // for each recipe, append the missing ingredients 
+        while($searchQuery->fetch()) {
+        	// bind input, execute the query, retrieve the output, and bind it
+            $notCoveredQuery->bind_param('is', $recipe->id, $commaSeparatedIngredients);
+            $notCoveredQuery->execute();
+            $notCoveredQuery->store_result();
+            $notCoveredQuery->bind_result($exchangeableId);
+
+            // array for missing ingredients for a recipe
+        	$recipe->missing = array();
+
+        	// find the missing ingredients for each exchangeable
+        	while($notCoveredQuery->fetch()) {
+                // bind input, execute the query, retrieve the output, and bind it
+                $missingQuery->bind_param('i', $exchangeableId);
+                $missingQuery->execute();
+                $missingQuery->store_result();
+                $missingQuery->bind_result($ingredientId);
+
+                // if missing ingredients were found for this exchangeable, add them to the result
+                if ($missingQuery->num_rows > 0) {
+                    // array for missing ingredients for an exchangeable
+            		$missingIngredients = array();
+
+                    // add missing ingredients to the array
+            		while($missingQuery->fetch()) {
+            			$missingIngredients[] = $ingredientId;
+            		}
+
+                    // add the missing ingredients for this exchangeable to the result
+            		$recipe->missing[] = $missingIngredients;
+                }
+
+                // free the resources
+                $missingQuery->free_result();
+        	}
+
+        	// remove duplicates and reindex array
+        	$recipe->missing = array_merge(array_unique($recipe->missing,SORT_REGULAR));
+
+             // we need to make a deep copy since $recipe is an array of refs
+        	$result[] = $this->deepCopy($recipe);
+
+            // free the resources
+            $notCoveredQuery->free_result();
+        }
+
+        $searchQuery->close();
+
+        return $this->echoSimpleJson($result);
+    }
+}
+\end{lstlisting}
