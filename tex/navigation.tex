@@ -15,15 +15,17 @@ The reason for the second option not being consistent is if the user navigates t
 Each item in the navigation drawer navigates to different top-level pages in the application or typical main actions like sign in/sign out.
 
 \subsection{Application navigation}
-Our application has five top level views ingredient search, recipe search, favourites, settings, and sign in/sign out. 
-We only have one lower level view in our application which is a recipe. 
+In our application we plan to implement six top level views ingredient search, recipe search, favourites, shopping list, settings, and sign in/sign out. 
+Our application only has one lower level view which is the display of a recipe, it is a lower level view because it is only accessible through other views.
 Some views or actions in the application might require the user to be signed in, for them to be available. 
 Like the favourites view, which displays the recipes that the user has favourited. 
-If the user is not signed in when trying to enter the favourite view, they are met a text asking them to sign in, this should always happen in the case the user tries to use user-functionalities. 
+If the user is not signed in when entering the favourite view, they are met with a text asking them to sign in, this should always happen in the case the user tries to use user-functionalities. 
+In the bottom of the navigation drawer we plan to add an item with the action of signing in or signing out the user, it is located in the bottom of the navigation drawer to signalise its difference with the other items in the navigation drawer.
 \begin{figure}[H]
 \centering
 \includegraphics[width=1.0\linewidth]{img/navigation.pdf}
 \caption{Navigation view flow}
 \label{fig:navigationViews}
 \end{figure}
-We have populated the navigation drawer with the action "sign in/sign out", it is located in the bottom part of the navigation drawer to signalise its difference with the other items in the navigation drawer. \autoref{fig:navigationViews} shows the views that are accessible in the application, and the navigation flow between views. It can be seen that to reach the recipe view you have to go through ingredient search, recipe search or favourites. It should be noted that it is always possible reach to top level views.
+\autoref{fig:navigationViews} shows the views that are accessible in the application, and the navigation flow between the views. 
+It can be seen that to reach the recipe view you have to go through ingredient search, recipe search or favourites. It should be noted that it is always possible reach to top level views.
