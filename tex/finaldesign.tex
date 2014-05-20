@@ -20,9 +20,9 @@ The first time the user opens up the application they are prompted with a naviga
 
 The user opens the navigation drawer either by swiping from the left edge of the screen or by clicking the icon in the top left corner and it is closed either by clicking outside of the navigation drawer, by clicking the icon in the top right corner again, by swiping from right to left anywhere on the screen, or by pressing back.
 
-If the user closes the navigation drawer and presses the search field on the action bar where it says ``Enter an ingredient'', the word cloud pops up. The word cloud is preloaded with suggestions for ingredients that can easily be clicked and added to the search. The user is also able to search for ingredients by typing in the name. When the user types, a list of suggestions will come up and the user can either press a suggestion from the list or press enter and add the first ingredient in the suggestion list to the search. The details of the search suggestions are explained later.
+If the user closes the navigation drawer and presses the search field on the action bar where it says ``Enter an ingredient'', the word cloud pops up. The word cloud is preloaded with all the ingredients in alphabetic order and they can easily be clicked and added to the search. The word cloud is static even when the user add ingredients to the search. The user is also able to search for ingredients by typing in the name. When the user types, a list of suggestions will come up and the user can either press a suggestion from the list or press enter and add the first ingredient in the suggestion list to the search. The details of the search suggestions are explained later.
 
-\autoref{fig:wordcloud} shows the word cloud with a number of ingredients added. The grey labels are included in the search, whereas the white labels are only suggestions the user can press and are not included in the search.
+\autoref{fig:wordcloud} shows the word cloud with a number of ingredients added. The grey labels are included in the search, whereas the white labels are only suggestions the user can press and are not included in the search. The user is not able to filter ingredients by specifying allergies etc, they have to manually exclude them from the search by removing the ingredients themselves.
 
 \begin{figure}[H]
 \begin{minipage}[t]{0.5\columnwidth}
@@ -53,7 +53,7 @@ If the user closes the navigation drawer and presses the search field on the act
 \end{figure}
 
 
-If the user presses the hardware back button or presses the enter key without having typed in anything into the search field, a search is performed. \autoref{fig:recipelist} shows the list of recipes based on the ingredients entered in \autoref{fig:wordcloud}. The search field changes its text after a search, it shows some of the ingredients that the user has included in the search, the search field itself works like before. If the ingredient search exceeds the number of recipes that can be shown on the screen, they will automatically be downloaded as the user scrolls down. This also applies to the list of recipes in recipe search and in favourites.
+If the user presses the hardware back button\todo{Fix i application. Back skal kun gå tilbage} or presses the enter key without having typed in anything into the search field, a search is performed. \autoref{fig:recipelist} shows the list of recipes based on the ingredients entered in \autoref{fig:wordcloud}. The search field changes its text after a search, it shows some of the ingredients that the user has included in the search, the search field itself works like before. If the ingredient search exceeds the number of recipes that can be shown on the screen, they will automatically be downloaded as the user scrolls down. This also applies to the list of recipes in recipe search and in favourites.
 
 
 The yellow text on some of the recipes indicates what ingredients the user is missing in order to have all mandatory ingredients for the recipe.
@@ -77,7 +77,7 @@ If the user presses a recipe it will open and they will see the full recipe. Thi
 \end{minipage}
 \end{figure}
 
-The user is not just limited to searching for recipes based on ingredients, they can also search for recipes using free text, this is shown in \autoref{fig:recipesearch}. This allows the user to search for a recipe based on its name or words included in the recipe description. 
+The user is not just limited to searching for recipes based on ingredients, they can also search for recipes using free text, this is shown in \autoref{fig:recipesearch}. This allows the user to search for a recipe based on its name or words included in the recipe description.
 
 When a user wants to access their favourites, they have to be signed in, incase the user tries to access their favourite recipes without being signed in, they are asked to log in using Google+, this is shown in \autoref{fig:signin}.
 
