@@ -7,7 +7,7 @@ In order to communicate with the server we created an abstract class which must 
 \caption{ServerComTask}
 \label{fig:servercomtask}
 \end{figure}
-\inline{ServerComTask} is a generic class, it declares a type which the abstract method \inline{ParseJson()} must create from the JSON it is supplied with.
+\inline{ServerComTask} is a generic class, it declares a type which the abstract method \inline{ParseJson()} must return. The object retuned by \inline{ParseJson()} is created by parsing the JSON it is supplied with.
 
 \inline{ServerAlertDialog} is a simple interface which just returns an \inline{AlertDialog} which the \inline{ServerComTask} can use to display an alert if something went wrong. The interface is suppose to be implemented by activities so all server requests can share the \inline{AlertDialog} reference. We use it to display a static message that notifies the user that the connection with the server failed.
 
