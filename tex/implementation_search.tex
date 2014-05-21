@@ -156,7 +156,6 @@ RIGHT JOIN ( {$countQuery} ) AS temp2
 
 
 \autoref{lst:sorting} shows the SQL query \inline{$sortingQuery}, that returns a list of recipes sorted according to the precedence function defined in \secref{sec:design_search}.
-\todo{beskriv \$sortingQuery}
 \begin{lstlisting}[language=SQL, float=h, label={lst:sorting}, caption={\$sortingQuery, combine and sort.}]
 SELECT recipe.id, name.{$lang} AS name, image
 FROM ( {$matchingQuery} ) AS temp1
