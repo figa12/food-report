@@ -7,7 +7,7 @@ Since SQL is a declarative language, each individual SQL query's clauses will no
 
 
 \subsection*{Free-text search}
-Free-text search can be used to search for parts of the text in recipes. As defined in \secref{sec:design_database}, we use MariaDB as our DBMS. MariaDB has support for full-text search which makes it simple to implement free-text search. MariaDB also has support for a special full-text search called ``Boolean search''. In ``Boolean search'', the user is able to use special operators for marking words as mandatory, matching phrases, and inserting wildcards, among other things. A disadvantage of ``Boolean search'' is that this query only outputs ``true'' or ``false'', to indicate whether a match was found. We want to be able to order the result based on how well the text in the recipes match the query. In particular, a match in a title of a recipe should have higher precedence in the result than a match in a description of a recipe.
+Free-text search can be used to search for parts of the recipe name or words in the recipe description. As defined in \secref{sec:design_database}, we use MariaDB as our DBMS. MariaDB has support for full-text search which makes it simple to implement free-text search. MariaDB also has support for a special full-text search called ``Boolean search''. In ``Boolean search'', the user is able to use special operators for marking words as mandatory, matching phrases, and inserting wildcards, among other things. A disadvantage of ``Boolean search'' is that this query only outputs ``true'' or ``false'', to indicate whether a match was found. We want to be able to order the result based on how well the text in the recipes match the query. In particular, a match in a title of a recipe should have higher precedence in the result than a match in a description of a recipe.
 \todo{Nævn hvilke operatorer, der er tilgængelige.}
 \autoref{lst:freetext} shows the SQL query used for free-text search.
 
@@ -46,7 +46,7 @@ WHERE FIND_IN_SET(ingredient_id, '{$commaSeparatedIngredients}')
 \end{lstlisting}
 
 \begin{description}
-\item[Line 2-3] Get the quantities which are made of one of the ingredients defined by the user. \inline{FIND_IN_SET} allow us to check a comma separated string instead of a tuple required by the \inline{IN} operator. It would not be possible to provide a tuple to the \inline{IN} operator because PHP's prepared statements does not have support for a variable number of arguments.
+\item[Line 2-3] Get the quantities which are made of one of the ingredients defined by the user\todo{Kan vi finde en bedre beskrivelse}. \inline{FIND_IN_SET} allow us to check a comma separated string instead of a tuple required by the \inline{IN} operator. It would not be possible to provide a tuple to the \inline{IN} operator because PHP's prepared statements does not have support for a variable number of arguments.
 \item[Line 1] The IDs of the found pairs of exchangeables and ingredients are returned.
 \end{description}
 
