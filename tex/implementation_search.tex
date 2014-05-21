@@ -38,19 +38,15 @@ LIMIT {$limit} OFFSET {$offset}
 \subsection*{Search by ingredients}
 \todo{forklar kort hvad det er med ref til design}
 
-\todo{beskriv \$quantityQuery}
-\begin{lstlisting}[language=SQL, float=h, label={}, caption={\$quantityQuery, get matching quantities.}]
+\autoref{lst:quantity} shows the SQL query \inline{$quantityQuery}, that returns every quantity that contains one of the ingredients specified by the user.
+\begin{lstlisting}[language=SQL, float=h, label={lst:quantity}, caption={\$quantityQuery, get matching quantities.}]
 SELECT DISTINCT exchange_ingredient_id, ingredient_id
 FROM quantity
 WHERE FIND_IN_SET(ingredient_id, '{$commaSeparatedIngredients}')
 \end{lstlisting}
 
 \begin{description}
-<<<<<<< HEAD
-\item[Line 2-3] Get the quantities which are made of one of the ingredients defined by the user\todo{Kan vi finde en bedre beskrivelse}. \inline{FIND_IN_SET} allow us to check a comma separated string instead of a tuple required by the \inline{IN} operator. It would not be possible to provide a tuple to the \inline{IN} operator because PHP's prepared statements does not have support for a variable number of arguments.
-=======
-\item[Lines 2-3] Get the quantities which are made of one of the ingredients defined by the user. \inline{FIND_IN_SET} allow us to check a comma separated string instead of a tuple required by the \inline{IN} operator. It would not be possible to provide a tuple to the \inline{IN} operator because PHP's prepared statements does not have support for a variable number of arguments.
->>>>>>> mere search
+\item[Lines 2-3] Get the quantities which are made of one of the ingredients defined by the user\todo{Kan vi finde en bedre beskrivelse}. \inline{FIND_IN_SET} allow us to check a comma separated string instead of a tuple required by the \inline{IN} operator. It would not be possible to provide a tuple to the \inline{IN} operator because PHP's prepared statements does not have support for a variable number of arguments.
 \item[Line 1] The IDs of the found pairs of exchangeables and ingredients are returned.
 \end{description}
 
