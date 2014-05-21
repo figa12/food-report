@@ -46,7 +46,11 @@ WHERE FIND_IN_SET(ingredient_id, '{$commaSeparatedIngredients}')
 \end{lstlisting}
 
 \begin{description}
+<<<<<<< HEAD
 \item[Line 2-3] Get the quantities which are made of one of the ingredients defined by the user\todo{Kan vi finde en bedre beskrivelse}. \inline{FIND_IN_SET} allow us to check a comma separated string instead of a tuple required by the \inline{IN} operator. It would not be possible to provide a tuple to the \inline{IN} operator because PHP's prepared statements does not have support for a variable number of arguments.
+=======
+\item[Lines 2-3] Get the quantities which are made of one of the ingredients defined by the user. \inline{FIND_IN_SET} allow us to check a comma separated string instead of a tuple required by the \inline{IN} operator. It would not be possible to provide a tuple to the \inline{IN} operator because PHP's prepared statements does not have support for a variable number of arguments.
+>>>>>>> mere search
 \item[Line 1] The IDs of the found pairs of exchangeables and ingredients are returned.
 \end{description}
 
@@ -180,7 +184,7 @@ ORDER BY mandatory_matching DESC , mandatory_lacking ASC ,
 \item[Lines 2-3] The result of \inline{$matchingQuery} is joined with the result of \inline{$lackingQuery}.
 \item[Lines 4-5] The rows are then joined with the \inline{recipe} table and the \inline{string} table. 
 \item[Lines 6-7] The result is ordered as defined in \secref{sec:design_search}. In descending order of precedence: most mandatory ingredients matching, least mandatory exchangeables lacking, most optional ingredients matching, least optional exchangeables lacking.
-\item[Lines 1] The ID, name, and image of the recipes are returned from the query and then later send to the application.
+\item[Line 1] The ID, name, and image of the recipes are returned from the query and then later send to the application.
 \end{description}
 
 
@@ -205,12 +209,31 @@ AND NOT EXISTS (
 )
 \end{lstlisting}
 
+\begin{description}
+\item[Line 2-3] The exchangeables which are a part of a specified recipe are retrieved.
+\item[Line 4] Optional exchangeables are discarded.
+\item[Lines 5-10] Discard exchangeables which are covered by the ingredients specified by the user.
+	\begin{description}
+	\item[Lines 7-8] Retrieve quantities which are a part of a given exchangeable.
+	\item[Line 9] Discard quantities which does not contain one of the ingredients specified by the user.
+	\item[Line 6] If the query returns any rows it means that the exchangeable is covered by any f the ingredients specified by the user.
+	\end{description}
+\item[Line 1] The IDs of the resulting exchangeables are returned. These exchangeables are not covered by any user specified ingredients.
+\end{description}
+
+
 \begin{lstlisting}[language=SQL, morekeywords={FIND_IN_SET}, float=h, label={}, caption={Query to get the ingredient of an exchangeable, excluding ignored ingredients.}]
 SELECT DISTINCT ingredient_id
 FROM quantity
 WHERE exchange_ingredient_id = ?
 AND NOT FIND_IN_SET(ingredient_id, '{$ignoredIngredients}' )
 \end{lstlisting}
+
+\begin{description}
+\item[Lines 2-3] The quantities which are a part of a specified exchangeable are retrieved.
+\item[Line 4] Discard quantities which contain an ignored ingredient.
+\item[Line 1] The ingredient IDs of the resulting quantities are returned.
+\end{description}
 
 
 
