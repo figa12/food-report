@@ -12,8 +12,7 @@ Free-text search can be used to search for parts of the text in recipes. As defi
 \autoref{lst:freetext} shows the SQL query used for free-text search.
 
 \begin{lstlisting}[language=SQL, morekeywords={AGAINST,OFFSET,BOOLEAN,MODE}, float=h, label={lst:freetext}, caption={Free-text search.}]
-SELECT recipe.id, name.{$lang} AS name,
-  description.{$lang} AS description, image,
+SELECT recipe.id, name.{$lang} AS name, image,
   (MATCH (name.{$lang}) AGAINST ('{$str}')) AS title_score,
   (MATCH (description.{$lang}) AGAINST ('{$str}')) AS desc_score
 FROM recipe
@@ -26,12 +25,12 @@ LIMIT {$limit} OFFSET {$offset}
 \end{lstlisting}
 
 \begin{description}
-\item[Lines 5-7] The \inline{recipe} table is joined with the \inline{string} table two times to get both the title and description of each recipe.
-\item[Lines 8-9] Keep only recipes which have a match in \inline{BOOLEAN MODE}. Note the asterisk, `*', which is appended to the user defined search text. This allow the user to enter e.g. ``choco'' and get a match on e.g. ``Chocolate cake''. We would like to add a prefixed asterisk as well to allow users to search for e.g. ``berry'' and get results like ``Strawberry Pie''. Unfortunately it is not possible due to limitations in MariaDB.\todo{ref}
-\item[Lines 3-4] The scores for when the user defined text is matched to the recipes' titles and descriptions are calculated using the default full text search mode: \inline{NATURAL LANGUAGE MODE}. These values are stored in respectively \inline{title_score} and \inline{desc_score}
-\item[Lines 10] The result is ordered using the calculated scores with \inline{title_score} having a higher precedence than \inline{desc_score}.
-\item[Line 11] The result is limited and offset according to the applications needs i.e. how far the user has scrolled through the result.
-\item[Lines 1-2] The ID, name, description, image, and scores of the recipes are returned from the query and then later send to the application.
+\item[Lines 4-6] The \inline{recipe} table is joined with the \inline{string} table two times to get both the title and description of each recipe.
+\item[Lines 7-8] Keep only recipes which have a match in \inline{BOOLEAN MODE}. Note the asterisk, `*', which is appended to the user defined search text. This allow the user to enter e.g. ``choco'' and get a match on e.g. ``Chocolate cake''. We would like to add a prefixed asterisk as well to allow users to search for e.g. ``berry'' and get results like ``Strawberry Pie''. Unfortunately it is not possible due to limitations in MariaDB.\todo{ref}
+\item[Lines 2-3] The scores for when the user defined text is matched to the recipes' titles and descriptions are calculated using the default full text search mode: \inline{NATURAL LANGUAGE MODE}. These values are stored in respectively \inline{title_score} and \inline{desc_score}
+\item[Line 9] The result is ordered using the calculated scores with \inline{title_score} having a higher precedence than \inline{desc_score}.
+\item[Line 10] The result is limited and offset according to the applications needs i.e. how far the user has scrolled through the result.
+\item[Line 1] The ID, name, image, and scores of the recipes are returned from the query and then later send to the application.
 \end{description}
 
 
@@ -168,22 +167,20 @@ RIGHT JOIN ( {$countQuery} ) AS temp2
 
 \todo{beskriv \$sortingQuery}
 \begin{lstlisting}[language=SQL, float=h, label={}, caption={\$sortingQuery, combine and sort.}]
-SELECT recipe.id, name.{$lang} AS name,
-  description.{$lang} AS description, image
+SELECT recipe.id, name.{$lang} AS name, image
 FROM ( {$matchingQuery} ) AS temp1
 JOIN ( {$lackingQuery} ) AS temp2 ON temp1.recipe_id = temp2.recipe_id
 JOIN recipe ON recipe.id = temp1.recipe_id
 JOIN string AS name ON name.id = recipe.name
-JOIN string AS description ON description.id = recipe.description
 ORDER BY mandatory_matching DESC , mandatory_lacking ASC ,
   optional_matching DESC , optional_lacking ASC
 \end{lstlisting}
 
 \begin{description}
-\item[Lines 3-4] The result of \inline{$matchingQuery} is joined with the result of \inline{$lackingQuery}.
-\item[Lines 5-7] The rows are then joined with the \inline{recipe} table and two \inline{string} tables. 
-\item[Lines 8-9] The result is ordered as defined in \secref{sec:design_search}. In descending order of precedence: most mandatory ingredients matching, least mandatory exchangeables lacking, most optional ingredients matching, least optional exchangeables lacking.
-\item[Lines 1-2] The ID, name, description, and image of the recipes are returned from the query and then later send to the application.
+\item[Lines 2-3] The result of \inline{$matchingQuery} is joined with the result of \inline{$lackingQuery}.
+\item[Lines 4-5] The rows are then joined with the \inline{recipe} table and the \inline{string} table. 
+\item[Lines 6-7] The result is ordered as defined in \secref{sec:design_search}. In descending order of precedence: most mandatory ingredients matching, least mandatory exchangeables lacking, most optional ingredients matching, least optional exchangeables lacking.
+\item[Lines 1] The ID, name, and image of the recipes are returned from the query and then later send to the application.
 \end{description}
 
 
