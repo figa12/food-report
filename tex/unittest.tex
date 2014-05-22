@@ -96,8 +96,7 @@ Score: 78.12%
 (14 escaped on 64 mutants)
 \end{lstlisting}
 
-The tests have been run trough a mutation testing tool and gives a success rate of 78.12\%. The reason behind mutation testing is to check how good the tests are by altering the source code. If any tests pass while the source code is altered it is considered defective. The percentage of escaped mutations could and should be reduced, but we simply ran out of time.
-
+The tests have been run trough a mutation testing tool\cite{mutagenesis} to ensure that the tests works as intended. The mutation test will change certain aspects of the source code before running the tests. This includes changing strings to random strings, changing ints, flipping boolean statements, etc. If a test still passes after the source code has been altered, the test is considered defective. The mutation score is a good indicator for the quality of the code coverage since it would be easy to achieve a high code coverage if the assertions always passed regardless of input/output. The mutation testing tool gives a success rate of 78.12\% which means that 78.12\% of the mutants made the tests fail. It is a satisfactory success rate, but could be improved if we had more time.
 
 %%% Local Variables: 
 %%% mode: latex
