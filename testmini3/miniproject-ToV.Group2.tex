@@ -1,0 +1,31 @@
+\documentclass[a4paper,12pt]{memoir}
+\usepackage{framed}
+\usepackage{enumitem}
+\usepackage{todonotes}
+
+%Commands
+\newcommand{\testdesign}[4]
+{
+\begin{framed}
+\begin{description}
+\item \textbf{Identifier:} #1
+\item \textbf{Features to be tested:} #2
+\item \textbf{Approach:} #3
+%\item \textbf{Test case identification:} #4
+\item \textbf{Pass/fail criteria:} #4
+\end{description}
+\end{framed}
+}
+
+\title{Miniproject in Test and Verification - Part 1}
+\author{Jacob Karstensensen Wortmann\\Sam Sepstrup Olesen\\Nicklas Andersen\\sw805f14}
+
+\begin{document}
+\maketitle %project description
+We will in our project make an application that functions as a digital cookbook. The user is able to search for recipes by different search functions: by ingredients and by the name of the recipe. Users can share the recipes with friends and relatives, it is also possible to favourite a recipe. Our application should also support conversion between the imperial and metric system to reach a larger audience. 
+We want to create a thin client which does not perform a huge amount of calculation, this means that we can focus on testing the server and the communication layer in the client.
+
+\section{section1}
+\section{section2}
+
+\end{document}
