@@ -1,12 +1,12 @@
 \section{Search}
-\todo{intro}
+\todo{intro}\todo{dette stykke skal nok stå et andet sted}
 \textbf{It should be noted that variables are only inserted directly in the SQL queries for clarification.} Inserting user specified variables directly in an SQL query will make the query vulnerable to SQL injections. In the actual implementation, the SQL queries are protected using PHP's \textit{prepared statements}. In prepared statements, the query and variables are separated to make make sure that the values of the variables are not executed on the DBMS. Prepared statements can also be used to execute a query repeatedly with different values, without sending the entire query to the DBMS every time.
 
 Since SQL is a declarative language, each individual SQL query's clauses will not be explained sequentially but in an order that is easier to understand.
 
 
 
-\subsection*{Free-text search}
+\section{Free-text search}
 Free-text search can be used to search for parts of the recipe name or words in the recipe description. As defined in \secref{sec:design_database}, we use MariaDB as our DBMS. MariaDB has support for full-text search which makes it simple to implement free-text search. MariaDB also has support for a special full-text search called ``Boolean search''. In ``Boolean search'', the user is able to use special operators for marking words as mandatory, matching phrases, and inserting wildcards, among other things. A disadvantage of ``Boolean search'' is that this query only outputs ``true'' or ``false'', to indicate whether a match was found. We want to be able to order the result based on how well the text in the recipes match the query. In particular, a match in a title of a recipe should have higher precedence in the result than a match in a description of a recipe.
 \todo{Nævn hvilke operatorer, der er tilgængelige.}
 \autoref{lst:freetext} shows the SQL query used for free-text search.
@@ -34,7 +34,7 @@ LIMIT {$limit} OFFSET {$offset}
 
 
 
-\subsection*{Search by ingredients}
+\section{Search by ingredients}
 \todo{forklar kort hvad det er med ref til design}
 
 \autoref{lst:quantity} shows the SQL query \inline{$quantityQuery}, that returns every quantity that contains one of the ingredients specified by the user.
@@ -50,6 +50,7 @@ WHERE FIND_IN_SET(ingredient_id, '{$commaSeparatedIngredients}')
 
 
 
+\subsection*{\$ingredientQuery}
 \autoref{lst:ingredient} shows the SQL query \inline{$ingredientQuery}, that returns the number of times the individual ingredients match in each recipe.
 \begin{lstlisting}[language=SQL, float=h, label={lst:ingredient}, caption={\$ingredientQuery, returns the number of times the individual ingredients appear in each recipe.}]
 SELECT recipe_id, ingredient_id,
@@ -67,6 +68,8 @@ GROUP BY recipe_id, ingredient_id
 \end{description}
 
 
+
+\subsection*{\$matchingQuery}
 \autoref{lst:matching} shows the SQL query \inline{$matchingQuery}, that returns the number of matching ingredients for each recipe.
 \begin{lstlisting}[language=SQL, morekeywords={OFFSET}, float=h, label={lst:matching}, caption={\$matchingQuery, returns the matching ingredients count for each recipe.}]
 SELECT recipe_id,
@@ -83,6 +86,8 @@ LIMIT {$limit} OFFSET {$offset}
 \end{description}
 
 
+
+\subsection*{\$exchangeQuery}
 \autoref{lst:exchange} shows the SQL query \inline{$exchangeQuery}, that returns for each recipe, the number of times the individual exchangeable contains an ingredient that match a user specified ingredient. The query returns both the number of times a mandatory exchangeable has a match as well as the number of times an optional exchangeable has a match. An exchangeable can obviously not have both mandatory and optional matches at the same time since it is the exchangeable that defines whether its containing ingredients are mandatory or not.
 \begin{lstlisting}[language=SQL, float=h, label={lst:exchange}, caption={\$exchangeQuery, returns the number of times the individual exchangeable appear in each recipe.}]
 SELECT recipe_id, exchange_ingredient_id,
@@ -103,6 +108,7 @@ GROUP BY recipe_id, exchange_ingredient_id
 
 
 
+\subsection*{\$coverQuery}
 \autoref{lst:cover} shows the SQL query \inline{$coverQuery}, that returns for each recipe, the number of exchangeables that are covered by matching ingredients. An exchangeable is covered when at least one ingredient in the exchangeable match one of the ingredients specified by the user. The query returns both the number of covered mandatory exchangeables and optional exchangeables.
 \begin{lstlisting}[language=SQL, morekeywords={NULLIF,OFFSET}, float=h, label={lst:cover}, caption={\$coverQuery, returns the exchangeable cover counts.}]
 SELECT recipe_id,
@@ -120,6 +126,7 @@ LIMIT {$limit} OFFSET {$offset}
 
 
 
+\subsection*{\$countQuery}
 \autoref{lst:count} shows the SQL query \inline{$countQuery}, that returns the total number of mandatory and optional exchangeables for each recipe.
 \begin{lstlisting}[language=SQL, float=h, label={lst:count}, caption={\$countQuery, returns the total number of mandatory and optional exchangeables for each recipe.}]
 SELECT recipe_id, SUM(mandatory) AS mandatory_count,
@@ -139,6 +146,7 @@ GROUP BY recipe_id
 
 
 
+\subsection*{\$lackingQuery}
 \autoref{lst:lacking} shows the SQL query \inline{$lackingQuery}, that returns the number of lacking ingredients for each recipe.
 \begin{lstlisting}[language=SQL, morekeywords={IFNULL}, float=h, label={lst:lacking}, caption={\$lackingQuery, returns the number of lacking ingredients for each recipe.}]
 SELECT temp2.recipe_id,
@@ -155,6 +163,7 @@ RIGHT JOIN ( {$countQuery} ) AS temp2
 
 
 
+\subsection*{\$sortingQuery}
 \autoref{lst:sorting} shows the SQL query \inline{$sortingQuery}, that returns a list of recipes sorted according to the precedence function defined in \secref{sec:design_search}.
 \begin{lstlisting}[language=SQL, float=h, label={lst:sorting}, caption={\$sortingQuery, combine and sort.}]
 SELECT recipe.id, name.{$lang} AS name, image
@@ -181,6 +190,7 @@ ORDER BY mandatory_matching DESC , mandatory_lacking ASC ,
 
 
 
+\subsection*{getNotCoveredQuery()}
 \begin{lstlisting}[language=SQL, morekeywords={FIND_IN_SET}, float=h, label={}, caption={Query to find the exchangeables that are not covered.}]
 SELECT id
 FROM exchangeable_ingredients
@@ -206,13 +216,14 @@ AND NOT EXISTS (
 \end{description}
 
 
+
+\subsection*{getIngredientsQuery()}
 \begin{lstlisting}[language=SQL, morekeywords={FIND_IN_SET}, float=h, label={}, caption={Query to get the ingredient of an exchangeable, excluding ignored ingredients.}]
 SELECT DISTINCT ingredient_id
 FROM quantity
 WHERE exchange_ingredient_id = ?
 AND NOT FIND_IN_SET(ingredient_id, '{$ignoredIngredients}' )
 \end{lstlisting}
-
 \begin{description}
 \item[Lines 2-3] The quantities which are a part of a specified exchangeable are retrieved.
 \item[Line 4] Discard quantities which contain an ignored ingredient.
