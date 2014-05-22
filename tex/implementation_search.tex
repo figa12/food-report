@@ -36,6 +36,7 @@ LIMIT {$limit} OFFSET {$offset}
 
 \section{Search by ingredients}
 \todo{forklar kort hvad det er med ref til design}
+\ref{sec:design_search}
 
 \autoref{lst:quantity} shows the SQL query \inline{$quantityQuery}, that returns every quantity that contains one of the ingredients specified by the user.
 \begin{lstlisting}[language=SQL, float=h, label={lst:quantity}, caption={\$quantityQuery, return quantities that match the search.}]
@@ -229,93 +230,3 @@ AND NOT FIND_IN_SET(ingredient_id, '{$ignoredIngredients}' )
 \item[Line 4] Discard quantities which contain an ignored ingredient.
 \item[Line 1] The ingredient IDs of the resulting quantities are returned.
 \end{description}
-
-
-
-
-
-
-
-\begin{lstlisting}[language=phpstyle, caption={Search by ingredients}]
-public function ingredientSearch($ingredients, $limit, $offset, $lang) {
-    // check whether the input is valid
-    if ($this->isNaturalNumber($limit) &&
-    	$this->isNaturalNumber($offset) &&
-    	$this->isValidLanguage($lang)) {
-        // ignored ingredients (water, salt, pepper)
-        $ignoredIngredients = '20,19,40';
-
-        // get the queries needed
-        $searchQuery =$this->getIngredientSearchQuery($ignoredIngredients, $limit, $offset, $lang);
-        $notCoveredQuery = $this->getNotCoveredQuery();
-        $missingQuery = $this->getIngredientsQuery($ignoredIngredients);
-
-        // prepare and bind the ingredients to the query. Bound 2 times since it is used in two sub-queries
-        $commaSeparatedIngredients = implode(',', $ingredients);
-        $searchQuery->bind_param('ss', $commaSeparatedIngredients, $commaSeparatedIngredients);
-        
-        // execute and retrieve the output of the query
-        $searchQuery->execute();
-        $searchQuery->store_result();
-
-        // bind the output to $recipe
-        $recipe = new stdClass();
-        $searchQuery->bind_result($recipe->id, $recipe->name,
-            $recipe->description, $recipe->image);
-
-        // array to store the result
-        $result = array();
-
-        // for each recipe, append the missing ingredients 
-        while($searchQuery->fetch()) {
-        	// bind input, execute the query, retrieve the output, and bind it
-            $notCoveredQuery->bind_param('is', $recipe->id, $commaSeparatedIngredients);
-            $notCoveredQuery->execute();
-            $notCoveredQuery->store_result();
-            $notCoveredQuery->bind_result($exchangeableId);
-
-            // array for missing ingredients for a recipe
-        	$recipe->missing = array();
-
-        	// find the missing ingredients for each exchangeable
-        	while($notCoveredQuery->fetch()) {
-                // bind input, execute the query, retrieve the output, and bind it
-                $missingQuery->bind_param('i', $exchangeableId);
-                $missingQuery->execute();
-                $missingQuery->store_result();
-                $missingQuery->bind_result($ingredientId);
-
-                // if missing ingredients were found for this exchangeable, add them to the result
-                if ($missingQuery->num_rows > 0) {
-                    // array for missing ingredients for an exchangeable
-            		$missingIngredients = array();
-
-                    // add missing ingredients to the array
-            		while($missingQuery->fetch()) {
-            			$missingIngredients[] = $ingredientId;
-            		}
-
-                    // add the missing ingredients for this exchangeable to the result
-            		$recipe->missing[] = $missingIngredients;
-                }
-
-                // free the resources
-                $missingQuery->free_result();
-        	}
-
-        	// remove duplicates and reindex array
-        	$recipe->missing = array_merge(array_unique($recipe->missing,SORT_REGULAR));
-
-             // we need to make a deep copy since $recipe is an array of refs
-        	$result[] = $this->deepCopy($recipe);
-
-            // free the resources
-            $notCoveredQuery->free_result();
-        }
-
-        $searchQuery->close();
-
-        return $this->echoSimpleJson($result);
-    }
-}
-\end{lstlisting}
