@@ -1,23 +1,38 @@
 \begin{description}
 \item[Shopping list] We wanted to have a shopping list where ingredients could easily be added from recipes and also from the shopping list itself.
+
 \item[Startpage] The application needs some kind of a startpage, right now the application opens in the ingredient search page. The startpage can be a page displaying popular or featured recipes to inspire the user, but an automatic display of popular recipes might become a static page with the same recipes displayed, and featured recipes needs to be maintained. A third option for a startpage can be a welcome message and a small guide or tutorial on how the application works and what it does.
+
 \item[Recipe filters] The user should be able to specify some filters for search results. Examples are filters for vegans and allergies.\todo{Flere eksempler?}
+
 \item[Sharing] You cannot currently share anything in the application. We wanted the ability to share recipes and shopping lists. Sharing can happen through services like SMS, Facebook, or Google+.
+
 \item[Recipe cache] Right now the recipes are downloaded each time they are opened. All the images are already automatically cached in the application, caching recipes also makes sense, since they are probably likely to opened multiple times, especially when they are favourited for later use.
+
 \item[Recipe license] We need to display a license on all the recipes in the application, the application can currently display a license, but the server does not send it.
+
+\item[Conversion] The database and the model currently contains a conversion constant for each unit, but the application does not contain the functionality to convert between units. Right now in the database decilitre is converted to ounces, but usually the imperial system deals with cups.\todo{skal der stå en løsning på det konverterings problem?}
+
+\item[Recipe references] We wanted recipes to be able to have references to other recipes, because ingredient groups might be big enough to be its own recipe. This is currently not possible.
+
+\item[Settings] The application does not have a settings page. Settings could include: Metric or imperial standard option, filtering of recipes e.g. by allergies or vegetarian.\todo{flere settings?}
+
+\item[Scaling of recipes] Button to scale the ingredients of a recipe to more people.
 \end{description}
 
 \begin{itemize}
 \item Intelligent sort of ingredients in wordcloud.
 %\item Shoppinglist
-\item Settings
-\item Salt er der som ingrediens? Settings?
+%\item Settings
+%\item Salt er der som ingrediens? Settings?
 %\item Startpage
-\item Conversion
+%\item Conversion
 %\item Filter (vegan)
-\item Refs to other recipes
+%\item Refs to other recipes
+\item Localization
 %\item Share recipes and shopping lists (sms, facebook, google+)
 \item Log interesting ingredient searches (to improve recipe database)
 %\item Recipe cache on mobile device (Perhaps FIFO)
 %\item llicense på recipes
+\item Revoke google account access
 \end{itemize}\todo{skriv future work om disse elementer}
