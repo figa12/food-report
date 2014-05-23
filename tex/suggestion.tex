@@ -4,7 +4,7 @@ We have decided that only the ingredients that are used in recipes can be added 
 
 When the users opens the application, all the ingredients are loaded into a list, this list of ingredients is then used for the search suggestions. Each time the user types in a letter, the input string is run through a regex trying to match the input string to an ingredient name in the list, the matching ingredients is added to a list and shown on the screen as a search suggestion. This can be seen in \autoref{lst:search}.
 
-\begin{lstlisting}[float][language=java, label=lst:search, caption={Search suggestions}]
+\begin{lstlisting}[language=java, label=lst:search, float=h, caption={Search suggestions}]
 Pattern p = Pattern.compile("(^|\\s)" + query);
 
 for (Ingredient ingredient : allIngredients) {
