@@ -25,7 +25,7 @@ LIMIT {$limit} OFFSET {$offset}
 \end{lstlisting}
 \begin{description}
 \item[Lines 4-6] The \inline{recipe} table is joined with the \inline{string} table two times to get both the title and description of each recipe.
-\item[Lines 7-8] Keep only recipes which have a match in \inline{BOOLEAN MODE}. Note the asterisk, `*', which is appended to the user defined search text. This allow the user to enter e.g. ``choco'' and get a match on e.g. ``Chocolate cake''. We would like to add a prefixed asterisk as well to allow users to search for e.g. ``berry'' and get results like ``Strawberry Pie''. Unfortunately it is not possible due to limitations in MariaDB.\todo{ref}
+\item[Lines 7-8] Keep only recipes which have a match in \inline{BOOLEAN MODE}. Note the asterisk, `*', which is appended to the user defined search text. This allow the user to enter e.g. ``choco'' and get a match on e.g. ``Chocolate cake''. We would like to add a prefixed asterisk as well to allow users to search for e.g. ``berry'' and get results like ``Strawberry Pie''. Unfortunately it is not possible due to limitations in MariaDB.\cite{mariafulltext}
 \item[Lines 2-3] The scores for when the user defined text is matched to the recipes' titles and descriptions are calculated using the default full text search mode: \inline{NATURAL LANGUAGE MODE}. These values are stored in respectively \inline{title_score} and \inline{desc_score}
 \item[Line 9] The result is ordered using the calculated scores with \inline{title_score} having a higher precedence than \inline{desc_score}.
 \item[Line 10] The result is limited and offset according to the applications needs i.e. how far the user has scrolled through the result.
@@ -101,7 +101,7 @@ LIMIT {$limit} OFFSET {$offset}
 \begin{description}
 \item[Lines 4-5] The result of \inline{$ingredientQuery} is grouped by the \inline{recipe_id}.
 \item[Line 6] The result is limited and offset according to the applications needs i.e. how far the user has scrolled through the result.
-\item[Lines 1-3] The ID of each recipe, and the number of matching mandatory and optional ingredients are returned. To calculate this, we first replace the matching count with \inline{NULL} if the count is 0. Since \inline{NULL} values are ignored by the \inline{COUNT} function, we will get the number of unique ingredient matches.\todo{improve}
+\item[Lines 1-3] The ID of each recipe, and the number of matching mandatory and optional ingredients are returned. To calculate this, we first replace the matching count with \inline{NULL} if the count is 0. Since \inline{NULL} values are ignored by the \inline{COUNT} function, we will get the number of unique ingredient matches.
 \end{description}
 
 
@@ -140,7 +140,7 @@ LIMIT {$limit} OFFSET {$offset}
 \begin{description}
 \item[Lines 4-5] The result of \inline{$exchangeQuery} is grouped by the \inline{recipe_id}.
 \item[Line 6] The result is limited and offset according to the applications needs i.e. how far the user has scrolled through the result.
-\item[Lines 1-3] The ID of each recipe, and the number of covered mandatory and optional exchangeables are returned. To calculate this, we first replace the cover count with \inline{NULL} if the count is 0. Since \inline{NULL} values are ignored by the \inline{COUNT} function, we will get the number of uniquely covered exchangeables.\todo{improve}
+\item[Lines 1-3] The ID of each recipe, and the number of covered mandatory and optional exchangeables are returned. To calculate this, we first replace the cover count with \inline{NULL} if the count is 0. Since \inline{NULL} values are ignored by the \inline{COUNT} function, we will get the number of uniquely covered exchangeables.
 \end{description}
 
 
@@ -208,7 +208,7 @@ ORDER BY mandatory_matching DESC , mandatory_lacking ASC ,
 
 
 
-
+\todo{overgang}
 \subsection*{getNotCoveredQuery()}
 \begin{lstlisting}[language=SQL, morekeywords={FIND_IN_SET}, float=h, label={}, caption={Query to find the exchangeables that are not covered.}]
 SELECT id
