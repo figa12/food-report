@@ -2,11 +2,13 @@ We have created some black-box test cases for our Android application. We are pe
 
 All test cases are presented in the form of a case header consisting of the case name, objective of the test, preconditions for the test, and the requirement we are satisfying. After the header we have made a procedure describing the steps that should be performed in the case and for each step we have a success criteria describing the expected outcome of the step.
 
+The preconditions specifies if you should be signed in. If not specified, then it does not matter if you are signed in or not. This indirectly fulfils the requirement \ref{req:Nologinrequired} No login required.
+
 \newcommand{\testcase}[4]
 {
 \subsubsection*{#1}
 \begin{center}
-\begin{tabular}{p{2.6cm} p{10cm}}
+\begin{tabular}{p{2.2cm} p{8.5cm}}
 \hline
 \textbf{Case name} & #1\\
 \textbf{Objective} & #2\\
@@ -22,7 +24,7 @@ All test cases are presented in the form of a case header consisting of the case
 {\newcommand{\step}{\arabic{counter}\stepcounter{counter}}
 \setcounter{counter}{1}
 \begin{center}
-\begin{tabular}{| c | p{5.4cm} | p{5.4cm} |}
+\begin{tabular}{| c | p{4.8cm} | p{4.8cm} |}
 \hline
 \textbf{Step} & \textbf{Procedure} & \textbf{Success Criteria}\\
 \hline}
@@ -49,7 +51,7 @@ All test cases are presented in the form of a case header consisting of the case
 {Recipe search}
 {Search and find recipe}
 {Connected to the Internet, application opened}
-{Recipe search}
+{\ref{req:recipesearch} Recipe search}
 
 \begin{testprocedure}
 \step & Open the navigation drawer and tab the Recipe search item & The recipe search page opens \\ 
@@ -67,7 +69,7 @@ All test cases are presented in the form of a case header consisting of the case
 {Ingredient search}
 {Search and find recipe}
 {Connected to the Internet, application opened}
-{Ingredient search}
+{\ref{req:ingredientsearch} Ingredient search}
 
 \begin{testprocedure}
 \step & Press the search field & A keyboard should appear \\
@@ -80,8 +82,8 @@ All test cases are presented in the form of a case header consisting of the case
 \testcase
 {Shopping list}
 {Add/remove items to/from the shopping list from the shopping list page}
-{}
-{Shopping list}
+{User signed in}
+{\ref{req:shoppinglist} Shopping list}
 
 \begin{testprocedure}
 \step & Open the navigation drawer and tab the Shopping list item & The Shopping list page opens \\ 
@@ -98,7 +100,7 @@ All test cases are presented in the form of a case header consisting of the case
 \testcase
 {Shopping list, recipe page}
 {Add/remove items to/from the shopping list from the recipe page}
-{Application is open}
+{Application is open, and user signed in}
 {}
 
 \begin{testprocedure}
@@ -118,8 +120,8 @@ All test cases are presented in the form of a case header consisting of the case
 \testcase
 {Shopping list sharing}
 {Share a shopping list}
-{Ingredients has been added to the shopping list}
-{Sharing}
+{Ingredients has been added to the shopping list, and user signed in}
+{\ref{req:sharing} Sharing}
 
 \begin{testprocedure}
 \step & Open navigation drawer and tab the Shopping list item & Shopping list page opens \\ 
@@ -136,8 +138,8 @@ All test cases are presented in the form of a case header consisting of the case
 \testcase
 {Recipe sharing}
 {Share a recipe}
-{A recipe has been selected}
-{Sharing}
+{A recipe has been selected, and user signed in}
+{\ref{req:sharing} Sharing}
 
 \begin{testprocedure}
 \step & Press the ``Share'' button & A list comes up asking what method you want to use \\
@@ -153,7 +155,7 @@ All test cases are presented in the form of a case header consisting of the case
 {Search filter}
 {Filter the recipe search}
 {Connected to the Internet, added an ingredient to the search filter}
-{Search filter}
+{\ref{req:searchfilters} Search filter}
 
 \begin{testprocedure}
 \step & Search for a recipe using text & A list of recipes is shown \\
@@ -172,8 +174,8 @@ All test cases are presented in the form of a case header consisting of the case
 \testcase
 {Favourites}
 {Add/remove favourite recipes}
-{Connected to the Internet}
-{Favourites recipes}
+{Connected to the Internet, and user signed in}
+{\ref{req:favourite} Favourites recipes}
 
 \begin{testprocedure}
 \step & Open navigation drawer and tap the Search item & The Search page opens\\
@@ -198,7 +200,7 @@ All test cases are presented in the form of a case header consisting of the case
 \testcase
 {No Internet}
 {Use application without Internet}
-{Not connected to the Internet, but already signed in with your user in the application}
+{Not connected to the Internet, and user signed in}
 {}
 
 \begin{testprocedure}
