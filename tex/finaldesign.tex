@@ -1,4 +1,4 @@
-This section explains and shows the final design of the application. The final design is a result of all the design analysis done in \chapref{chap:design}.\todo{Skal det stå der? Skal have en form for intro} 
+This section explains and shows the final design of the application. The final design is a result of all the design analysis done in \chapref{chap:design}. It should be noted that compared to the prototypes shown in \secref{sec:prototypes} the shopping list has not been implemented.
 
 \section{Final Application Design}
 The first time the user opens up the application they are prompted with a navigation drawer, as seen on \autoref{fig:navdrawer1}. The reason this is shown the first time the application is opened is to inform the user that it is available, as this is the tool they will be using to navigate between the different pages in the application. The navigation drawer is available from every page of the application. The navigation drawer is an overlay of the application content but not the action bar\citep{guidelines-navigationdrawer}.
@@ -54,7 +54,7 @@ The details of the search suggestions are explained later.
 \caption{Recipe layout\label{fig:recipe3}}
 \end{minipage}
 \end{figure}
-If the user presses the hardware back button \todo{Fix i application. Back skal kun gå tilbage} or presses the enter key without having typed in anything into the search field, a search is performed. \autoref{fig:recipelist} shows the list of recipes based on the ingredients entered in \autoref{fig:wordcloud}. The search field changes its text after a search, it shows some of the ingredients that the user has included in the search, the search field itself works like before. If the ingredient search exceeds the number of recipes that can be shown on the screen, they will automatically be downloaded as the user scrolls down. This also applies to the list of recipes in recipe search and in favourites.
+If the user presses the back button or presses the enter key without having typed in anything into the search field, a search is performed. \autoref{fig:recipelist} shows the list of recipes based on the ingredients entered in \autoref{fig:wordcloud}. The search field changes its text after a search, it shows some of the ingredients that the user has included in the search, the search field itself works like before. If the ingredient search exceeds the number of recipes that can be shown on the screen, they will automatically be downloaded as the user scrolls down. This also applies to the list of recipes in recipe search and in favourites.
 
 
 The yellow text on some of the recipes indicates what ingredients the user is missing in order to have all mandatory ingredients for the recipe.

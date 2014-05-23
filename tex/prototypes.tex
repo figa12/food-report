@@ -1,5 +1,5 @@
-\section{Prototypes}\todo{More discussion of concepts needed. Design decisions}
-This section shows the prototypes that we have made and touches lightly on the application's functionality. The section includes both early and late prototypes to show how the design has progressed and changed. \todo{Billede af start screen}
+\section{Prototypes}
+This section shows the prototypes that we have made and touches lightly on the application's functionality. The section includes both early and late prototypes to show how the design has progressed and changed. 
 
 \begin{figure}[H]
 \begin{minipage}[b]{0.5\columnwidth}
@@ -15,11 +15,13 @@ This section shows the prototypes that we have made and touches lightly on the a
 \end{minipage}
 \end{figure}
 
-The first thing the user is shown when opening the application is the navigation drawer, as seen on \autoref{fig:navdrawer}. This is a standard component in Android which is used to navigate between different pages\cite{guidelines-navigationdrawer}. We felt that it was a good way to make the views less cluttered, collecting all navigation options in an easy accessible component.
+The first thing the user is shown when opening the application is the navigation drawer, as seen on \autoref{fig:navdrawer}. This is a standard component in Android which is used to navigate between different pages\cite{guidelines-navigationdrawer}. We felt that it was a good way to make the views less cluttered, collecting all navigation options in an easy accessible component. An alternative to the navigation drawer could have been to use fixed tabs, however this is only used if there is a limited number of up to three top-level views which we do not have\cite{guidelines-appstructure}.
 
-The application allows the user to search for recipes both based on the title of the recipe and based on ingredients that the user inputs. Searching for recipes based on the title is simple and straight forward, the user inputs a partial or full title of the recipe they want and the application shows suggestions based on this. Searching based on ingredients is more complicated. The user might have to type in multiple ingredients and we want to make it easy for them to do so, therefore we have implemented two different ways of aiding the user in entering ingredients, either by text or by tiles.
+The application allows the user to search for recipes both based on the title of the recipe and based on ingredients that the user inputs. Searching for recipes based on the title is simple and straight forward, the user inputs a partial or full title of the recipe they want and the application shows suggestions based on this. 
 
-\autoref{fig:ingretext} shows the screen layout when entering ingredients with text. The user clicks the search field at the top of the page and a keyboard and a word cloud pops up. Now the user can either type in the ingredient they want by use of the keyboard, or if the word appears in the word cloud they can simply click it. The idea with the word cloud is that it comes up with suggestions based on the ingredients the user has already put in.
+Searching based on ingredients is more complicated. The user might have to type in multiple ingredients and we want to make it easy for them to do so, therefore we have implemented two different ways of aiding the user in entering ingredients, either by text or by tiles.
+
+\autoref{fig:ingretext} shows the screen layout when entering ingredients with text. The user clicks the search field at the top of the page and a keyboard and a word cloud pops up. Now the user can either type in the ingredient they want by use of the keyboard, or if the word appears in the word cloud they can simply click it. The idea with the word cloud is that it comes up with suggestions based on the ingredients the user has already put in, allowing the user to perform faster searches as they would not need to type so much but instead be able to click directly from the word cloud.
 
 \begin{figure}[H]
 \begin{minipage}[b]{0.5\columnwidth}
