@@ -3,7 +3,7 @@
 
 The server is implemented as a REST API using GET parameters, this means that whenever a request is made to the server it is of the following format: $$http://figz.dk/food/lib/ingredients.php?lang=us$$ In the given example the parameter sent is \textit{lang} with the value of \textit{"us"}.
 
-We have created a single file on the server that handles all database connections, this means that whenever a call is made to the server, the parameters are checked and then sent to an instance of the database class. This way we isolate all connection to the database making it easier to maintain and test. The server will then return a JSON formatted object which can easily be parsed on the mobile application. We have chosen JSON as a format since it is well supported, easy to generate, and unserialisable in both PHP and Android.
+We have created a single file on the server that handles all database connections, this means that whenever a call is made to the server, the parameters are checked and then sent to an instance of the database class. This way we isolate all connection to the database making it easier to maintain and test. The server will then return a \ac{json} formatted object which can easily be parsed on the mobile application. We have chosen \ac{json} as a format since it is well supported, easy to generate, and unserialisable in both PHP and Android.
 
 \begin{lstlisting}[language=phpstyle, caption=ingredients.php]
 require_once('DB.php');
@@ -47,7 +47,7 @@ public function getIngredients($lang) {
 \item[Line 10] The \inline{echoJson} method is called to print the result of the SQL query.
 \end{description}
 
-As seen in \autoref{lst:getIngredients} the method \inline{echoJson} is called. This method will encode the result into a JSON formatted object and then print it. An example of result from a request to the server could look like the following:
+As seen in \autoref{lst:getIngredients} the method \inline{echoJson} is called. This method will encode the result into a \ac{json} formatted object and then print it. An example of result from a request to the server could look like the following:
 
 \begin{lstlisting}[language=json, label=lst:jsonResult, caption=Example result from \colorbox{background}{getIngredients()}]
 [
@@ -70,7 +70,7 @@ As seen in \autoref{lst:getIngredients} the method \inline{echoJson} is called. 
 ]
 \end{lstlisting}
 
-In \autoref{lst:jsonResult} it is worth noticing that the result is an array of JSON objects where every row that was selected from the database is represented as an object. Since the database contains a lot of ingredients, this example is only a snippet of the total result. The different types of requests the server can take are:
+In \autoref{lst:jsonResult} it is worth noticing that the result is an array of \ac{json} objects where every row that was selected from the database is represented as an object. Since the database contains a lot of ingredients, this example is only a snippet of the total result. The different types of requests the server can take are:
 
 \begin{description}
 \item[favourites] This request takes two required parameters and four optional parameters. The two required parameters are: \textit{action} and \textit{hash}. The four optional parameters are: \textit{recipeid}, \textit{limit}, \textit{offset}, and \textit{lang}.\\

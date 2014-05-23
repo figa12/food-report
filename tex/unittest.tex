@@ -78,7 +78,7 @@ To demonstrate how we have performed the unit tests, the tests \inline{testSetRe
 \begin{description}
 \item[Lines 2] The test depends on \inline{testSetRecipe()}.
 \item[Line 4] \inline{testGetRecipe()} takes the id that was returned from \inline{testSetRecipe()} as a parameter.
-\item[Lines 5-6] The method to get a recipe is called from the \inline{DB} class, and the result is JSON decoded. This enables us to handle the result as a PHP object.
+\item[Lines 5-6] The method to get a recipe is called from the \inline{DB} class, and the result is \ac{json} decoded. This enables us to handle the result as a PHP object.
 \item[Line 7] The \inline{$url} variable is initialised to the value address of the file that handles creation of recipes. \textit{recipebackend.php} is used by the recipe creator tool.%$
 \item[Lines 9-19] Numerous assertions are made to ensure that the data in the fetched object is equal to the data we used when writing the recipe to the database.
 \end{description}

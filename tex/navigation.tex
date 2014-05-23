@@ -3,7 +3,7 @@ There are several different navigation structures that are recommended by Google
 On Google's developer page for Android it says \textit{``Use the navigation drawer if you have more than 3 unique top-level views.''}\cite{guidelines-navigationdrawer}, this supports our decision of implementing the navigation drawer in our application. The navigation drawer will also make the application easier to expand with more functionality, and we do not sacrifice vertical space as we would have done with a dedicated tab bar. Vertical space is very important for our application because it is used to display the details of a recipe, search results, and many other things.
 
 \subsection{Navigation drawer}
-The navigation drawer is a design that allows the user to navigate to any top level view from any context, which means that even if the user finds itself deep into the application, the user can always expand the navigation and reach the top level views. 
+The navigation drawer is a design that allows the user to navigate to any top level view from any context, which means that even if the user is on a lower level view, the user can just expand the navigation drawer to reach the top level views. 
 The navigation drawer has an option to change which side it should be expanded from, but it is typically expanded from the left side of the application.
 \begin{figure}[H]
 \centering
@@ -18,12 +18,12 @@ If the user is entering a lower level view, it will change the button's appearan
 Each item in the navigation drawer navigates to different top-level pages in the application or typical main actions like sign in/sign out.
 
 \subsection{Application navigation}
-In our application we plan to implement six top level views ingredient search, recipe search, favourites, shopping list, settings, and sign in/sign out. 
+In our application we expect to implement six top level views ingredient search, recipe search, favourites, shopping list, settings, and sign in/sign out. 
 Our application only has one lower level view which is the display of a recipe, it is a lower level view because it is only accessible through other views.
 Some views or actions in the application might require the user to be signed in, for them to be available. 
 Like the favourites view, which displays the recipes that the user has favourited.
-If the user is not signed in when entering the favourite view, they are met with a text asking them to sign in, this should always happen in the case the user tries to use user-functionalities. 
-In the bottom of the navigation drawer we plan to add an item with the action of signing in or signing out the user, it is located in the bottom of the navigation drawer to signalise its difference with the other items in the navigation drawer.
+If the user is not signed in when entering the favourite view, they are prompted with a text asking them to sign in, this should always happen in the case the user tries to use user-functionalities. 
+In the bottom of the navigation drawer we plan to add an item with the action of signing in, or signing out the user, it is located in the bottom of the navigation drawer to signalise its difference with the other items in the navigation drawer.
 \begin{figure}[H]
 \centering
 \includegraphics[width=1.0\linewidth]{img/navigation.pdf}
@@ -31,4 +31,4 @@ In the bottom of the navigation drawer we plan to add an item with the action of
 \label{fig:navigationViews}
 \end{figure}
 \autoref{fig:navigationViews} shows the views that are accessible in the application, and the navigation flow between the views. 
-It can be seen that to reach the recipe view you have to go through ingredient search, recipe search or favourites. It should be noted that it is always possible reach to top level views, no matter which context the user is in.
+It can be seen that to reach the recipe view you have to go through either ingredient search, recipe search or favourites. It should be noted that it is always possible reach to top level views, no matter the context the user is in.
