@@ -76,10 +76,10 @@ In \autoref{lst:jsonResult} it is worth noticing that the result is an array of 
 \item[favourites] This request takes two required parameters and four optional parameters. The two required parameters are: \textit{action} and \textit{hash}. The four optional parameters are: \textit{recipeid}, \textit{limit}, \textit{offset}, and \textit{lang}.\\
   \textit{action} must be set to one of four things: \textit{status}, \textit{add}, \textit{remove}, and \textit{get}. \textit{hash} must be set to the SHA-256 hashed value of the users email.\\\\
   Depending on the set value of \textit{action} the following will happen:\\\\
-  \textbf{status:} Requires \textit{recipeid} must be set. This request will return a boolean value indicating whether the user already has the given recipe favourited or not.\\\\
-  \textbf{add:} Requires \textit{recipeid} must be set. This request will set the given recipe as a favourite of the user.\\\\
-  \textbf{remove:} Requires \textit{recipeid} must be set. This request will remove the given recipe from user's favourites.\\\\
-  \textbf{get:} Requires \textit{limit}, and \textit{offset} must be set. This request will return a list of all the user's favourited recipes\\\\
+  \textbf{status:} Requires \textit{recipeid} to be set. This request will return a boolean value indicating whether the user already has the given recipe favourited or not.\\\\
+  \textbf{add:} Requires \textit{recipeid} to be set. This request will set the given recipe as a favourite of the user.\\\\
+  \textbf{remove:} Requires \textit{recipeid} to be set. This request will remove the given recipe from user's favourites.\\\\
+  \textbf{get:} Requires \textit{limit}, and \textit{offset} to be set. This request will return a list of all the user's favourited recipes\\\\
 \item[ingredientsearch] This request takes one required parameter and three optional parameters. The required parameter is \textit{i} and it must be set to an array of ingredient ids. The optional parameters are: \textit{lang}, \textit{limit}, and \textit{offset}. The request will return an array of partial recipes. A partial recipe consists of the recipe id, name, and image name.
 \item[ingredients] This request takes one optional parameter: \textit{lang}. If \textit{lang} is not set it will default to ``us''. The request will return an array of all ingredients in the system in the given language.
 \item[recipe] This request takes one required parameter and two optional parameters. The required parameter is \textit{id} which must be set to a recipe id. The optional parameters are \textit{lang} and \textit{metric}. This request will return an object containing all information about the given recipe.
