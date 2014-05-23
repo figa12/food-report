@@ -1,12 +1,12 @@
 %authentication
 \section{Authentication}
 We have chosen to implement a social media sign in option because it would not require us to handle the user's passwords and other personal information. With a social media sign in implemented in our application as a way of identifying the user, we move the security measures to the specific social media.
-There are many different social media sign in options such as Google+, Facebook, Twitter etc. We chose Google+ to be the first social media sign in to implement. Other sign in options could later be implemented to the application.
+There are many different social media sign in options such as Google+, Facebook, Twitter etc. We chose Google+ to be the first social media sign in to implement. Other sign in options could later be implemented in the application.
 
 \subsection{Google+}
 It makes sense to use Google+ sign in since it is recommended by Google to have a Google account when using an Android device, because the user would limit their experience with an Android device, if they do not have a Google account. 
 The authentication of Google+ uses Auth 2.0 and it is an easy implementation of a secure sign in for Android users, since it is natively supported by Android. 
-It can seamlessly authenticate an user without the user has to enter a password or even account name. 
+It can seamlessly authenticate a user without the user has to enter a password or even account name. 
 Once granted access the application is able to gain access to the user's Google+ information through their Google+ account.\cite{googleplusvideo}
 
 In our implementation of the Google+ sign in we use an object called \\\inline{GoogleApiClient}\citep{googleapiclient-docs}, which is provided by the Google Play services application. 
@@ -29,7 +29,7 @@ When the user is signed in to our application we can get information of the user
 In our application we only use the user's Google email(account name) and the user's real name(for comments on recipes). 
 When we receives the user's email we hash it using a hashing technique called "SHA-256", we do it because we have no use of the email other than its uniqueness, and it makes no sense storing the user's email in plain text both in the application and database. 
 So we hash it and every time the user makes an action that requires the user to be signed in, we send the hashed email to the server together with the action. 
-It might seem redundant to send the hashed email every time and not just an user ID, but the mobile device is not required to have an Internet connection\todo{Internet or connection to the server?} to be able to sign in using Google+. 
+It might seem redundant to send the hashed email every time and not just a user ID, but the mobile device is not required to have an Internet connection\todo{Internet or connection to the server?} to be able to sign in using Google+. 
 The sign in can be achieved locally on the mobile device, and we have kept the functionality of signing in without an Internet connection by doing as explained earlier.
 
 
