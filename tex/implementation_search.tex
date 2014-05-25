@@ -119,7 +119,7 @@ GROUP BY recipe_id, exchange_ingredient_id
 \end{lstlisting}
 \begin{description}
 \item[Lines 4-6] The result of the \inline{$quantityQuery} is joined with the \inline{exchangeable_ingredients} table.
-\item[Line 7] All rows containing ignored ingredients are discarded.
+\item[Line 7] All rows containing ignored ingredients are discarded. Ignored ingredients are ingredient that we assume people have i.e. water, salt, pepper.
 \item[Line 8] The result is then grouped by \inline{recipe_id} and \inline{exchange_ingredient_id}.
 \item[Lines 1-3] The IDs of the pairs of recipes and exchangeables are returned together with the sum of the \inline{mandatory} column in \inline{exchangeable_ingredients}. Since the \inline{mandatory} column consists of boolean values we will get the number of matching non-ignored ingredients of this exchangeable when the exchangeable is mandatory. Likewise, we get the number of matching non-ignored ingredients of this exchangeable when the exchangeable is optional.
 \end{description}
@@ -203,13 +203,9 @@ ORDER BY mandatory_matching DESC , mandatory_lacking ASC ,
 
 
 
-
-
-
-
-\todo{overgang}
-\subsection*{getNotCoveredQuery()}
-\begin{lstlisting}[language=SQL, morekeywords={FIND_IN_SET}, float=h, label={}, caption={Query to find the exchangeables that are not covered.}]
+\subsection*{Get needed ingredients}
+We now have all the recipes returned by the search query but we also want to provide the user with a list of ingredients they also need in order to follow the recipes, i.e. the ingredients in the exchangeables that are not covered by the ingredients specified by the user. Those ingredients are found by first finding the exchangeables that are not covered using the query defined in \autoref{lst:getNotCovered}.
+\begin{lstlisting}[language=SQL, morekeywords={FIND_IN_SET}, float=h, label={lst:getNotCovered}, caption={Query to find the exchangeables that are not covered.}]
 SELECT id
 FROM exchangeable_ingredients
 WHERE exchangeable_ingredients.recipe_id = {$recipeId}
@@ -218,32 +214,32 @@ AND NOT EXISTS (
     SELECT * 
     FROM quantity
     WHERE exchangeable_ingredients.id = quantity.exchange_ingredient_id
-    AND FIND_IN_SET(ingredient_id, {$ingredients})
+    AND (
+    	FIND_IN_SET(ingredient_id, {$ingredients})
+    	OR FIND_IN_SET(ingredient_id, '{$ignoredIngredients}' )
+    )
 )
 \end{lstlisting}
 \begin{description}
 \item[Line 2-3] The exchangeables which are a part of a specified recipe are retrieved.
 \item[Line 4] Optional exchangeables are discarded.
-\item[Lines 5-10] Discard exchangeables which are covered by the ingredients specified by the user.
+\item[Lines 5-13] Discard exchangeables which are covered by the ingredients specified by the user.
 	\begin{description}
 	\item[Lines 7-8] Retrieve quantities which are a part of a given exchangeable.
-	\item[Line 9] Discard quantities which does not contain one of the ingredients specified by the user.
+	\item[Line 9-12] Discard quantities which does not contain one of the ingredients specified by the user or an ignored ingredient.
 	\item[Line 6] If the query returns any rows it means that the exchangeable is covered by any f the ingredients specified by the user.
 	\end{description}
 \item[Line 1] The IDs of the resulting exchangeables are returned. These exchangeables are not covered by any user specified ingredients.
 \end{description}
 
 
-
-\subsection*{getIngredientsQuery()}
-\begin{lstlisting}[language=SQL, morekeywords={FIND_IN_SET}, float=h, label={}, caption={Query to get the ingredient of an exchangeable, excluding ignored ingredients.}]
+We now have the exchangeables for each recipe that are not covered by an ingredient specified by the user or an ignored ingredient. We then simply find the ingredients that are a part of those exchangeables using the query in \autoref{lst:getIngredientsQ}.
+\begin{lstlisting}[language=SQL, morekeywords={FIND_IN_SET}, float=h, label={lst:getIngredientsQ}, caption={Query to get the ingredient of an exchangeable, excluding ignored ingredients.}]
 SELECT DISTINCT ingredient_id
 FROM quantity
 WHERE exchange_ingredient_id = ?
-AND NOT FIND_IN_SET(ingredient_id, '{$ignoredIngredients}' )
 \end{lstlisting}
 \begin{description}
 \item[Lines 2-3] The quantities which are a part of a specified exchangeable are retrieved.
-\item[Line 4] Discard quantities which contain an ignored ingredient.
 \item[Line 1] The ingredient IDs of the resulting quantities are returned.
 \end{description}
