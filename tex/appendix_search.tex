@@ -1,4 +1,11 @@
 \chapter{Search by Ingredients Algorithm}\label{app:search}
+\begin{itemize}[leftmargin=*]
+\item The function \inline{getIngredientSearchQuery()} returns a prepared statement which consists of the queries in \autoref{lst:quantity}, \autoref{lst:ingredient}, \autoref{lst:matching}, \autoref{lst:lacking}, and \autoref{lst:sorting}.
+
+\item The function \inline{getNotCoveredQuery()} returns a prepared statement of the query in \autoref{lst:getNotCovered}.
+
+\item The function \inline{getIngredientsQuery()} returns a prepared statement of the query in \autoref{lst:getIngredientsQ}.
+\end{itemize}
 
 \begin{lstlisting}[language=phpstyle, caption={Search by ingredients}]
 public function ingredientSearch($ingredients, $limit, $offset, $lang) {
