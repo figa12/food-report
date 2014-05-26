@@ -14,14 +14,14 @@ WHERE MATCH (name.{$lang}, description.{$lang})
 ORDER BY title_score DESC, desc_score DESC
 LIMIT {$limit} OFFSET {$offset}
 \end{lstlisting}
-\textbf{It should be noted that variables are only inserted directly in the SQL queries for clarification.} Inserting user specified variables directly in an SQL query will make the query vulnerable to SQL injections. In the actual implementation, the SQL queries are protected using PHP's \textit{prepared statements}. In prepared statements, the query and variables are separated to make make sure that the values of the variables are not executed on the \ac{rdbms}. Prepared statements can also be used to execute a query repeatedly with different values, without sending the entire query to the \ac{rdbms} every time.
+\textbf{It should be noted that variables are only inserted directly in the SQL queries for clarification.} Inserting user specified variables directly in an SQL query will make the query vulnerable to SQL injections. In the actual implementation, the SQL queries are protected using PHP's \textit{prepared statements}. In prepared statements, the query and variables are separated to make sure that the values of the variables are not executed on the \ac{rdbms}. Prepared statements can also be used to execute a query repeatedly with different values, without sending the entire query to the \ac{rdbms} every time.
 
 Since SQL is a declarative language, each individual SQL query's clauses will not be explained sequentially but in an order that is easier to understand.
 \begin{description}
 \item[Lines 4-6] The \inline{recipe} table is joined with the \inline{string} table two times to get both the title and description of each recipe.
 \item[Lines 7-8] Keep only recipes which have a match in \inline{BOOLEAN MODE}. Note the asterisk, `*', which is appended to the user defined search text. This allow the user to enter e.g. ``choco'' and get a match on e.g. ``Chocolate cake''. We would like to add a prefixed asterisk as well to allow users to search for e.g. ``berry'' and get results like ``Strawberry Pie''. Unfortunately it is not possible due to limitations in MariaDB.\cite{mariafulltext}
-\item[Lines 2-3] The scores for when the user defined text is matched to the recipes' titles and descriptions are calculated using the default full text search mode: \inline{NATURAL LANGUAGE MODE}. These values are stored in respectively \inline{title_score} and \inline{desc_score}. \todo{so bad}
-\item[Line 9] The result is ordered using the calculated scores with \inline{title_score} having a higher precedence than \inline{desc_score}.
+\item[Lines 2-3] When you use full text search in the default mode, \inline{NATURAL LANGUAGE MODE}, it calculates a score which reflect the relevance of the match. A high relevance could indicate that the matched query represent a big part of the text. The scores for when the user defined text is matched to the recipes' titles and descriptions are calculated using \inline{NATURAL LANGUAGE MODE}. These values are stored in respectively \inline{title_score} and \inline{desc_score}.
+\item[Line 9] The result is ordered by the calculated scores with \inline{title_score} having a higher precedence than \inline{desc_score}.
 \item[Line 10] The result is limited and offset according to the applications needs i.e. how far the user has scrolled through the result.
 \item[Line 1] The ID, name, image, and scores of the recipes are returned from the query and then later sent to the application.
 \end{description}
@@ -57,7 +57,7 @@ FROM quantity
 WHERE FIND_IN_SET(ingredient_id, '{$commaSeparatedIngredients}')
 \end{lstlisting}
 \begin{description}
-\item[Lines 2-3] Get the quantities which are made of one of the ingredients defined by the user\todo{Kan vi finde en bedre beskrivelse}. \inline{FIND_IN_SET} allow us to check a comma separated string instead of a tuple required by the \inline{IN} operator. It would not be possible to provide a tuple to the \inline{IN} operator because PHP's prepared statements does not have support for a variable number of arguments.
+\item[Lines 2-3] The quantities that consist of one of the ingredients defined by the user are retrieved. \inline{FIND_IN_SET} allow us to check a comma separated string instead of a tuple which is required by the \inline{IN} operator. It would not be possible to provide a tuple to the \inline{IN} operator because PHP's prepared statements does not have support for a variable number of arguments.
 \item[Line 1] The IDs of the found pairs of exchangeables and ingredients are returned.
 \end{description}
 
@@ -144,7 +144,7 @@ ORDER BY mandatory_matching DESC, mandatory_lacking ASC,
 \begin{description}
 \item[Lines 2-3] The result of \inline{$matchingQuery} is joined with the result of \inline{$lackingQuery}. A \inline{LEFT JOIN} is used since \inline{$lackingQuery} will not return rows of recipes that are completely covered by the ingredients specified by the user and ignored ingredients.
 \item[Lines 4-5] The rows are then joined with the \inline{recipe} table and the \inline{string} table. 
-\item[Lines 6-7] The result is ordered as defined in \secref{sec:design_search}. In descending order of precedence: most mandatory ingredients matching, least mandatory exchangeables lacking, most optional ingredients matching, least optional exchangeables lacking. It should be noted that the \inline{LEFT JOIN} in Line 3 will return \inline{NULL} values for any recipe that is fully covered. In our case, the \inline{NULL} values represent zeros since they occur when a recipe have zero exchangeables that are not covered. We do not need any extra clauses to handle those \inline{NULL} values since \inline{NULL} values always have the highest precedence when sorted.
+\item[Lines 6-7] The result is ordered as defined in \secref{sec:design_search}. In descending order of precedence: most mandatory ingredients matching, least mandatory exchangeables lacking, most optional ingredients matching, least optional exchangeables lacking. It should be noted that the \inline{LEFT JOIN} in Line 3 will insert \inline{NULL} values in any recipe that is fully covered. In our case, the \inline{NULL} values represent zeros since they occur when a recipe have zero exchangeables that are not covered. We do not need any extra clauses to handle those \inline{NULL} values since \inline{NULL} values always have the highest precedence when sorted.
 \item[Line 1] The ID, name, and image of the recipes are returned from the query and then later send to the application.
 \end{description}
 
