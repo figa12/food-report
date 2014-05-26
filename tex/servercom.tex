@@ -67,7 +67,7 @@ public abstract class ServerComTask<T> extends AsyncTask<String, Integer, T> {
 
 \begin{description}
 \item[Lines 7-14] The constructor for \inline{ServerComTask}. It must have a \inline{ServerAlertDialog} to display errors, and it must have an \inline{OnResponseListener} to send the result to.
-\item[Line 13] The call to \inline{execute()} starts the overriden abstract method \inline{doInBackground()} on a new thread. We chose to execute the task when the class is instantiated, since the task can only be executed once per instance of the task, so it is required that the path to download from is specified in the constructor.
+\item[Line 13] The call to \inline{execute()} starts the overridden abstract method \inline{doInBackground()} on a new thread. We chose to execute the task when the class is instantiated, since the task can only be executed once per instance of the task, so it is required that the path to download from is specified in the constructor.
 \item[Lines 16-24] \inline{doinBackground()} must return the generic type. The result is then passed to the method \inline{onPostExecute()} which runs on the \ac{ui} thread.
 \item[Line 19] First we download the data from the server. The download is an \textit{http get} request, so any parameters to the call is specified in the path. The \inline{download()} method is not shown.
 \item[Line 20] The the response \ac{json} is parsed to the generic type and returned to the \ac{ui} thread.
