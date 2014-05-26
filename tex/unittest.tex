@@ -3,9 +3,9 @@ The server layer consists of a class that handles all connection to the database
 
 To avoid corrupting the data that is running on production we have made a script that makes an exact copy of the database to perform all of the testing on. An example of how the testing could corrupt the database is when the test is run a recipe will be created to ensure that this functionality works. If this recipe, for any reason, could not get deleted again it would be possible for the users to see this recipe. The copying of the database could prove to be a bottleneck if the application were to get very big, but in current state it only takes a few seconds.
 
-The unit tests are run using ``PHPUnit'' version 3.6.10 by Sebastian Bergmann\cite{phpunit}, furthermore mutation tests are run using ``judgedim/mutagenesis''\cite{mutagenesis}. The basic approach of using PHPUnit is to create a new file that includes the functions which should be tested, the new file must have a new class that extends\linebreak \inline{PHPUnit_Framework_TestCase}. All public methods, in this new class, which are named with a prefix of \inline{test} will be included in the test. Inside each of these methods all kinds of assertions can be made, an example could be \inline{$this->assertNotNull($var)}.
+The unit tests are run using ``PHPUnit'' version 3.6.10 by Sebastian\linebreak Bergmann\cite{phpunit}, furthermore mutation tests are run using ``judgedim/mutagenesis'' \cite{mutagenesis}. The basic approach of using PHPUnit is to create a new file that includes the functions which should be tested, the new file must have a new class that extends\linebreak \inline{PHPUnit_Framework_TestCase}. All public methods, in this new class, which are named with a prefix of \inline{test} will be included in the test. Inside each of these methods all kinds of assertions can be made, an example could be \inline{$this->assertNotNull($var)}.
 
-To demonstrate how we have performed the unit tests, the tests \inline{testSetRecipe()} and \inline{testGetRecipe()} have been included. These tests ensure that when a new recipe is written to the database, the exact same recipe can be retrieved again with no missing data.
+To demonstrate how we have performed the unit tests, the tests \linebreak\inline{testSetRecipe()} and \inline{testGetRecipe()} have been included. These tests ensure that when a new recipe is written to the database, the exact same recipe can be retrieved again with no missing data.
 
 \begin{lstlisting}[language=phpstyle]
 /**
@@ -49,7 +49,7 @@ public function testSetRecipe($unit, $ingredient) {
 \item[Line 23] The request is send to the server with the given POST variables and the result is stored in \inline{$result}.%$
 \item[Line 24] It is checked that the result is not null. If the result was null it would mean that something went wrong while inserting the data.
 \item[Lines 26-27] The id of the newly inserted recipe must be greater than 0.
-\item[Line 29] Return the id of the insert recipe. This id is used by the \inline{testGetRecipe()} method to check that we can extract the recipe correctly again.
+\item[Line 29] Return the id of the insert recipe. This id is used by the \linebreak\inline{testGetRecipe()} method to check that we can extract the recipe correctly again.
 \end{description}
 
 \begin{lstlisting}[language=phpstyle]
