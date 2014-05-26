@@ -34,7 +34,7 @@ The application also allows the user to search for recipes by entering a number 
 The source code for the search algorithm, excluding SQL queries, is available in \appref{app:search}. The general structure of the algorithm is as follows:
 \begin{enumerate}
 \item The input parameters are validated.
-\item A search query is sent to the DBMS together with the input parameters. The result is an ordered list of recipes.
+\item A search query is sent to the \ac{rdbms} together with the input parameters. The result is an ordered list of recipes.
 \item For each recipe we find the exchangeables that are not \textit{covered} by the user specified ingredients. Exchangeables allow us to specify which ingredients in a recipe can be replaced by other ingredients. An example could be a recipe where either minced beef or minced pork could be used. If the user has specified either one in the search query we consider the exchangeable to be \textit{covered} i.e. the user does not need to buy minced pork if he searched for ``minced beef''.
 \item Using the list of exchangeables that are not covered, we for each recipe create a list containing the ingredients they also need in order to follow the recipe. This list excludes the ingredients the user specified for the search.
 \item The result is returned to the user.
