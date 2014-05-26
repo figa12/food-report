@@ -1,11 +1,3 @@
-\section{Search}
-\todo{intro}\todo{dette stykke skal nok stå et andet sted}
-\textbf{It should be noted that variables are only inserted directly in the SQL queries for clarification.} Inserting user specified variables directly in an SQL query will make the query vulnerable to SQL injections. In the actual implementation, the SQL queries are protected using PHP's \textit{prepared statements}. In prepared statements, the query and variables are separated to make make sure that the values of the variables are not executed on the \ac{rdbms}. Prepared statements can also be used to execute a query repeatedly with different values, without sending the entire query to the \ac{rdbms} every time.
-
-Since SQL is a declarative language, each individual SQL query's clauses will not be explained sequentially but in an order that is easier to understand.
-
-
-
 \section{Free-text search}
 Free-text search can be used to search for parts of the recipe name or words in the recipe description. As defined in \secref{sec:design_database}, we use MariaDB as our \ac{rdbms}. MariaDB has support for full-text search which makes it simple to implement free-text search. MariaDB also has support for a special full-text search called ``Boolean search''.\cite{mariafulltext} In ``Boolean search'', the user is able to use special operators like  +, -, "", and *  for marking words as mandatory, discarding rows containing specific word, matching phrases, and inserting wildcards, among other things. Unlike the default search mode, ``Natural Language'', which returns a score for each row, the ``Boolean search'' is that this query only outputs ``true'' or ``false'', to indicate whether a match was found. We want to be able to order the result based on how well the text in the recipes match the query. In particular, a match in a title of a recipe should have higher precedence in the result than a match in a description of a recipe.
 \autoref{lst:freetext} shows the SQL query we use for free-text search.
@@ -22,19 +14,22 @@ WHERE MATCH (name.{$lang}, description.{$lang})
 ORDER BY title_score DESC, desc_score DESC
 LIMIT {$limit} OFFSET {$offset}
 \end{lstlisting}
+\textbf{It should be noted that variables are only inserted directly in the SQL queries for clarification.} Inserting user specified variables directly in an SQL query will make the query vulnerable to SQL injections. In the actual implementation, the SQL queries are protected using PHP's \textit{prepared statements}. In prepared statements, the query and variables are separated to make make sure that the values of the variables are not executed on the \ac{rdbms}. Prepared statements can also be used to execute a query repeatedly with different values, without sending the entire query to the \ac{rdbms} every time.
+
+Since SQL is a declarative language, each individual SQL query's clauses will not be explained sequentially but in an order that is easier to understand.
 \begin{description}
 \item[Lines 4-6] The \inline{recipe} table is joined with the \inline{string} table two times to get both the title and description of each recipe.
 \item[Lines 7-8] Keep only recipes which have a match in \inline{BOOLEAN MODE}. Note the asterisk, `*', which is appended to the user defined search text. This allow the user to enter e.g. ``choco'' and get a match on e.g. ``Chocolate cake''. We would like to add a prefixed asterisk as well to allow users to search for e.g. ``berry'' and get results like ``Strawberry Pie''. Unfortunately it is not possible due to limitations in MariaDB.\cite{mariafulltext}
 \item[Lines 2-3] The scores for when the user defined text is matched to the recipes' titles and descriptions are calculated using the default full text search mode: \inline{NATURAL LANGUAGE MODE}. These values are stored in respectively \inline{title_score} and \inline{desc_score}. \todo{so bad}
 \item[Line 9] The result is ordered using the calculated scores with \inline{title_score} having a higher precedence than \inline{desc_score}.
 \item[Line 10] The result is limited and offset according to the applications needs i.e. how far the user has scrolled through the result.
-\item[Line 1] The ID, name, image, and scores of the recipes are returned from the query and then later send to the application.
+\item[Line 1] The ID, name, image, and scores of the recipes are returned from the query and then later sent to the application.
 \end{description}
 
 
 
 \section{Search by ingredients}
-The application also allows the user to search for recipes by entering a number of ingredients. The search algorithm should then find recipes which contain one or more of the ingredients specified by the user. The search algorithm should then order the results according to the precedence function described in \secref{sec:design_search}.
+The application also allows the user to search for recipes by entering a number of ingredients. The search algorithm should then find recipes which contain one or more of the ingredients specified by the user. The search algorithm should also order the results according to the precedence function described in \secref{sec:design_search}.
 
 The source code for the search algorithm, excluding SQL queries, is available in \appref{app:search}. The general structure of the algorithm is as follows:
 \begin{enumerate}
@@ -45,7 +40,7 @@ The source code for the search algorithm, excluding SQL queries, is available in
 \item The result is returned to the user.
 \end{enumerate}
 
-The search query mentioned above clearly does most of the work in the search algorithm by returning an ordered list of recipes related to the ingredients specified by the user. The query itself has the following structure:
+The search query mentioned in step 2 clearly does most of the work in the search algorithm by returning an ordered list of recipes related to the ingredients specified by the user. The query itself has the following structure:
 \begin{enumerate}
 \item Calculate how many of the user specified ingredients exists in each recipe.
 \item Calculate how many not covered exchangeables exists in each recipe.
@@ -105,7 +100,7 @@ LIMIT {$limit} OFFSET {$offset}
 
 
 
-\subsection*{\$exchangeQuery}
+\subsection*{\$exchangeQuery}\todo{herfra til og med \$lackingQuery skal skrives om til den nye query :(}
 \autoref{lst:exchange} shows the SQL query \inline{$exchangeQuery}, that returns for each recipe, the number of times the individual exchangeable contains an ingredient that match a user specified ingredient. The query returns both the number of times a mandatory exchangeable has a match as well as the number of times an optional exchangeable has a match. An exchangeable can obviously not have both mandatory and optional matches at the same time since it is the exchangeable that defines whether its containing ingredients are mandatory or not.
 \begin{lstlisting}[language=SQL, float=h, label={lst:exchange}, caption={\$exchangeQuery, returns the number of times the individual exchangeable appear in each recipe.}]
 SELECT recipe_id, exchange_ingredient_id,
@@ -204,7 +199,7 @@ ORDER BY mandatory_matching DESC , mandatory_lacking ASC ,
 
 
 \subsection*{Get needed ingredients}
-We now have all the recipes returned by the search query but we also want to provide the user with a list of ingredients they also need in order to follow the recipes, i.e. the ingredients in the exchangeables that are not covered by the ingredients specified by the user. Those ingredients are found by first finding the exchangeables that are not covered using the query defined in \autoref{lst:getNotCovered}.
+We now have all the recipes returned by the search query but we also want to provide the user with a list of ingredients they also need in order to follow the recipes, i.e. the ingredients in the exchangeables that are not covered by the ingredients specified by the user. To find those ingredients we find the exchangeables that are not covered using the query defined in \autoref{lst:getNotCovered}.
 \begin{lstlisting}[language=SQL, morekeywords={FIND_IN_SET}, float=h, label={lst:getNotCovered}, caption={Query to find the exchangeables that are not covered.}]
 SELECT id
 FROM exchangeable_ingredients
@@ -216,7 +211,7 @@ AND NOT EXISTS (
     WHERE exchangeable_ingredients.id = quantity.exchange_ingredient_id
     AND (
     	FIND_IN_SET(ingredient_id, {$ingredients})
-    	OR FIND_IN_SET(ingredient_id, '{$ignoredIngredients}' )
+    	OR FIND_IN_SET(ingredient_id, '{$ignoredIngredients}')
     )
 )
 \end{lstlisting}
