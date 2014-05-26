@@ -100,78 +100,32 @@ LIMIT {$limit} OFFSET {$offset}
 
 
 
-\subsection*{\$exchangeQuery}\todo{herfra til og med \$lackingQuery skal skrives om til den nye query :(}
-\autoref{lst:exchange} shows the SQL query \inline{$exchangeQuery}, that returns for each recipe, the number of times the individual exchangeable contains an ingredient that match a user specified ingredient. The query returns both the number of times a mandatory exchangeable has a match as well as the number of times an optional exchangeable has a match. An exchangeable can obviously not have both mandatory and optional matches at the same time since it is the exchangeable that defines whether its containing ingredients are mandatory or not.
-\begin{lstlisting}[language=SQL, float=h, label={lst:exchange}, caption={\$exchangeQuery, returns the number of times the individual exchangeable appear in each recipe.}]
-SELECT recipe_id, exchange_ingredient_id,
-  SUM(mandatory) AS mandatory_cover,
-  SUM(NOT mandatory) AS optional_cover
-FROM ( {$quantityQuery} ) AS temp
-JOIN exchangeable_ingredients
-  ON temp.exchange_ingredient_id = exchangeable_ingredients.id
-WHERE temp.ingredient_id NOT IN ( {$ignoredIngredients} )
-GROUP BY recipe_id, exchange_ingredient_id
-\end{lstlisting}
-\begin{description}
-\item[Lines 4-6] The result of the \inline{$quantityQuery} is joined with the \inline{exchangeable_ingredients} table.
-\item[Line 7] All rows containing ignored ingredients are discarded. Ignored ingredients are ingredient that we assume people have i.e. water, salt, pepper.
-\item[Line 8] The result is then grouped by \inline{recipe_id} and \inline{exchange_ingredient_id}.
-\item[Lines 1-3] The IDs of the pairs of recipes and exchangeables are returned together with the sum of the \inline{mandatory} column in \inline{exchangeable_ingredients}. Since the \inline{mandatory} column consists of boolean values we will get the number of matching non-ignored ingredients of this exchangeable when the exchangeable is mandatory. Likewise, we get the number of matching non-ignored ingredients of this exchangeable when the exchangeable is optional.
-\end{description}
-
-
-
-\subsection*{\$coverQuery}
-\autoref{lst:cover} shows the SQL query \inline{$coverQuery}, that returns for each recipe, the number of exchangeables that are covered by matching ingredients. An exchangeable is covered when at least one ingredient in the exchangeable match one of the ingredients specified by the user. The query returns both the number of covered mandatory exchangeables and optional exchangeables.
-\begin{lstlisting}[language=SQL, morekeywords={NULLIF,OFFSET}, float=h, label={lst:cover}, caption={\$coverQuery, returns the exchangeable cover counts.}]
-SELECT recipe_id,
-  COUNT(NULLIF(mandatory_cover,0)) AS mandatory_cover,
-  COUNT(NULLIF(optional_cover,0)) AS optional_cover
-FROM ( {$exchangeQuery} ) AS temp
-GROUP BY recipe_id
-LIMIT {$limit} OFFSET {$offset}
-\end{lstlisting}
-\begin{description}
-\item[Lines 4-5] The result of \inline{$exchangeQuery} is grouped by the \inline{recipe_id}.
-\item[Line 6] The result is limited and offset according to the applications needs i.e. how far the user has scrolled through the result.
-\item[Lines 1-3] The ID of each recipe, and the number of covered mandatory and optional exchangeables are returned. To calculate this, we first replace the cover count with \inline{NULL} if the count is 0. Since \inline{NULL} values are ignored by the \inline{COUNT} function, we will get the number of uniquely covered exchangeables.
-\end{description}
-
-
-
-\subsection*{\$countQuery}
-\autoref{lst:count} shows the SQL query \inline{$countQuery}, that returns the total number of mandatory and optional exchangeables for each recipe.
-\begin{lstlisting}[language=SQL, float=h, label={lst:count}, caption={\$countQuery, returns the total number of mandatory and optional exchangeables for each recipe.}]
-SELECT recipe_id, SUM(mandatory) AS mandatory_count,
-  SUM(NOT mandatory) AS optional_count
-FROM exchangeable_ingredients
-JOIN quantity
-  ON quantity.exchange_ingredient_id = exchangeable_ingredients.id
-WHERE quantity.ingredient_id NOT IN ( {$ignoredIngredients} )
-GROUP BY recipe_id
-\end{lstlisting}
-\begin{description}
-\item[Lines 3-5] The \inline{quantity} table is joined with the \inline{exchangeable} table.
-\item[Line 6] The rows which consists of an ignored ingredient are discarded.
-\item[Line 7] The result is grouped by \inline{recipe_id}.
-\item[Lines 1-2] The ID of each recipe is returned together with the number of mandatory and optional exchangeables for that recipe.
-\end{description}
-
-
-
 \subsection*{\$lackingQuery}
-\autoref{lst:lacking} shows the SQL query \inline{$lackingQuery}, that returns the number of lacking ingredients for each recipe.
+\autoref{lst:lacking} shows the SQL query \inline{$lackingQuery}, that returns the number of lacking ingredients for each recipe.Retrieve all exchangeables that are not covered by an ingredient specified by the user or an ignored ingredient.
 \begin{lstlisting}[language=SQL, morekeywords={IFNULL}, float=h, label={lst:lacking}, caption={\$lackingQuery, returns the number of lacking ingredients for each recipe.}]
-SELECT temp2.recipe_id,
-  (mandatory_count-IFNULL(mandatory_cover,0)) AS mandatory_lacking,
-  (optional_count-IFNULL(optional_cover,0)) AS optional_lacking
-FROM ( {$coverQuery} ) AS temp1
-RIGHT JOIN ( {$countQuery} ) AS temp2
-  ON temp1.recipe_id = temp2.recipe_id
+SELECT recipe_id,
+  SUM(mandatory) AS mandatory_lacking,
+  SUM(NOT mandatory) AS optional_lacking
+FROM exchangeable_ingredients
+WHERE NOT EXISTS (
+    SELECT * 
+    FROM quantity
+    WHERE quantity.exchange_ingredient_id = exchangeable_ingredients.id
+    AND (
+        FIND_IN_SET(ingredient_id, '{$commaSeparatedIngredients}')
+        OR ingredient_id IN ( {$ignoredIngredients} )
+    )
+)
+GROUP BY recipe_id
 \end{lstlisting}
 \begin{description}
-\item[Lines 4-6] The result of \inline{$coverQuery} is joined with the result of \inline{$countQuery}. We use \inline{RIGHT JOIN} to ensure we do not discard recipes where a match exists. \todo{Vi kan måske undgå det hvis vi bruger left join i sortingQuery}
-\item[Lines 1-3] The ID of each recipe, and the number of lacking mandatory and optional exchangeables are returned. To calculate this, we first replace the cover count with 0 if the count is \inline{NULL} due to the \inline{RIGHT JOIN} in \inline{$lackingQuery}. We then substract the mandatory cover count from the total number of mandatory exchangeables to get the number of lacking exchangeables. We do the same to get the number of lacking optional exchangeables.
+\item[Lines 4-13] Retrieve all exchangeables that are not covered by an ingredient specified by the user or an ignored ingredient.
+	\begin{description}
+	\item[Lines 7-8] Retrieve quantities which are a part of a given exchangeable.
+	\item[Lines 9-12] Discard the exchangeable if any of its consisting quantities contain one of the ingredients specified by the user or an ignored ingredient.
+	\end{description}
+\item[Line 14] The resulting exchangeables are grouped by the recipes they are a part of.
+\item[Lines 1-3] The ID of each recipe, and the number of lacking mandatory and optional exchangeables are returned.
 \end{description}
 
 
@@ -181,16 +135,16 @@ RIGHT JOIN ( {$countQuery} ) AS temp2
 \begin{lstlisting}[language=SQL, float=h, label={lst:sorting}, caption={\$sortingQuery, combine and sort.}]
 SELECT recipe.id, name.{$lang} AS name, image
 FROM ( {$matchingQuery} ) AS temp1
-JOIN ( {$lackingQuery} ) AS temp2 ON temp1.recipe_id = temp2.recipe_id
+LEFT JOIN ( {$lackingQuery} ) AS temp2 ON temp1.recipe_id = temp2.recipe_id
 JOIN recipe ON recipe.id = temp1.recipe_id
 JOIN string AS name ON name.id = recipe.name
-ORDER BY mandatory_matching DESC , mandatory_lacking ASC ,
-  optional_matching DESC , optional_lacking ASC
+ORDER BY mandatory_matching DESC, mandatory_lacking ASC,
+  optional_matching DESC, optional_lacking ASC
 \end{lstlisting}
 \begin{description}
-\item[Lines 2-3] The result of \inline{$matchingQuery} is joined with the result of \inline{$lackingQuery}.
+\item[Lines 2-3] The result of \inline{$matchingQuery} is joined with the result of \inline{$lackingQuery}. A \inline{LEFT JOIN} is used since \inline{$lackingQuery} will not return rows of recipes that are completely covered by the ingredients specified by the user and ignored ingredients.
 \item[Lines 4-5] The rows are then joined with the \inline{recipe} table and the \inline{string} table. 
-\item[Lines 6-7] The result is ordered as defined in \secref{sec:design_search}. In descending order of precedence: most mandatory ingredients matching, least mandatory exchangeables lacking, most optional ingredients matching, least optional exchangeables lacking.
+\item[Lines 6-7] The result is ordered as defined in \secref{sec:design_search}. In descending order of precedence: most mandatory ingredients matching, least mandatory exchangeables lacking, most optional ingredients matching, least optional exchangeables lacking. It should be noted that the \inline{LEFT JOIN} in Line 3 will return \inline{NULL} values for any recipe that is fully covered. In our case, the \inline{NULL} values represent zeros since they occur when a recipe have zero exchangeables that are not covered. We do not need any extra clauses to handle those \inline{NULL} values since \inline{NULL} values always have the highest precedence when sorted.
 \item[Line 1] The ID, name, and image of the recipes are returned from the query and then later send to the application.
 \end{description}
 
