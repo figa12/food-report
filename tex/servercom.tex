@@ -96,5 +96,5 @@ new RecipeSearchCom((ServerAlertDialog) this.getActivity(), query, new OnRespons
 \begin{description}
 \item[Line 1] We make a new instance of \inline{RecipeSearchCom} and create an inline implementation of the \inline{OnResponseListener}. Both the class and the interface uses the generic type \inline{ArrayList<IntermediateRecipe>} which is the result of the request. A \inline{query} string is specified which is the recipe text to search for.
 \item[Lines 5-6] When the request is done we display the recipe search results in \inline{RecipeSearchFragment.this}, and hide the progress circle.
-\item[line 11] If the request failed then we must make sure to hide the progress circle as well, the \inline{ServerComTask} will show an alert to the user.
+\item[Line 11] If the request failed then we must make sure to hide the progress circle as well, the \inline{ServerComTask} will show an alert to the user.
 \end{description}
