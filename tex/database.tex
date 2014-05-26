@@ -1,7 +1,7 @@
 \section{Database}\label{sec:design_database}
-We have chosen to use a fork of MySQL called MariaDB. The main reason for using a variant of MySQL is because all group members has experience with the \ac{rdbms}. MariaDB offers some additional features and some speed improvements compared to MySQL, but the main reason for choosing MariaDB over MySQL is that MariaDB is truly open source whereas MySQL is only released under GPL.\cite{mariavsmysql}\todo{Hvis siderne bliver træls så brug MariaDB diskussion som intro, og resten indsættes mellem diagram og mapping}
+We have chosen to use a fork of MySQL called MariaDB. The main reason for using a variant of MySQL is because all group members has experience with the \ac{rdbms}. MariaDB offers some additional features and some speed improvements compared to MySQL, but the main reason for choosing MariaDB over MySQL is that MariaDB is truly open source whereas MySQL is only released under GPL.\cite{mariavsmysql}
 
-\autoref{fig:erdiagram} shows the \ac{er} diagram of our our database. The diagram does not show the attributes of the entities. All functional relationship types are total participants except for the relationship \textit{Parent} between \textit{Category}'s.\todo{Category's eller Categories?}
+\autoref{fig:erdiagram} shows the \ac{er} diagram of our our database. The diagram does not show the attributes of the entities. All functional relationship types are total participants except for the relationship \textit{Parent} between \textit{Categories}.
 
 \autoref{tab:relations} shows the mapping of our \ac{er} diagram to relations. It also shows the attributes of the entities.
 
