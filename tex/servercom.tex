@@ -75,7 +75,7 @@ public abstract class ServerComTask<T> extends AsyncTask<String, Integer, T> {
 \item[Line 32] The generic type result is sent to the response listener, and the execution of the task is complete.
 \item[Lines 35-38] If the task failed, then we notify the \inline{OnResponseListener} that the task failed and we show an alert to the user.
 \end{description}
-The different server request implementations are not shown, they only specify a generic type and then parse the supplied \ac{json} to the generic type. An example of how to make a request on the server and then handle the response is shown in \autoref{lst:recipesearchcom}. It is easiest to create an in line implementation of the \inline{OnResponseListener} interface, but you need to make sure to get the generic types right. Luckily the Android Studio \ac{ide} \todo{acronym overkill?} can generate the correct \inline{OnResponseListener} for us.\todo{er det Android Studio eller IntelliJ der genererer?}
+The different server request implementations are not shown, they only specify a generic type and then parse the supplied \ac{json} to the generic type. An example of how to make a request on the server and then handle the response is shown in \autoref{lst:recipesearchcom}. It is easiest to create an in line implementation of the \inline{OnResponseListener} interface, but you need to make sure to get the generic types right. Luckily the Android Studio can generate the correct \inline{OnResponseListener} for us.
 
 \begin{lstlisting}[language=java, label=lst:recipesearchcom, caption={Search for recipes by text}]
 new RecipeSearchCom((ServerAlertDialog) this.getActivity(), query, new OnResponseListener<ArrayList<IntermediateRecipe>>() {
@@ -94,7 +94,7 @@ new RecipeSearchCom((ServerAlertDialog) this.getActivity(), query, new OnRespons
 \end{lstlisting}
 
 \begin{description}
-\item[Line 1] We make a new instance of \inline{RecipeSearchCom} and create an in line implementation of the \inline{OnResponseListener}. Both the class and the interface uses the generic type \inline{ArrayList<IntermediateRecipe>} which is the result of the request. An \inline{IntermediateRecipe} is a partial recipe, used to display recipe search results. When the user wants to view the recipe, then the entire recipe is download. \todo{Der skal måske være en forklaring af vores applikation model før det her hvor det bliver forklaret} A \inline{query} string is specified which is the recipe text to search for.
+\item[Line 1] We make a new instance of \inline{RecipeSearchCom} and create an in line implementation of the \inline{OnResponseListener}. Both the class and the interface uses the generic type \inline{ArrayList<IntermediateRecipe>} which is the result of the request. A \inline{query} string is specified which is the recipe text to search for.
 \item[Lines 5-6] When the request is done we display the recipe search results in \inline{RecipeSearchFragment.this}, and hide the progress circle.
 \item[line 11] If the request failed then we must make sure to hide the progress circle as well, the \inline{ServerComTask} will show an alert to the user.
 \end{description}
