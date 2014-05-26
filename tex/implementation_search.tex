@@ -101,7 +101,7 @@ LIMIT {$limit} OFFSET {$offset}
 
 
 \subsection*{\$lackingQuery}
-\autoref{lst:lacking} shows the SQL query \inline{$lackingQuery}, that returns the number of lacking ingredients for each recipe.Retrieve all exchangeables that are not covered by an ingredient specified by the user or an ignored ingredient.
+\autoref{lst:lacking} shows the SQL query \inline{$lackingQuery}, that returns the number of lacking ingredients for each recipe. Retrieve all exchangeables that are not covered by an ingredient specified by the user or an ignored ingredient.
 \begin{lstlisting}[language=SQL, morekeywords={IFNULL}, float=h, label={lst:lacking}, caption={\$lackingQuery, returns the number of lacking ingredients for each recipe.}]
 SELECT recipe_id,
   SUM(mandatory) AS mandatory_lacking,
