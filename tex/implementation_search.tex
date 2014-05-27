@@ -1,4 +1,4 @@
-\section{Free-text search}
+\section{Free-text Search}
 Free-text search can be used to search for parts of the recipe name or words in the recipe description. As defined in \secref{sec:design_database}, we use MariaDB as our \ac{rdbms}. MariaDB has support for full-text search which makes it simple to implement free-text search. MariaDB also has support for a special full-text search called ``Boolean search''\cite{mariafulltext}. In ``Boolean search'', the user is able to use special operators like  +, -, "", and *  for marking words as mandatory, discarding rows containing specific word, matching phrases, and inserting wildcards, among other things. Unlike the default search mode, ``Natural Language'', which returns a score for each row, the ``Boolean search'' only outputs ``true'' or ``false'', to indicate whether a match was found. We want to be able to order the result based on how well the text in the recipes match the query. In particular, a match in a title of a recipe should have higher precedence in the result than a match in a description of a recipe.
 \autoref{lst:freetext} shows the SQL query we use for free-text search.
 
@@ -27,8 +27,7 @@ Since SQL is a declarative language, each individual SQL query's clauses will no
 \end{description}
 
 
-
-\section{Search by ingredients}
+\section{Search by Ingredients}
 The application also allows the user to search for recipes by entering a number of ingredients. The search algorithm should then find recipes which contain one or more of the ingredients specified by the user. The search algorithm should also order the results according to the precedence function described in \secref{sec:design_search}.
 
 The source code for the search algorithm, excluding SQL queries, is available in \appref{app:search}. The general structure of the algorithm is as follows:
