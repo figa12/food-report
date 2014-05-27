@@ -1,7 +1,11 @@
-The mobile application is designed to be a thin client that sends and receives messages to and from the server. Because of this we have chosen to focus our testing on the server, if the server has a 100\% code coverage and all tests are satisfied, we only need to ensure that the mobile application sends a correct message, and we can guarantee that the result is correct.
+The mobile application is designed to be a thin client that sends and receives messages to and from the server. 
+Because of this we have chosen to focus our testing on the server, if the server has a 100\% code coverage and all tests are satisfied, then we only need to ensure that the mobile application sends a correct message, to be confident in that the result is correct.
 The server layer consists of a class that handles all connection to the database, the goal is to achieve 100\% method coverage on this class.
 
-To avoid corrupting the data that is running on production we have made a script that makes an exact copy of the database to perform all of the testing on. An example of how the testing could corrupt the database is, when the test is run, a recipe will be created to ensure that this functionality works. If this recipe, for any reason, could not get deleted again it would be possible for the users to see this recipe. The copying of the database could prove to be a bottleneck if the database were to get very big.
+To avoid corrupting the data that is running on production we have made a script that makes an exact copy of the database to perform all of our tests on. An example of how the testing could corrupt the database is e.g. testing creation and deletion of a recipe. 
+When the test is run, a recipe will be created to ensure that this functionality works. 
+If for any reason this recipe could not be deleted it would be possible for the users to see this recipe. 
+The copying of the database could prove to be a bottleneck if the database were to get very big.
 
 The unit tests are run using ``PHPUnit'' version 3.6.10 by Sebastian\linebreak Bergmann\cite{phpunit}, furthermore mutation tests are run using ``judgedim/mutagenesis'' \cite{mutagenesis}. The basic approach of using PHPUnit is to create a new file that includes the functions which should be tested, the new file must have a new class that extends \inline{PHPUnit_Framework_TestCase}. All public methods, in this new class, which are named with a prefix of \inline{test} will be included in the test. Inside each of these methods all kinds of assertions can be made, an example could be \inline{$this->assertNotNull($var)}.
 
