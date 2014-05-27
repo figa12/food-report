@@ -1,7 +1,7 @@
 \section{Search by Ingredients}\label{sec:design_search}
-As Requirement \ref{req:ingredientsearch} and Requirement \ref{req:recipesearch} states, we want two different ways to search for recipes: Free-text and by entering a number of ingredients.
+As Requirement \ref{req:ingredientsearch} and Requirement \ref{req:recipesearch} states, we want two different ways to search for recipes: Free-text and based on ingredients.
 
-The primary feature of the application is the ability to search for recipes based on a number of ingredients. Unlike the existing service, Supercook, described in \secref{sec:exist}, we want recipes with the most matching number of ingredients to have a higher precedence than recipes with the least missing ingredients. We believe this will yield better results since the user is unlikely to enter every single ingredient they own. This should also make the application more useful when searching by items on sale in a supermarket.
+The primary feature of the application is the ability to search for recipes based on a number of ingredients. Unlike the existing service, Supercook, described in \secref{sec:exist}, we want recipes with the most matching number of ingredients to have a higher precedence than recipes with the least missing ingredients. We believe this will yield a better results since the user is unlikely to enter every single ingredient they own. This should also make the application more useful when searching by items on sale in a supermarket.
 
 When searching by an ingredient we also want recipes where this ingredient is an essential part of the recipe to have a higher precedence than recipes where the ingredient is optional, e.g. when searching for recipes which contain ``cream'', an ice cream recipe should have a higher precedence than a recipe for making hot chocolate, since cream is not an essential ingredient for making hot chocolate.
 
