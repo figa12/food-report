@@ -48,7 +48,7 @@ public function getIngredients($lang) {
 \item[Line 10] The \inline{echoJson()} method is called to print the result of the SQL query.
 \end{description}
 
-As seen in \autoref{lst:getIngredients} the method \inline{echoJson()} is called. This method will encode the result into a \ac{json} formatted object and then print it. An example of result from a request to the server could look like the following:
+As seen in \autoref{lst:getIngredients} the method \inline{echoJson()} is called. This method will serialise the result into a \ac{json} formatted object and then print it. An example of result from a request to the server could look like the following:
 
 \begin{lstlisting}[language=json, label=lst:jsonResult, caption=Example result from \colorbox{background}{getIngredients()}.]
 [
