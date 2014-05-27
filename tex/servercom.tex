@@ -7,9 +7,9 @@ In order to communicate with the server we created an abstract class which must 
 \caption{ServerComTask.}
 \label{fig:servercomtask}
 \end{figure}
-\inline{ServerComTask} is a generic class, it declares a type which the abstract method \inline{ParseJson()} must return. The object retuned by \inline{ParseJson()} is created by parsing the \ac{json} it is supplied with.
+\inline{ServerComTask} is a generic class that declares a type which the abstract method \inline{ParseJson()} must return. The object retuned by \inline{ParseJson()} is created by parsing the \ac{json} it is supplied with.
 
-\inline{ServerAlertDialog} is a simple interface which just returns an \inline{AlertDialog} which the \inline{ServerComTask} can use to display an alert if something went wrong. The interface is suppose to be implemented by activities so all server requests can share the \inline{AlertDialog} reference. We use it to display a static message that notifies the user that the connection with the server failed.
+\inline{ServerAlertDialog} is a simple interface which returns an \inline{AlertDialog}, which the \inline{ServerComTask} can use to display an alert, if something went wrong. The interface is implemented in all activities so all server requests can share the \inline{AlertDialog} reference. We use it to display a static message that notifies the user that the connection with the server failed.
 
 \inline{OnResponseListener} is a generic interface. It is used by \inline{ServerComTask} to communicate the result to where the server request was started. It sends the generic type as the result with \inline{onResponse()}. If anything went wrong with the request and no answer was produced, then \inline{onFailed()} is called so the lack of a result can be handled.
 
@@ -66,11 +66,11 @@ public abstract class ServerComTask<T> extends AsyncTask<String, Integer, T> {
 \end{lstlisting}
 
 \begin{description}
-\item[Lines 7-14] The constructor for \inline{ServerComTask}. It must have a \linebreak\inline{ServerAlertDialog} to display errors, and it must have an \inline{OnResponseListener} to send the result to.
+\item[Lines 7-14] The constructor for \inline{ServerComTask} takes a \inline{ServerAlertDialog} to display errors, and an \inline{OnResponseListener} to send the result to.
 \item[Line 13] The call to \inline{execute()} starts the overridden abstract method \linebreak\inline{doInBackground()} on a new thread. We chose to execute the task when the class is instantiated, since the task can only be executed once per instance of the task, so it is required that the path to download from is specified in the constructor.
 \item[Lines 16-24] \inline{doinBackground()} must return the generic type. The result is then passed to the method \inline{onPostExecute()} which runs on the \ac{ui} thread.
 \item[Line 19] First we download the data from the server. The download is an \textit{http get} request, so any parameters to the call is specified in the path. The \inline{download()} method is not shown.
-\item[Line 20] The the response \ac{json} is parsed to the generic type and returned to the \ac{ui} thread.
+\item[Line 20] The response \ac{json} is parsed to the generic type and returned to the \ac{ui} thread.
 \item[Lines 28-31] If the result of the task is \inline{null} then the task failed. \inline{onFailed()} handles this.
 \item[Line 32] The generic type result is sent to the response listener, and the execution of the task is complete.
 \item[Lines 35-38] If the task failed, then we notify the \inline{OnResponseListener} that the task failed and we show an alert to the user.
