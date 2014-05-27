@@ -26,8 +26,8 @@ If the user did not grant access to the application the routine starts all over.
 
 When the user is signed in to our application we can gain information of the user by using the \inline{GoogleApiClient}.
 In our application we only use the user's Google email(account name) and their real name(for comments on recipes). 
-When we receive the user's email we hash it using a hashing technique called "SHA-256", we do it because we have no use of the email other than its uniqueness, and it makes no sense storing their email in plain text both in the application and database. 
-So we hash it and every time the user makes an action that requires them to be signed in, we send the hashed email to the server together with the action. 
+When we receive the user's email we hash it using the SHA-256 hashing algorithm. We hash it because we have no use of the email other than its uniqueness, and from a security aspect it does not make sense to store their email in plain text both in the application and database. 
+Every time the user makes an action that requires them to be signed in, we send their hashed email to the server together with the action. 
 %It might seem redundant to send the hashed email every time and not just a user ID, but getting the user ID from the server turns out to be quite stressful to the server. Each time a user switches activity i.e. each time they view a recipe, the application signs in the user, and thus query the server for the user ID. Therefore it is more efficient just to send the hashed email with each user action.
 
 
