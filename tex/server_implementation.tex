@@ -2,7 +2,7 @@ This chapter describes how the API has been implemented on the server as well as
 \section{API}
 \label{sec:com}
 
-The server is implemented as a REST API using GET parameters, this means that whenever a request is made to the server it is of the following format: $$http://figz.dk/food/lib/ingredients.php?lang=us$$ In the given example the parameter sent is \textit{lang} with the value of \textit{"us"}.
+The server is implemented as a REST API using GET parameters, this means that whenever a request is made to the server, it is of the following format: $$http://figz.dk/food/lib/ingredients.php?lang=us$$ In the given example the parameter sent is \textit{lang} with the value of \textit{"us"}.
 
 We have created a single file on the server that handles all database connections, this means that whenever a call is made to the server, the parameters are checked and then sent to an instance of the database class. This way we isolate all connection to the database making it easier to maintain and test. The server will then return a \ac{json} formatted object which can easily be unserialised on the mobile application. We have chosen \ac{json} as a format since it is well supported, easy to generate, and unserialisable in both PHP and Android.
 
