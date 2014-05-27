@@ -22,7 +22,7 @@ Since SQL is a declarative language, each individual SQL query's clauses will no
 \item[Lines 7-8] Keep only recipes which have a match in \inline{BOOLEAN MODE}. Note the asterisk, `*', which is appended to the user defined search text. This allow the user to enter e.g. ``choco'' and get a match on e.g. ``Chocolate cake''. We would like to add a prefixed asterisk as well to allow users to search for e.g. ``berry'' and get results like ``Strawberry Pie''. Unfortunately it is not possible due to limitations in MariaDB.\cite{mariafulltext}
 \item[Lines 2-3] When you use full text search in the default mode, \linebreak\inline{NATURAL LANGUAGE MODE}, it calculates a score which reflect the relevance of the match. A high relevance could indicate that the matched query represent a big part of the text. The scores for when the user defined text is matched to the recipes' titles and descriptions are calculated using \inline{NATURAL LANGUAGE MODE}. These values are stored in respectively \inline{title_score} and \inline{desc_score}.
 \item[Line 9] The result is ordered by the calculated scores with \inline{title_score} having a higher precedence than \inline{desc_score}.
-\item[Line 10] The result is limited and offset according to the applications needs i.e. how far the user has scrolled through the result.
+\item[Line 10] The result is limited and offset according to the application's needs i.e. how far the user has scrolled through the result.
 \item[Line 1] The ID, name, image, and scores of the recipes are returned from the query and then later sent to the application.
 \end{description}
 
@@ -177,7 +177,7 @@ AND NOT EXISTS (
 	\begin{description}
 	\item[Lines 7-8] Retrieve quantities which are a part of a given exchangeable.
 	\item[Line 9-12] Discard quantities which does not contain one of the ingredients specified by the user or an ignored ingredient.
-	\item[Line 6] If the query returns any rows it means that the exchangeable is covered by any f the ingredients specified by the user.
+	\item[Line 6] If the query returns any rows it means that the exchangeable is covered by any of the ingredients specified by the user.
 	\end{description}
 \item[Line 1] The IDs of the resulting exchangeables are returned. These exchangeables are not covered by any user specified ingredients.
 \end{description}
