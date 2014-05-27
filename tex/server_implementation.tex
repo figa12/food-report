@@ -76,7 +76,7 @@ In \autoref{lst:jsonResult} it is worth noticing that the result is an array of 
 \item[favourites] This request takes two required parameters and four optional parameters. The two required parameters are: \textit{action} and \textit{hash}. The four optional parameters are: \textit{recipeid}, \textit{limit}, \textit{offset}, and \textit{lang}.
 
 \begin{description}
-\item[action] must be set to one of four things: \textit{status}, \textit{add}, \textit{remove}, and \textit{get}. \textit{hash} must be set to the SHA-256 hashed value of the users email.
+\item[action] must be set to one of four things: \textit{status}, \textit{add}, \textit{remove}, and \textit{get}. \textit{hash} must be set to the SHA-256 hashed value of the user's email.
 Depending on the set value of \textit{action} the following will happen:
 \item[status] Requires \textit{recipeid} to be set. This request will return a boolean value indicating whether the recipe is added to the user's list of favourites or not.
 \item[add] Requires \textit{recipeid} to be set. This request will add the given recipe to the user's list of favourites .
