@@ -1,12 +1,12 @@
 %authentication
 \section{Authentication}
 We have chosen to implement a social media sign-in option because it does not require us to handle the user's passwords and other personal information. With a social media sign-in implemented in our application as a way of identifying the user, we move the security measures to the specific social media.
-There are many different social media sign-in options such as Google+, Facebook, Twitter etc. We chose Google+ to be the first social media sign-in to implement. Other sign-in options could later be implemented in the application. It should be noted that it is not necessary for the user to be signed in to search for recipes, but actions like favouriting, adding to items to the shopping list, requires them to be signed in.
+There are many different social media sign-in options such as Google+, Facebook, Twitter, etc. We chose Google+ to be the first social media sign-in to implement. Other sign-in options could later be implemented in the application. It should be noted that it is not necessary for the user to be signed in to search for recipes, but actions like favouriting, adding to items to the shopping list, requires them to be signed in.
 
 It makes sense to use Google+ sign-in since Google recommends Android users to have a Google account, because otherwise the user would limit their experience with an Android device. 
-The Google+ sign-in authenticates the user and manages the OAuth 2.0 flow, which simplifies the integration with the Google \ac{api}s.
+The Google+ sign-in authenticates the user and manages the OAuth 2.0 flow, which simplifies the integration with the Google \ac{api}.
 The Google+ sign-in process can seamlessly authenticate a user without them having to enter a password or even an account name. 
-Once granted access the application is able to access to user's Google+ information through their Google+ account\cite{googleplusvideo}.
+Once granted access, the application is able to access to user's Google+ information through their Google+ account\cite{googleplusvideo}.
 
 In the implementation of the Google+ sign-in we use an object called \\\inline{GoogleApiClient}\citep{googleapiclient-docs}, which is provided by the Google Play services application. 
 The object \inline{GoogleApiClient} should be initialised and connected separately in every activity, so each activity has its own life cycle with the \inline{GoogleApiClient}, \autoref{fig:googleclientlifecycle} shows the basic life cycle of a \inline{GoogleApiClient} object in an activity.
