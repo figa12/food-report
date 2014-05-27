@@ -6,7 +6,7 @@ The server is implemented as a REST API using GET parameters, this means that wh
 
 We have created a single file on the server that handles all database connections, this means that whenever a call is made to the server, the parameters are checked and then sent to an instance of the database class. This way we isolate all connection to the database making it easier to maintain and test. The server will then return a \ac{json} formatted object which can easily be parsed on the mobile application. We have chosen \ac{json} as a format since it is well supported, easy to generate, and unserialisable in both PHP and Android.
 
-\begin{lstlisting}[language=phpstyle, caption=ingredients.php]
+\begin{lstlisting}[language=phpstyle, caption=ingredients.php.]
 require_once('DB.php');
 // Connect to the DB
 $DB = new DB();
@@ -25,7 +25,7 @@ $DB->getIngredients($lang);
 \item[Line 10] The method \inline{getIngredients()} in the \inline{DB} class is called with the given language parameter.
 \end{description}
 
-\begin{lstlisting}[language=phpstyle, label=lst:getIngredients, caption=getIngredients() method of DB class]
+\begin{lstlisting}[language=phpstyle, label=lst:getIngredients, caption=getIngredients() method of DB class.]
 public function getIngredients($lang) {
     if ($this->checkLanguage($lang)) {
         $ingredientQuery = $this->con->prepare(
@@ -50,7 +50,7 @@ public function getIngredients($lang) {
 
 As seen in \autoref{lst:getIngredients} the method \inline{echoJson} is called. This method will encode the result into a \ac{json} formatted object and then print it. An example of result from a request to the server could look like the following:
 
-\begin{lstlisting}[language=json, label=lst:jsonResult, caption=Example result from \colorbox{background}{getIngredients()}]
+\begin{lstlisting}[language=json, label=lst:jsonResult, caption=Example result from \colorbox{background}{getIngredients()}.]
 [
     {
         "id": 7,

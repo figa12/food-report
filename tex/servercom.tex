@@ -4,7 +4,7 @@ In order to communicate with the server we created an abstract class which must 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\linewidth, page=2]{img/servercomtask.pdf}
-\caption{ServerComTask}
+\caption{ServerComTask.}
 \label{fig:servercomtask}
 \end{figure}
 \inline{ServerComTask} is a generic class, it declares a type which the abstract method \inline{ParseJson()} must return. The object retuned by \inline{ParseJson()} is created by parsing the \ac{json} it is supplied with.
@@ -23,7 +23,7 @@ We have several different request we can make from the application to the server
 \item[RecipeSearchCom] Searches for recipes based on a user specified text string.
 \end{description}
 
-\begin{lstlisting}[language=java, label=lst:servercomtask, caption={Simplified code of the \inline{ServerComTask}}]
+\begin{lstlisting}[language=java, label=lst:servercomtask, caption={Simplified code of the \inline{ServerComTask}.}]
 public abstract class ServerComTask<T> extends AsyncTask<String, Integer, T> {
     private ServerAlertDialog serverAlertDialog;
     private OnResponseListener<T> onResponseListener;
@@ -77,7 +77,7 @@ public abstract class ServerComTask<T> extends AsyncTask<String, Integer, T> {
 \end{description}
 The different server request implementations are not shown, they only specify a generic type and then parse the supplied \ac{json} to the generic type. An example of how to make a request on the server and then handle the response is shown in \autoref{lst:recipesearchcom}. It is easiest to create an in line implementation of the \inline{OnResponseListener} interface, but you need to make sure to get the generic types right. Luckily the Android Studio can generate the correct \inline{OnResponseListener} for us.
 
-\begin{lstlisting}[language=java, label=lst:recipesearchcom, caption={Search for recipes by text}]
+\begin{lstlisting}[language=java, label=lst:recipesearchcom, caption={Search for recipes by text.}]
 new RecipeSearchCom((ServerAlertDialog) this.getActivity(), query, new OnResponseListener<ArrayList<IntermediateRecipe>>() {
     
     @Override
