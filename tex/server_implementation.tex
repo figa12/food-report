@@ -84,9 +84,9 @@ Depending on the set value of \textit{action} the following will happen:
 \item[get] Requires \textit{limit}, and \textit{offset} to be set. This request will return all recipes from the user's list of favourites.
 \end{description}
 
-\item[ingredientsearch] This request takes one required parameter and three optional parameters. The required parameter is \textit{i} and it must be set to an array of ingredient ids. The optional parameters are: \textit{lang}, \textit{limit}, and \textit{offset}. The request will return an array of partial recipes. A partial recipe consists of the recipe id, name, and image name.
+\item[ingredientsearch] This request takes one required parameter and three optional parameters. The required parameter is \textit{i} and it must be set to an array of ingredient ids. The optional parameters are: \textit{lang}, \textit{limit}, and \textit{offset}. The request will return an array of partial recipes. A partial recipe consists of the recipe ID, name, and image name.
 \item[ingredients] This request takes one optional parameter: \textit{lang}. If \textit{lang} is not set it will default to ``us''. The request will return an array of all ingredients in the system in the given language.
-\item[recipe] This request takes one required parameter and two optional parameters. The required parameter is \textit{id} which must be set to a recipe id. The optional parameters are \textit{lang} and \textit{metric}. This request will return an object containing all information about the given recipe.
+\item[recipe] This request takes one required parameter and two optional parameters. The required parameter is \textit{id} which must be set to a recipe ID. The optional parameters are \textit{lang} and \textit{metric}. This request will return an object containing all information about the given recipe.
 \item[textsearch] This request takes one required parameter and three optional parameters. The required parameter is \textit{q} and it must be set to the string of which you want to search for. The optional parameters are \textit{lang}, \textit{limit}, and \textit{offset}. The request will return an array of partial recipes that satisfy the search query.
 \end{description}
 

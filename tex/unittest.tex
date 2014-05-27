@@ -47,13 +47,13 @@ public function testSetRecipe($unit, $ingredient) {
 \begin{description}
 \item[Lines 2-3] The test depends on both \inline{testSetUnit()} and \inline{testSetIngredient()}, we need both ingredients and a unit of measurement to create a recipe.
 \item[Line 4] We specify that this test covers the \inline{setRecipe()} method in the \inline{DB} class. This is because the code coverage analysis tool does not properly detect coverage when using cURL\cite{curl}.
-\item[Line 6] \inline{testSetRecipe()} takes two parameters: the id of the inserted unit of measurement from \inline{testSetUnit()} and the id from \inline{testSetIngredient()} respectively.
+\item[Line 6] \inline{testSetRecipe()} takes two parameters: the ID of the inserted unit of measurement from \inline{testSetUnit()} and the ID from \inline{testSetIngredient()} respectively.
 \item[Line 7] The \inline{$url} variable is initialised to the value address of the file that handles creation of recipes. \textit{recipebackend.php} is used by the recipe creator tool.%$
 \item[Lines 9-21] An array is initialised with key value pairs that represent the POST variables that is send to the given url.
 \item[Line 23] The request is send to the server with the given POST variables and the result is stored in \inline{$result}.%$
 \item[Line 24] It is checked that the result is not null. If the result was null it would mean that something went wrong while inserting the data.
-\item[Lines 26-27] The id of the newly inserted recipe must be greater than 0.
-\item[Line 29] Return the id of the insert recipe. This id is used by the \linebreak\inline{testGetRecipe()} method to check that we can extract the recipe correctly again.
+\item[Lines 26-27] The ID of the newly inserted recipe must be greater than 0.
+\item[Line 29] Return the ID of the insert recipe. This ID is used by the \linebreak\inline{testGetRecipe()} method to check that we can extract the recipe correctly again.
 \end{description}
 
 \begin{lstlisting}[language=phpstyle]
@@ -80,7 +80,7 @@ public function testGetRecipe($recipeId) {
 \end{lstlisting}%$
 \begin{description}
 \item[Lines 2] The test depends on \inline{testSetRecipe()}.
-\item[Line 4] \inline{testGetRecipe()} takes the id that was returned from \inline{testSetRecipe()} as a parameter.
+\item[Line 4] \inline{testGetRecipe()} takes the ID that was returned from \inline{testSetRecipe()} as a parameter.
 \item[Lines 5-6] The method to get a recipe is called from the \inline{DB} class, and the \ac{json} result is deserialised. This enables us to handle the result as a PHP object.
 \item[Line 7] The \inline{$url} variable is initialised to the value address of the file that handles creation of recipes. \textit{recipebackend.php} is used by the recipe creator tool.%$
 \item[Lines 9-19] Numerous assertions are made to ensure that the data in the fetched object is equal to the data we used when writing the recipe to the database.
