@@ -1,6 +1,6 @@
 \section{Existing solutions}\label{sec:exist}
 
-During the early stages of the project we began searching for existing solutions to draw inspiration to the design and implementation phases. All members of the group have previously had experience using different recipe sites on the Internet, and we think that the existing solutions lack functionality. In this section we review and discuss the existing solutions and draw some good practices from these.
+During the early stages of the project we began searching for existing solutions to draw inspiration to the design and implementation phases. All members of the group have previously had experience using different recipe sites on the Internet, and we think that the existing solutions lack functionality. In this section we review and discuss existing solutions and draw some good practices from these.
 
 \subsection{Supercook}
 Supercook\cite{supercook} is a website with focus on searching for recipes based on their ingredients, however you can also search for recipes using free-text. 
@@ -22,6 +22,8 @@ By evaluating the search results of Supercook, we have deduced what we believe a
 	\item Sort by most matching ingredients.
 	\item Sort by least missing ingredients.
 \end{enumerate}
+Notice that the result is primarily sorted by the least missing ingredients since it is the latter sort.
+
 We have also noticed some quirks in the way it counts matching ingredients. It seems like the search algorithm counts the number of occurrences of the entered ingredients in the recipes. When entering ``bell pepper'' and ``olive oil'', recipes which contain both red, green, and yellow pepper are prioritised higher than recipes which actually contains both of the entered ingredients. It also appears as if ingredients in the recipes are mapped to the ingredients defined by Supercook. An example of that is that ``flour'' appear to be mapped to ``flour'', ``wheat'', ``oat'', etc. This also appears to have the shortcoming that recipes containing e.g. ``wheat flour'' are prioritised as if they have two matching ingredient when the user entered ``flour'', since Supercook detects both ``wheat'' and ``flour''.
 
 When making a search containing ``eggs'', ``garlic'', ``ground beef'', and ``onion'', we get a result which showcases a drawback of the sorting done by Supercook. The first 94 recipes are simple recipes using only few of the entered ingredients, including 24 recipes on how to boil an egg. Recipe number 95 is a recipe for meatballs and is using all entered ingredients but it also needs ``bread crumbs''. The reason why the first 94 recipes are prioritised highest is because they do not need any other ingredients than the ingredients entered.
@@ -41,18 +43,18 @@ BigOven is also one of the most downloaded \cite{bigoven-googleplay} Android app
 The application main page is cluttered and presents the user with many functionalities, see \autoref{fig:mainpage-bigoven}. It is possible to search both by ingredients and free-text. The search by ingredients is limited to only three ingredients and the algorithm finds only the recipes where they all are included. The search by ingredient is based on free-text, meaning the user does not have the aid of autocompletion, like with Supercook. If the user inputs three ingredients that have no real relation like: ``beef'', ``cake-mix'', ``salmon'', the search by ingredients would find no results, the search by ingredients excludes everything that does not contain all three ingredients. 
 Like in the application Allthecooks, the user can add the different ingredients to a shopping list, save the recipe to favourites, and alternate between the metric and imperial system.
 
-A cool feature that is unique to the BigOven application is the menu-cards, see \autoref{fig:menucards-bigoven}.
+A feature that is unique to the BigOven application is the menu-cards, see \autoref{fig:menucards-bigoven}.
 \twofigs{screenshots/mainpage-bigoven.png}{The main page of BigOven}{fig:mainpage-bigoven}{screenshots/menucards-bigoven.png}{Menu Cards from BigOven}{fig:menucards-bigoven}
-It is a small collection of different recipes that together builds to a meal, e.g. ``steak'', ``fries'', and ``green beans''. Each meal is bound to a day, which means that the user can create a menu-card that can contain a meal for each day of the week, or more. 
+It is a small collection of different recipes that together form a meal, e.g. ``steak'', ``fries'', and ``green beans''. Each meal is bound to a day which means that the user can create a menu-card that can contain a meal for each day of the week or more. 
 
-The recipes of BigOven is also, like Allthecooks, user created, which provides the same risks and benefits as explained in the previous section.
-The BigOven application is free, but you can buy Pro-features that exclude advertisers from the application and unlocks more functionality in the application.
+The recipes of BigOven is also, like Allthecooks, user created which provides the same risks and benefits as explained in the previous section.
+The BigOven application is free but you can buy Pro-features that exclude advertisers from the application and unlocks more functionality in the application.
 
 \subsection{Comparison}
-These three applications have been chosen for comparison since they vary in focus, design, navigation, and features. Allthecooks focus on design and navigation, where as BigOven has focus on features. Supercook is a bit different since it is not an Android application, but it was included in the comparison since it had a unique set of features, such as the word cloud, and search by ingredients.
+These three applications have been chosen for comparison since they vary in focus, design, navigation, and features. Allthecooks focus on design and navigation, where as BigOven has focus on features. Supercook is a bit different since it is not an Android application but it was included in the comparison since it had a unique set of features, such as the word cloud, and search by ingredients.
 Allthecooks and BigOven share a lot of features, they both have free-text search, shopping list, and saving of recipes. Though BigOven has some features that are unique, such as search by ingredients, and menu-cards. A noticeable thing about BigOven is that the experience of using the application could be improved significantly, both in terms of its design and performance.
 
-BigOven and Supercook is both able to search by ingredients, but there is a big difference in the two searches. In the BigOven application you are only able to enter three ingredients, the search finds all the recipes that include all three ingredients. BigOven also uses free-text as an input method, whereas Supercook aids the user with autocompletion. In Supercook the user is also able to enter as many ingredients as necessary.
+BigOven and Supercook is both able to search by ingredients, but there is a big difference in the two searches. In the BigOven application you are only able to enter three ingredients. The search finds all the recipes that include all three ingredients. BigOven also uses free-text as an input method, whereas Supercook aids the user with autocompletion. In Supercook the user is also able to enter as many ingredients as necessary.
 A comparison between the existing solutions can be seen in \autoref{tab:appcomparison}.
 \begin{table}[H]
 \centering
@@ -68,7 +70,7 @@ Recipe search & Yes & Yes & Yes  \\
 \hline
 Ingredient search & Yes & No & Yes \\
 \hline
-Recipe origin & Web crawl & User defined & User defined \\
+Recipe origin & Web crawl & User created & User created \\
 \hline
 Shopping list & Yes & Yes & Yes \\
 \hline
