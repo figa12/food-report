@@ -4,7 +4,7 @@ This chapter describes how the API has been implemented on the server as well as
 
 The server is implemented as a REST API using GET parameters, this means that whenever a request is made to the server it is of the following format: $$http://figz.dk/food/lib/ingredients.php?lang=us$$ In the given example the parameter sent is \textit{lang} with the value of \textit{"us"}.
 
-We have created a single file on the server that handles all database connections, this means that whenever a call is made to the server, the parameters are checked and then sent to an instance of the database class. This way we isolate all connection to the database making it easier to maintain and test. The server will then return a \ac{json} formatted object which can easily be parsed on the mobile application. We have chosen \ac{json} as a format since it is well supported, easy to generate, and unserialisable in both PHP and Android.
+We have created a single file on the server that handles all database connections, this means that whenever a call is made to the server, the parameters are checked and then sent to an instance of the database class. This way we isolate all connection to the database making it easier to maintain and test. The server will then return a \ac{json} formatted object which can easily be unserialised on the mobile application. We have chosen \ac{json} as a format since it is well supported, easy to generate, and unserialisable in both PHP and Android.
 
 \begin{lstlisting}[language=phpstyle, caption=ingredients.php.]
 require_once('DB.php');
@@ -45,10 +45,10 @@ public function getIngredients($lang) {
 \item[Line 2] \inline{checkLanguage()} is called to check whether the language is valid. The method simply checks that the string matches a string in an array of valid strings.
 \item[Lines 3-8] The SQL query is prepared for execution with the language parameter.
 \item[Line 9] The query is executed.
-\item[Line 10] The \inline{echoJson} method is called to print the result of the SQL query.
+\item[Line 10] The \inline{echoJson()} method is called to print the result of the SQL query.
 \end{description}
 
-As seen in \autoref{lst:getIngredients} the method \inline{echoJson} is called. This method will encode the result into a \ac{json} formatted object and then print it. An example of result from a request to the server could look like the following:
+As seen in \autoref{lst:getIngredients} the method \inline{echoJson()} is called. This method will encode the result into a \ac{json} formatted object and then print it. An example of result from a request to the server could look like the following:
 
 \begin{lstlisting}[language=json, label=lst:jsonResult, caption=Example result from \colorbox{background}{getIngredients()}.]
 [
@@ -78,10 +78,10 @@ In \autoref{lst:jsonResult} it is worth noticing that the result is an array of 
 \begin{description}
 \item[action] must be set to one of four things: \textit{status}, \textit{add}, \textit{remove}, and \textit{get}. \textit{hash} must be set to the SHA-256 hashed value of the users email.
 Depending on the set value of \textit{action} the following will happen:
-\item[status] Requires \textit{recipeid} to be set. This request will return a boolean value indicating whether the user already has the given recipe favourited or not.
-\item[add] Requires \textit{recipeid} to be set. This request will set the given recipe as a favourite of the user.
-\item[remove] Requires \textit{recipeid} to be set. This request will remove the given recipe from the user's favourites.
-\item[get] Requires \textit{limit}, and \textit{offset} to be set. This request will return a list of all the user's favourited recipes
+\item[status] Requires \textit{recipeid} to be set. This request will return a boolean value indicating whether the recipe is added to the user's list of favourites or not.
+\item[add] Requires \textit{recipeid} to be set. This request will add the given recipe to the user's list of favourites .
+\item[remove] Requires \textit{recipeid} to be set. This request will remove the given recipe from the user's list of favourites.
+\item[get] Requires \textit{limit}, and \textit{offset} to be set. This request will return all recipes from the user's list of favourites.
 \end{description}
 
 \item[ingredientsearch] This request takes one required parameter and three optional parameters. The required parameter is \textit{i} and it must be set to an array of ingredient ids. The optional parameters are: \textit{lang}, \textit{limit}, and \textit{offset}. The request will return an array of partial recipes. A partial recipe consists of the recipe id, name, and image name.
