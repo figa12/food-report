@@ -1,31 +1,129 @@
-\documentclass[a4paper,12pt]{memoir}
-\usepackage{framed}
-\usepackage{enumitem}
-\usepackage{todonotes}
-
-%Commands
-\newcommand{\testdesign}[4]
-{
-\begin{framed}
-\begin{description}
-\item \textbf{Identifier:} #1
-\item \textbf{Features to be tested:} #2
-\item \textbf{Approach:} #3
-%\item \textbf{Test case identification:} #4
-\item \textbf{Pass/fail criteria:} #4
-\end{description}
-\end{framed}
-}
+\input{../preamble}
 
 \title{Miniproject in Test and Verification - Part 2}
 \author{Jacob Karstensensen Wortmann\\Sam Sepstrup Olesen\\Nicklas Andersen\\sw805f14}
 
 \begin{document}
 \maketitle %project description
-We will in our project make an application that functions as a digital cookbook. The user is able to search for recipes by different search functions: by ingredients and by the name of the recipe. Users can share the recipes with friends and relatives, it is also possible to favourite a recipe. Our application should also support conversion between the imperial and metric system to reach a larger audience. 
-We want to create a thin client which does not perform a huge amount of calculation, this means that we can focus on testing the server and the communication layer in the client.
+\section*{2a - Results of Test Cases}
 
-\section{Mutation testing}
-\section{Code coverage}
+\subsection*{Environment setup}
+To avoid corrupting the data that is running on production, we made a script that makes an exact copy of the database to perform all of our tests on. An example of how the testing could corrupt the database is testing creation and deletion of a recipe.
+When the test is run, a recipe will be created to ensure that this functionality works. 
+If for any reason this recipe could not be deleted it would be possible for the users to see this recipe. 
+The copying of the database could prove to be a bottleneck if the database were to get very big.
+
+\subsection*{PHPUnit}
+The basic approach of using PHPUnit is to create a new file that includes the functions which should be tested. The new file must have a new class that extends \inline{PHPUnit_Framework_TestCase}. All public methods in this new class, which are named with a prefix of \inline{test}, will be included in the test. Inside each of these methods all kinds of assertions can be made, an example could be \inline{$this->assertNotNull($var)}.
+
+To demonstrate how we have performed the unit tests, the tests \linebreak\inline{testSetRecipe()} and \inline{testGetRecipe()} have been included. These tests ensure that after a new recipe is written to the database, the exact same recipe can be retrieved again with no missing data.
+
+\begin{lstlisting}[language=phpstyle]
+/**
+ * @depends testSetUnit
+ * @depends testSetIngredient
+ * @covers DB::setRecipe
+ */
+public function testSetRecipe($unit, $ingredient) {
+    $url = 'http://localhost/food/lib/recipebackend.php';
+p
+    $fields = array(
+        'test'=>"true",
+        'recipeName'=>$this->recipeName,
+        'recipeDesc'=>$this->recipeDesc,
+        'group1'=>$this->groupName,
+        'group1_exchange1'=>"",
+        'group1_exchange1_mandatory'=>$this->firstExchangeMandatory,
+        'group1_exchange1_ingredient1'=>$ingredient,
+        'group1_exchange1_ingredient1_amount'=>$this->firstIngAmount,
+        'group1_exchange1_ingredient1_unit'=>$unit,
+        'step1'=>$this->firstStepDesc,
+        'step2'=>$this->secondStepDesc
+        );
+    
+    $result = $this->sendCurl($url, $fields);
+    $this->assertNotNull($result);
+        
+    $resultRecipeId = (int)strip_tags($result);
+    $this->assertGreaterThan(0, $resultRecipeId);
+    
+    return $resultRecipeId;
+}
+\end{lstlisting}
+
+\begin{description}
+\item[Lines 2-3] The test depends on both \inline{testSetUnit()} and \inline{testSetIngredient()}, we need both ingredients and a unit of measurement to create a recipe.
+\item[Line 4] We specify that this test covers the \inline{setRecipe()} method in the \inline{DB} class. This is because the code coverage analysis tool does not properly detect coverage when using cURL.
+\item[Line 6] \inline{testSetRecipe()} takes two parameters: the ID of the inserted unit of measurement from \inline{testSetUnit()} and the ID from \inline{testSetIngredient()} respectively.
+\item[Line 7] The \inline{$url} variable is initialised to the value address of the file that handles creation of recipes. \textit{recipebackend.php} is used by the recipe creator tool.%$
+\item[Lines 9-21] An array is initialised with key value pairs that represent the POST variables that is send to the given url.
+\item[Line 23] The request is send to the server with the given POST variables and the result is stored in \inline{$result}.%$
+\item[Line 24] It is checked that the result is not null. If the result was null it would mean that something went wrong while inserting the data.
+\item[Lines 26-27] The ID of the newly inserted recipe must be greater than 0.
+\item[Line 29] Return the ID of the insert recipe. This ID is used by the \linebreak\inline{testGetRecipe()} method to check that we can extract the recipe correctly again.
+\end{description}
+
+\begin{lstlisting}[language=phpstyle]
+/**
+ * @depends testSetRecipe
+ */
+public function testGetRecipe($recipeId) {
+    $jsonResult = self::$DB->getRecipe($recipeId, $this->language, $this->metric);
+    $recipe = json_decode($jsonResult);
+
+    //Check that the recipe is equal to the one we inserted.
+    $this->assertEquals($recipeId, $recipe->id);
+    $this->assertEquals($this->recipeName, $recipe->name);
+    $this->assertEquals($this->recipeDesc, $recipe->desc);
+    $this->assertEquals($this->recipeImage, $recipe->image);
+    $this->assertEquals($this->groupName, $recipe->groups[0]->name);
+    $this->assertNotNull($recipe->groups[0]->order);
+    $this->assertEquals($this->ingredientName, $recipe->groups[0]->exchanges[0]->ingredients[0]->name);
+    $this->assertEquals($this->firstIngAmount, $recipe->groups[0]->exchanges[0]->ingredients[0]->amount);
+    $this->assertEquals($this->metricName, $recipe->groups[0]->exchanges[0]->ingredients[0]->unit);
+
+    $this->assertEquals(((bool)$this->firstExchangeMandatory), $recipe->groups[0]->exchanges[0]->mandatory);
+}
+\end{lstlisting}%$
+\begin{description}
+\item[Lines 2] The test depends on \inline{testSetRecipe()}.
+\item[Line 4] \inline{testGetRecipe()} takes the ID that was returned from \inline{testSetRecipe()} as a parameter.
+\item[Lines 5-6] The method to get a recipe is called from the \inline{DB} class, and the JSON result is deserialised. This enables us to handle the result as a PHP object.
+\item[Line 7] The \inline{$url} variable is initialised to the value address of the file that handles creation of recipes. \textit{recipebackend.php} is used by the recipe creator tool.%$
+\item[Lines 9-19] Numerous assertions are made to ensure that the data in the fetched object is equal to the data we used when writing the recipe to the database.
+\end{description}
+
+\subsection*{Result}
+\begin{lstlisting}[numbers=none, basicstyle=\ttfamily, caption={The result of the PHPUnit test.}]
+Time: 1 second, Memory: 3.75Mb
+OK (16 tests, 45 assertions)
+\end{lstlisting}
+
+The goal was to achieve 100\% statement coverage of the \inline{DB} class and as seen in \autoref{fig:codecoverage} this was succeeded. Since all of the tests pass, we can be more confident that all of the functionality on the server works as intended. As long as the mobile application sends the correct data of the correct format, a valid response should be sent back.
+
+\begin{lstlisting}[numbers=none, basicstyle=\ttfamily, caption={The result of the Mutagenesis test.}]
+Score: 78.12%
+(14 escaped on 64 mutants)
+\end{lstlisting}
+
+The tests have been run trough a mutation testing tool, judgedim/mutagenesis, to ensure that the tests work as intended. The mutation test will change certain aspects of the source code before running the tests. This includes changing strings to random strings, changing integers, negating boolean statements, etc. If a test still passes after the source code has been altered, the test is considered defective. The mutation testing tool gives a success rate of 78.12\% which means that 78.12\% of the mutants made the tests fail. It is a satisfactory success rate, but could be improved if we had more time.
+
+\begin{lstlisting}[label=lst:mutant, caption={Example of an escaped mutant.}]
+$exchange = new Exchange();
+// Original
+$exchange->mandatory = ($exchangerow->mandatory == 1) ? true : false;
+// Mutant
+$exchange->mandatory = ($exchangerow->mandatory == 1) ? true : true;
+\end{lstlisting}%$
+
+\autoref{lst:mutant} shows an example of a mutant that has escaped. When a recipe is made with the recipe creation tool the mandatory value is set to either 1 or 0. We want to represent this value as a boolean in the database, thus making the simple if statement seen in \autoref{lst:mutant}. The way to fix this mutant is to check that the value of mandatory still matches the value set in the recipe creation tool after it has been inserted in the database.
+
+\section*{2b - Reflections}
+We quickly realised that having 100\% code covering does not necessarily mean much. A better metric for determining test quality could be: \[CodeCoverage \times MutationScore = TestQuality\] This forces you to write tests of high quality since it would be easy to achieve a high code coverage if the assertions always passed regardless of input/output.
+Likewise, if you only have a code coverage of 50\% the test quality will never surpass 50\%\\\\
+Our experience with mutation testing is generally positive since it quickly enables us to find mistakes in the unit tests. A good example is the snippet seen in \autoref{lst:mutant}. A test for this case would not be difficult to write, but we did not spot the error ourselves. It might vary from tool to tool, but the tools that we tried for mutating PHP unit tests were all difficult to setup.
+
+\landscapefigure{width=0.715\linewidth}{coverage.png}{Code coverage analysis.}{fig:codecoverage}
+
 
 \end{document}
